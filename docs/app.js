@@ -372,3 +372,4 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
 // On Initial Load, Check Login
 // ---------------------------
 checkLogin();
+// Test change to check Git detection
