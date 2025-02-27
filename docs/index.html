@@ -2,26 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Disable predictive text on mobile inputs -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <title>Lexcelerate</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
 </head>
 <body>
-  <!-- Notification Div (hidden by default) -->
-  <div id="notification" style="display:none; position:fixed; top:10px; right:10px; background:#007BFF; color:#fff; padding:10px; border-radius:5px;"></div>
+  <!-- Help Modal -->
+  <div id="help-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span id="help-close" class="close">&times;</span>
+      <h2>Help</h2>
+      <div id="help-text">
+        <!-- Help text will be inserted dynamically based on current page -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Div -->
+  <div id="notification" class="notification" style="display:none;"></div>
+
+  <!-- Header with Help Button -->
+  <header>
+    <button id="help-btn" class="help-btn">?</button>
+  </header>
 
   <!-- Login Screen -->
   <div id="login-screen" class="screen" style="display: none;">
     <h2>Sign In to Lexcelerate</h2>
-    <input type="text" id="login-username" placeholder="Username" />
-    <input type="password" id="login-password" placeholder="Password" />
+    <input type="text" id="login-username" placeholder="Username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <input type="password" id="login-password" placeholder="Password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     <button id="login-btn">Sign In</button>
   </div>
 
   <!-- Home Screen -->
-  <div id="home-screen" style="display: none;">
+  <div id="home-screen" class="screen" style="display: none;">
     <h1>Lexcelerate</h1>
+    <!-- Word of the Day Section -->
+    <div id="word-of-day" class="word-of-day">
+      <strong>Word of the Day:</strong> <span id="wotd">[Placeholder]</span>
+    </div>
     <button id="add-word-btn">Add a Word</button>
     <button id="practice-btn">Practice Spelling</button>
     <button id="stats-btn">View Word Stats</button>
@@ -32,7 +53,7 @@
   <!-- Add Word Screen -->
   <div id="add-word-screen" class="screen" style="display: none;">
     <h2>Add a Word</h2>
-    <input type="text" id="word-input" placeholder="Enter word" />
+    <input type="text" id="word-input" placeholder="Enter word" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     <button id="save-word-btn">Save Word</button>
     <button class="back-btn">Back</button>
   </div>
@@ -40,13 +61,10 @@
   <!-- Practice Screen -->
   <div id="practice-screen" class="screen" style="display: none;">
     <h2>Practice Spelling</h2>
-    <!-- The prompt area shows the covered word -->
-    <div id="prompt" style="cursor:pointer;"></div>
-    <!-- Sound toggle button -->
+    <div id="prompt" class="prompt" style="cursor:pointer;"></div>
     <button id="sound-toggle-btn">Sound: ON</button>
-    <!-- Talk button remains available -->
     <button id="talk-btn">Talk</button>
-    <input type="text" id="spell-input" placeholder="Spell the word" />
+    <input type="text" id="spell-input" placeholder="Spell the word" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     <button id="submit-spelling-btn">Submit</button>
     <div id="feedback"></div>
     <button class="back-btn">Back</button>
@@ -55,9 +73,17 @@
   <!-- Statistics Screen -->
   <div id="stats-screen" class="screen" style="display: none;">
     <h2>Word Statistics</h2>
+    <!-- Export/Import Buttons -->
+    <button id="export-btn">Export Catalogue</button>
+    <button id="import-btn">Import Catalogue</button>
     <div id="stats-list"></div>
     <button class="back-btn">Back</button>
   </div>
+
+  <!-- Footer with Version Number -->
+  <footer>
+    <span id="version">v1.0</span>
+  </footer>
 
   <script src="app.js"></script>
 </body>
