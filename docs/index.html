@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Disable predictive text on inputs -->
+  <!-- Disable predictive text via HTML attributes on inputs -->
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Lexcelerate</title>
   <link rel="stylesheet" href="style.css" />
@@ -15,7 +15,7 @@
       <span id="help-close" class="close">&times;</span>
       <h2>Help</h2>
       <div id="help-text">
-        <!-- Help text will load based on current screen -->
+        <!-- Help text will be populated based on the current screen -->
       </div>
     </div>
   </div>
@@ -39,13 +39,12 @@
   <!-- Home Screen -->
   <div id="home-screen" class="screen" style="display: none;">
     <h1>Lexcelerate</h1>
-    <!-- Word of the Day Section -->
+    <!-- Word of the Day Section (always from a fixed list) -->
     <div id="word-of-day" class="word-of-day">
       <strong>Word of the Day:</strong> <span id="wotd" style="cursor:pointer;"></span>
     </div>
     <button id="add-word-btn">Add a Word</button>
     <button id="practice-btn">Practice Spelling</button>
-    <button id="random-practice-btn">Practice Random Words</button>
     <button id="stats-btn">View Word Stats</button>
     <button id="logout-btn">Log Out</button>
     <div id="progress-summary"></div>
@@ -59,9 +58,14 @@
     <button class="back-btn">Back</button>
   </div>
 
-  <!-- Practice Spelling Screen (Using User Catalogue) -->
+  <!-- Practice Spelling Screen (Combined Mode) -->
   <div id="practice-screen" class="screen" style="display: none;">
     <h2>Practice Spelling</h2>
+    <!-- Mode Toggle Button: Catalogue vs. Random -->
+    <button id="mode-toggle-btn">Mode: Catalogue</button>
+    <!-- Button to add random word to catalogue; visible in Random mode -->
+    <button id="add-random-to-catalogue-btn" style="display:none;">Add Random Word to Catalogue</button>
+    <!-- Practice area -->
     <div id="prompt" class="prompt" style="cursor:pointer;"></div>
     <button id="sound-toggle-btn">Sound: ON</button>
     <button id="talk-btn">Talk</button>
@@ -71,31 +75,18 @@
     <button class="back-btn">Back</button>
   </div>
 
-  <!-- Random Words Practice Screen -->
-  <div id="random-practice-screen" class="screen" style="display: none;">
-    <h2>Practice Random Words</h2>
-    <div id="rand-prompt" class="prompt" style="cursor:pointer;"></div>
-    <button id="rand-sound-toggle-btn">Sound: ON</button>
-    <button id="rand-talk-btn">Talk</button>
-    <input type="text" id="rand-spell-input" placeholder="Spell the word" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-    <button id="rand-submit-btn">Submit</button>
-    <div id="rand-feedback"></div>
-    <button class="back-btn">Back</button>
-  </div>
-
   <!-- Statistics Screen -->
   <div id="stats-screen" class="screen" style="display: none;">
     <h2>Word Statistics</h2>
-    <!-- Export/Import Buttons -->
     <button id="export-btn">Export Catalogue</button>
     <button id="import-btn">Import Catalogue</button>
     <div id="stats-list"></div>
     <button class="back-btn">Back</button>
   </div>
 
-  <!-- Footer with Version Number -->
+  <!-- Footer with Version Number (updated to v1.1) -->
   <footer>
-    <span id="version">v1.0</span>
+    <span id="version">v1.1</span>
   </footer>
 
   <script src="app.js"></script>
