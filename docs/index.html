@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Disable predictive text on mobile inputs -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <!-- Disable predictive text on inputs -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Lexcelerate</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
@@ -15,12 +15,12 @@
       <span id="help-close" class="close">&times;</span>
       <h2>Help</h2>
       <div id="help-text">
-        <!-- Help text will be inserted dynamically based on current page -->
+        <!-- Help text will load based on current screen -->
       </div>
     </div>
   </div>
 
-  <!-- Notification Div -->
+  <!-- Notification -->
   <div id="notification" class="notification" style="display:none;"></div>
 
   <!-- Header with Help Button -->
@@ -41,10 +41,11 @@
     <h1>Lexcelerate</h1>
     <!-- Word of the Day Section -->
     <div id="word-of-day" class="word-of-day">
-      <strong>Word of the Day:</strong> <span id="wotd">[Placeholder]</span>
+      <strong>Word of the Day:</strong> <span id="wotd" style="cursor:pointer;"></span>
     </div>
     <button id="add-word-btn">Add a Word</button>
     <button id="practice-btn">Practice Spelling</button>
+    <button id="random-practice-btn">Practice Random Words</button>
     <button id="stats-btn">View Word Stats</button>
     <button id="logout-btn">Log Out</button>
     <div id="progress-summary"></div>
@@ -58,7 +59,7 @@
     <button class="back-btn">Back</button>
   </div>
 
-  <!-- Practice Screen -->
+  <!-- Practice Spelling Screen (Using User Catalogue) -->
   <div id="practice-screen" class="screen" style="display: none;">
     <h2>Practice Spelling</h2>
     <div id="prompt" class="prompt" style="cursor:pointer;"></div>
@@ -67,6 +68,18 @@
     <input type="text" id="spell-input" placeholder="Spell the word" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     <button id="submit-spelling-btn">Submit</button>
     <div id="feedback"></div>
+    <button class="back-btn">Back</button>
+  </div>
+
+  <!-- Random Words Practice Screen -->
+  <div id="random-practice-screen" class="screen" style="display: none;">
+    <h2>Practice Random Words</h2>
+    <div id="rand-prompt" class="prompt" style="cursor:pointer;"></div>
+    <button id="rand-sound-toggle-btn">Sound: ON</button>
+    <button id="rand-talk-btn">Talk</button>
+    <input type="text" id="rand-spell-input" placeholder="Spell the word" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <button id="rand-submit-btn">Submit</button>
+    <div id="rand-feedback"></div>
     <button class="back-btn">Back</button>
   </div>
 

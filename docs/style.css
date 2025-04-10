@@ -6,6 +6,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
 }
 
 header {
@@ -55,6 +56,11 @@ input[type="password"] {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
+  /* Disable predictive text: */
+  autocomplete: off;
+  autocorrect: off;
+  autocapitalize: off;
+  spellcheck: false;
 }
 
 .notification {
@@ -75,12 +81,16 @@ footer {
   color: #555;
 }
 
-/* Styles for the Stats accordion */
+/* Stats screen accordion styles */
 .word-stat {
   border-bottom: 1px solid #ddd;
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   text-align: left;
+}
+
+.word-stat strong {
+  font-size: 1.1rem;
 }
 
 .details {
@@ -96,7 +106,7 @@ footer {
   color: #007BFF;
 }
 
-/* Modal styles for help */
+/* Modal (Help) styles */
 .modal {
   display: none;
   position: fixed;
@@ -132,4 +142,5 @@ footer {
   background: #e7f3ff;
   padding: 10px;
   border-radius: 4px;
+  cursor: pointer;
 }
