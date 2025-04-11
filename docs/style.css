@@ -56,6 +56,10 @@ input[type="password"] {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
+  autocomplete: off;
+  autocorrect: off;
+  autocapitalize: off;
+  spellcheck: false;
 }
 
 .notification {
@@ -76,7 +80,7 @@ footer {
   color: #555;
 }
 
-/* Accordion styles for Stats screen */
+/* Stats accordion styles */
 .word-stat {
   border-bottom: 1px solid #ddd;
   margin-bottom: 1rem;
@@ -101,7 +105,7 @@ footer {
   color: #007BFF;
 }
 
-/* Modal styles for Help */
+/* Modal (Help) styles */
 .modal {
   display: none;
   position: fixed;
