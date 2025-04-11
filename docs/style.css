@@ -56,10 +56,6 @@ input[type="password"] {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
-  autocomplete: off;
-  autocorrect: off;
-  autocapitalize: off;
-  spellcheck: false;
 }
 
 .notification {
@@ -105,7 +101,7 @@ footer {
   color: #007BFF;
 }
 
-/* Modal (Help) styles */
+/* Modal styles for Help */
 .modal {
   display: none;
   position: fixed;
