@@ -1,4 +1,10 @@
 // ---------------------------
+// Import Firebase Firestore instance (if using cloud sync; ensure firebaseConfig.js exists)
+// If you use Firebase via ES modules, uncomment the lines below:
+// import { db } from "./firebaseConfig.js";
+// import { doc, setDoc, getDoc } from "firebase/firestore";
+
+// ---------------------------
 // Global Variables for User & Catalogue
 // ---------------------------
 let currentUser = localStorage.getItem('currentUser');
@@ -14,7 +20,47 @@ let practiceMode = 'catalogue';
 let currentRevealCount = 0;
 
 // ---------------------------
-// Load the current user’s catalogue (or initialize it)
+// Cloud Sync Functions using Firestore (Optional)
+// ---------------------------
+async function saveCatalogueCloud() {
+  if (!currentUser) return;
+  try {
+    await setDoc(doc(db, "catalogues", currentUser), { catalogue: wordCatalogue });
+    console.log("Catalogue saved to Firestore.");
+  } catch (error) {
+    console.error("Error saving catalogue: ", error);
+  }
+}
+
+async function loadCatalogueCloud(callback) {
+  if (!currentUser) return;
+  try {
+    const docSnap = await getDoc(doc(db, "catalogues", currentUser));
+    if (docSnap.exists()) {
+      wordCatalogue = docSnap.data().catalogue;
+      localStorage.setItem("wordCatalogue_" + currentUser, JSON.stringify(wordCatalogue));
+    } else {
+      console.log("No catalogue found in Firestore.");
+    }
+    if (callback) callback();
+  } catch (error) {
+    console.error("Error loading catalogue: ", error);
+    if (callback) callback();
+  }
+}
+
+// ---------------------------
+// Local Save/Load Functions (Augmented with Cloud Sync)
+// ---------------------------
+function saveCatalogue() {
+  if (currentUser) {
+    const key = "wordCatalogue_" + currentUser;
+    localStorage.setItem(key, JSON.stringify(wordCatalogue));
+    // Optionally, also update cloud sync:
+    // saveCatalogueCloud();
+  }
+}
+
 function loadUserCatalogue() {
   if (currentUser) {
     const key = "wordCatalogue_" + currentUser;
@@ -27,14 +73,8 @@ function loadUserCatalogue() {
       if (!wordObj.interval) wordObj.interval = 1;
     });
     saveCatalogue();
-  }
-}
-
-// Save catalogue for current user.
-function saveCatalogue() {
-  if (currentUser) {
-    const key = "wordCatalogue_" + currentUser;
-    localStorage.setItem(key, JSON.stringify(wordCatalogue));
+    // Optionally, load from cloud:
+    // loadCatalogueCloud();
   }
 }
 
@@ -100,9 +140,8 @@ function loadWordOfTheDay() {
   }
 }
 
-// Use a guard flag to prevent the Word of the Day click handler from firing twice.
+// Use a guard flag to prevent repeated popups.
 let wotdHandling = false;
-
 document.getElementById('wotd').addEventListener('click', () => {
   if (wotdHandling) return;
   wotdHandling = true;
@@ -127,11 +166,13 @@ document.getElementById('wotd').addEventListener('click', () => {
         showNotification(`"${wotd}" is already in your catalogue`);
       }
     }
-    wotdHandling = false;
+    // Delay resetting the flag to prevent immediate re-opening.
+    setTimeout(() => { wotdHandling = false; }, 500);
   });
 });
 
-// Updated fetchDefinition with a callback.
+// ---------------------------
+// fetchDefinition (with callback)
 function fetchDefinition(word, callback) {
   fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
     .then(response => response.json())
@@ -436,8 +477,8 @@ document.getElementById('sound-toggle-btn').addEventListener('click', () => {
 // ---------------------------
 // Reveal Word on Prompt Tap
 // When the prompt is tapped:
-// - If sound is ON: reveal the word and automatically speak it.
-// - If sound is OFF: reveal the word only; user must press Talk to hear it.
+// - If sound is ON: reveal the word and speak it automatically.
+// - If sound is OFF: reveal only.
 document.getElementById('prompt').addEventListener('click', () => {
   if (currentWordObj) {
     document.getElementById('prompt').textContent = currentWordObj.word;
@@ -568,7 +609,8 @@ document.getElementById('wotd').addEventListener('click', () => {
         showNotification(`"${wotd}" is already in your catalogue`);
       }
     }
-    wotdHandling = false;
+    // Delay resetting the flag to prevent immediate re-opening.
+    setTimeout(() => { wotdHandling = false; }, 500);
   });
 });
 
@@ -641,7 +683,7 @@ document.getElementById('help-btn').addEventListener('click', () => {
       helpText = "Add Word: Enter a new word to add to your catalogue and press 'Save Word'.";
       break;
     case "practice-screen":
-      helpText = "Practice Word: Toggle between Catalogue and Random modes using the Mode button. Click on the covered word to reveal it. If sound is ON, it will be spoken automatically; if OFF, it won't speak unless you press Talk. Note: Revealing the word reduces your score.";
+      helpText = "Practice Word: Toggle between Catalogue and Random modes using the Mode button. Click on the covered word to reveal it. If sound is ON, it will be spoken automatically; if OFF, it won't speak (press Talk to hear it). Note: Revealing the word reduces your score.";
       break;
     case "stats-screen":
       helpText = "Stats: Review your catalogue with detailed stats. Use Export/Import to copy or paste your catalogue. Press 'Show Random Trials' to view random word attempts.";
