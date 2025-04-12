@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Disable predictive text on inputs -->
+  <!-- Disable predictive text on inputs via HTML attributes -->
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Lexcelerate</title>
   <link rel="stylesheet" href="style.css" />
@@ -63,7 +63,7 @@
     <h2>Practice Word</h2>
     <!-- Mode Toggle -->
     <button id="mode-toggle-btn">Mode: Catalogue</button>
-    <!-- Button to add random word to catalogue; visible only in Random mode -->
+    <!-- Button to add a random word to catalogue; visible only in Random mode -->
     <button id="add-random-to-catalogue-btn" style="display:none;">Add Random Word to Catalogue</button>
     <!-- Practice area -->
     <div id="prompt" class="prompt" style="cursor:pointer;"></div>
@@ -88,7 +88,7 @@
 
   <!-- Footer with Version Number -->
   <footer>
-    <span id="version">v1.3</span>
+    <span id="version">v1.3 α</span>
   </footer>
 
   <script src="app.js"></script>
