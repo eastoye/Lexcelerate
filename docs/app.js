@@ -466,7 +466,7 @@ function loadPracticeWord() {
 
 // ---------------------------
 // Dictionary Words for Random Mode
-function getRandomDictionaryWord() {
+ {
   return { word: dictionaryWords[Math.floor(Math.random() * dictionaryWords.length)] };
 }
 
