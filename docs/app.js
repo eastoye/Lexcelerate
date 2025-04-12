@@ -83,14 +83,13 @@ document.getElementById('logout-btn').addEventListener('click', () => {
 });
 
 // ---------------------------
-// Word of the Day: Persist 24 hours
+// Word of the Day: Persist for 24 hours
 // ---------------------------
 function loadWordOfTheDay() {
   const defaultWords = ["serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous"];
   const storedWOTD = localStorage.getItem('wotd');
   const wotdTimestamp = localStorage.getItem('wotdTimestamp');
   const now = Date.now();
-  // 24 hours = 86,400,000 milliseconds.
   if (storedWOTD && wotdTimestamp && (now - wotdTimestamp < 86400000)) {
     document.getElementById('wotd').textContent = storedWOTD;
   } else {
@@ -99,6 +98,50 @@ function loadWordOfTheDay() {
     localStorage.setItem('wotdTimestamp', now);
     document.getElementById('wotd').textContent = wotd;
   }
+}
+
+// When Word of the Day is clicked: fetch definition and prompt to add.
+document.getElementById('wotd').addEventListener('click', () => {
+  const wotd = document.getElementById('wotd').textContent;
+  fetchDefinition(wotd, (definition) => {
+    if (confirm(`Definition: ${definition}\n\nAdd this word to your catalogue?`)) {
+      if (!wordCatalogue.find(w => w.word.toLowerCase() === wotd.toLowerCase())) {
+        wordCatalogue.push({
+          word: wotd,
+          totalAttempts: 0,
+          correctFirstTryCount: 0,
+          mistakes: {},
+          nextReview: Date.now(),
+          interval: 1,
+          score: 0,
+          streak: 0
+        });
+        saveCatalogue();
+        showNotification(`"${wotd}" added to your catalogue`);
+        updateProgressSummary();
+      } else {
+        showNotification(`"${wotd}" is already in your catalogue`);
+      }
+    }
+  });
+});
+
+// Updated fetchDefinition to accept a callback.
+function fetchDefinition(word, callback) {
+  fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
+    .then(response => response.json())
+    .then(data => {
+      let definition = "Definition not found.";
+      if (Array.isArray(data) && data[0].meanings && data[0].meanings.length > 0) {
+        definition = data[0].meanings[0].definitions[0].definition;
+      }
+      if (callback) callback(definition);
+      else showNotification(`Definition of "${word}": ${definition}`);
+    })
+    .catch(err => {
+      console.error(err);
+      showNotification(`Error fetching definition for "${word}".`);
+    });
 }
 
 // ---------------------------
@@ -207,7 +250,6 @@ function updateStatsList() {
   });
 }
 
-// For Random Trials Stats (separate from catalogue stats)
 function updateRandomStatsList() {
   const randomStatsDiv = document.getElementById('random-stats');
   let html = '<h3>Random Word Trials</h3>';
@@ -250,7 +292,10 @@ function showScreen(screenId) {
 // ---------------------------
 document.getElementById('add-word-btn').addEventListener('click', () => { showScreen('add-word-screen'); });
 document.getElementById('practice-btn').addEventListener('click', () => {
-  if (practiceMode === 'catalogue' && wordCatalogue.length === 0) { alert('Please add at least one word first!'); return; }
+  if (practiceMode === 'catalogue' && wordCatalogue.length === 0) {
+    alert('Please add at least one word first!');
+    return;
+  }
   showScreen('practice-screen');
   loadPracticeWord();
 });
@@ -365,7 +410,7 @@ function loadPracticeWord() {
   document.getElementById('feedback').textContent = '';
   document.getElementById('spell-input').value = '';
   attemptCount = 0;
-  currentRevealCount = 0; // Reset reveal count for each new word
+  currentRevealCount = 0; // Reset reveal count
   document.getElementById('spell-input').disabled = false;
   if (soundEnabled) {
     const utterance = new SpeechSynthesisUtterance(actualWord);
@@ -388,12 +433,17 @@ document.getElementById('sound-toggle-btn').addEventListener('click', () => {
 
 // ---------------------------
 // Reveal Word on Prompt Tap
-// When the prompt is tapped, reveal the word without speaking if sound is off.
-// (If sound is on, we do not speak automatically unless Talk is pressed.)
+// When the prompt is tapped:
+// - If sound is ON: reveal the word and speak it automatically.
+// - If sound is OFF: reveal the word only (no speech) until timeout.
 document.getElementById('prompt').addEventListener('click', () => {
   if (currentWordObj) {
-    // Reveal word but do NOT speak if sound is off.
     document.getElementById('prompt').textContent = currentWordObj.word;
+    // Only speak automatically if sound is ON.
+    if (soundEnabled) {
+      const utterance = new SpeechSynthesisUtterance(currentWordObj.word);
+      speechSynthesis.speak(utterance);
+    }
     const spellInput = document.getElementById('spell-input');
     spellInput.value = "";
     spellInput.disabled = true;
@@ -417,15 +467,11 @@ document.getElementById('talk-btn').addEventListener('click', () => {
 // ---------------------------
 // Enter Key Submission for Practice
 document.getElementById('spell-input').addEventListener('keydown', function(event) {
-  if (event.key === 'Enter') { 
-    event.preventDefault(); 
-    document.getElementById('submit-spelling-btn').click();
-  }
+  if (event.key === 'Enter') { event.preventDefault(); document.getElementById('submit-spelling-btn').click(); }
 });
 
 // ---------------------------
 // Practice Submission Handler for Catalogue Practice
-// Revealing the word reduces the points earned.
 document.getElementById('submit-spelling-btn').addEventListener('click', () => {
   let actualWord = currentWordObj.word;
   const userSpelling = document.getElementById('spell-input').value.trim();
@@ -436,11 +482,9 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
     if (practiceMode === 'catalogue') {
       currentWordObj.totalAttempts++;
       currentWordObj.streak++;
-      // Determine base points based on streak.
       let basePoints = 1;
       if (currentWordObj.streak >= 10) basePoints = 5;
       else if (currentWordObj.streak >= 5) basePoints = 2;
-      // Apply a penalty factor based on the number of reveals.
       let factor = Math.max(1 - 0.2 * currentRevealCount, 0.2);
       let pointsAwarded = basePoints * factor;
       currentWordObj.score += pointsAwarded;
@@ -481,7 +525,7 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
 });
 
 // ---------------------------
-// Word of the Day Functionality (from a fixed list, same for 24 hours)
+// Word of the Day Functionality (from fixed list, persists 24 hours)
 function loadWordOfTheDay() {
   const defaultWords = ["serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous"];
   const storedWOTD = localStorage.getItem('wotd');
@@ -497,35 +541,35 @@ function loadWordOfTheDay() {
   }
 }
 
-// When Word of the Day is clicked, prompt for definition or addition.
+// ---------------------------
+// When Word of the Day is clicked: fetch definition and prompt to add.
 document.getElementById('wotd').addEventListener('click', () => {
   const wotd = document.getElementById('wotd').textContent;
-  let action = prompt("Enter 'D' to view definition or 'A' to add this word to your catalogue:","");
-  if (action && action.toLowerCase() === 'd') {
-    fetchDefinition(wotd);
-  } else if (action && action.toLowerCase() === 'a') {
-    if (!wordCatalogue.find(w => w.word.toLowerCase() === wotd.toLowerCase())) {
-      wordCatalogue.push({
-        word: wotd,
-        totalAttempts: 0,
-        correctFirstTryCount: 0,
-        mistakes: {},
-        nextReview: Date.now(),
-        interval: 1,
-        score: 0,
-        streak: 0
-      });
-      saveCatalogue();
-      showNotification(`"${wotd}" added to your catalogue`);
-      updateProgressSummary();
-    } else {
-      showNotification(`"${wotd}" is already in your catalogue`);
+  fetchDefinition(wotd, (definition) => {
+    if (confirm(`Definition: ${definition}\n\nWould you like to add this word to your catalogue?`)) {
+      if (!wordCatalogue.find(w => w.word.toLowerCase() === wotd.toLowerCase())) {
+        wordCatalogue.push({
+          word: wotd,
+          totalAttempts: 0,
+          correctFirstTryCount: 0,
+          mistakes: {},
+          nextReview: Date.now(),
+          interval: 1,
+          score: 0,
+          streak: 0
+        });
+        saveCatalogue();
+        showNotification(`"${wotd}" added to your catalogue`);
+        updateProgressSummary();
+      } else {
+        showNotification(`"${wotd}" is already in your catalogue`);
+      }
     }
-  }
+  });
 });
 
-// Fetch definition via dictionaryapi.dev
-function fetchDefinition(word) {
+// Updated fetchDefinition to accept a callback.
+function fetchDefinition(word, callback) {
   fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
     .then(response => response.json())
     .then(data => {
@@ -533,7 +577,8 @@ function fetchDefinition(word) {
       if (Array.isArray(data) && data[0].meanings && data[0].meanings.length > 0) {
         definition = data[0].meanings[0].definitions[0].definition;
       }
-      showNotification(`Definition of "${word}": ${definition}`);
+      if (callback) callback(definition);
+      else showNotification(`Definition of "${word}": ${definition}`);
     })
     .catch(err => {
       console.error(err);
@@ -591,7 +636,7 @@ document.getElementById('help-btn').addEventListener('click', () => {
       helpText = "Add Word: Enter a new word to add to your catalogue and press 'Save Word'.";
       break;
     case "practice-screen":
-      helpText = "Practice Word: Toggle between Catalogue and Random modes using the Mode button. Click on the covered word to reveal it (revealing reduces the points awarded) but it will not be spoken if sound is off. Use the sound icon to toggle audio and the Talk button to hear the word.";
+      helpText = "Practice Word: Toggle between Catalogue and Random modes using the Mode button. Click on the covered word to reveal it. If sound is ON, it will be spoken automatically; if OFF, it won’t speak (you must press Talk). Revealing the word reduces your score.";
       break;
     case "stats-screen":
       helpText = "Stats: Review your catalogue with detailed stats. Use Export/Import to copy or paste your catalogue. Press 'Show Random Trials' to view random word attempts.";
