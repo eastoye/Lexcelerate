@@ -100,11 +100,15 @@ function loadWordOfTheDay() {
   }
 }
 
-// When Word of the Day is clicked: fetch definition and prompt to add.
+// Use a guard flag to prevent the Word of the Day click handler from firing twice.
+let wotdHandling = false;
+
 document.getElementById('wotd').addEventListener('click', () => {
+  if (wotdHandling) return;
+  wotdHandling = true;
   const wotd = document.getElementById('wotd').textContent;
   fetchDefinition(wotd, (definition) => {
-    if (confirm(`Definition: ${definition}\n\nAdd this word to your catalogue?`)) {
+    if (confirm(`Definition: ${definition}\n\nWould you like to add this word to your catalogue?`)) {
       if (!wordCatalogue.find(w => w.word.toLowerCase() === wotd.toLowerCase())) {
         wordCatalogue.push({
           word: wotd,
@@ -123,10 +127,11 @@ document.getElementById('wotd').addEventListener('click', () => {
         showNotification(`"${wotd}" is already in your catalogue`);
       }
     }
+    wotdHandling = false;
   });
 });
 
-// Updated fetchDefinition to accept a callback.
+// Updated fetchDefinition with a callback.
 function fetchDefinition(word, callback) {
   fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
     .then(response => response.json())
@@ -292,10 +297,7 @@ function showScreen(screenId) {
 // ---------------------------
 document.getElementById('add-word-btn').addEventListener('click', () => { showScreen('add-word-screen'); });
 document.getElementById('practice-btn').addEventListener('click', () => {
-  if (practiceMode === 'catalogue' && wordCatalogue.length === 0) {
-    alert('Please add at least one word first!');
-    return;
-  }
+  if (practiceMode === 'catalogue' && wordCatalogue.length === 0) { alert('Please add at least one word first!'); return; }
   showScreen('practice-screen');
   loadPracticeWord();
 });
@@ -410,7 +412,7 @@ function loadPracticeWord() {
   document.getElementById('feedback').textContent = '';
   document.getElementById('spell-input').value = '';
   attemptCount = 0;
-  currentRevealCount = 0; // Reset reveal count
+  currentRevealCount = 0; // Reset reveal count for each new word
   document.getElementById('spell-input').disabled = false;
   if (soundEnabled) {
     const utterance = new SpeechSynthesisUtterance(actualWord);
@@ -434,12 +436,11 @@ document.getElementById('sound-toggle-btn').addEventListener('click', () => {
 // ---------------------------
 // Reveal Word on Prompt Tap
 // When the prompt is tapped:
-// - If sound is ON: reveal the word and speak it automatically.
-// - If sound is OFF: reveal the word only (no speech) until timeout.
+// - If sound is ON: reveal the word and automatically speak it.
+// - If sound is OFF: reveal the word only; user must press Talk to hear it.
 document.getElementById('prompt').addEventListener('click', () => {
   if (currentWordObj) {
     document.getElementById('prompt').textContent = currentWordObj.word;
-    // Only speak automatically if sound is ON.
     if (soundEnabled) {
       const utterance = new SpeechSynthesisUtterance(currentWordObj.word);
       speechSynthesis.speak(utterance);
@@ -525,7 +526,7 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
 });
 
 // ---------------------------
-// Word of the Day Functionality (from fixed list, persists 24 hours)
+// Word of the Day Functionality (from fixed list, persists 24 hrs)
 function loadWordOfTheDay() {
   const defaultWords = ["serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous"];
   const storedWOTD = localStorage.getItem('wotd');
@@ -541,9 +542,11 @@ function loadWordOfTheDay() {
   }
 }
 
-// ---------------------------
 // When Word of the Day is clicked: fetch definition and prompt to add.
+
 document.getElementById('wotd').addEventListener('click', () => {
+  if (wotdHandling) return;
+  wotdHandling = true;
   const wotd = document.getElementById('wotd').textContent;
   fetchDefinition(wotd, (definition) => {
     if (confirm(`Definition: ${definition}\n\nWould you like to add this word to your catalogue?`)) {
@@ -565,10 +568,12 @@ document.getElementById('wotd').addEventListener('click', () => {
         showNotification(`"${wotd}" is already in your catalogue`);
       }
     }
+    wotdHandling = false;
   });
 });
 
-// Updated fetchDefinition to accept a callback.
+// ---------------------------
+// Fetch definition via dictionaryapi.dev (with callback)
 function fetchDefinition(word, callback) {
   fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
     .then(response => response.json())
@@ -636,7 +641,7 @@ document.getElementById('help-btn').addEventListener('click', () => {
       helpText = "Add Word: Enter a new word to add to your catalogue and press 'Save Word'.";
       break;
     case "practice-screen":
-      helpText = "Practice Word: Toggle between Catalogue and Random modes using the Mode button. Click on the covered word to reveal it. If sound is ON, it will be spoken automatically; if OFF, it won’t speak (you must press Talk). Revealing the word reduces your score.";
+      helpText = "Practice Word: Toggle between Catalogue and Random modes using the Mode button. Click on the covered word to reveal it. If sound is ON, it will be spoken automatically; if OFF, it won't speak unless you press Talk. Note: Revealing the word reduces your score.";
       break;
     case "stats-screen":
       helpText = "Stats: Review your catalogue with detailed stats. Use Export/Import to copy or paste your catalogue. Press 'Show Random Trials' to view random word attempts.";
