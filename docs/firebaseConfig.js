@@ -2,7 +2,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
-// Your Firebase configuration (replace with your own keys)
 const firebaseConfig = {
   apiKey: "AIzaSyCaqb2xVon5Lq90Z5eB1OcteZ_OjJy1cW8",
   authDomain: "lexcelerate-35eba.firebaseapp.com",
@@ -13,7 +12,6 @@ const firebaseConfig = {
   measurementId: "G-FKTS29MLMS"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 

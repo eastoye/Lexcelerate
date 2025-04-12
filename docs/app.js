@@ -1,6 +1,6 @@
 // ---------------------------
-// Import Firebase Firestore instance (if using cloud sync; ensure firebaseConfig.js exists)
-// If you use Firebase via ES modules, uncomment the lines below:
+// Import Firebase Firestore instance
+// Uncomment these lines if you are using cloud sync via Firebase
 // import { db } from "./firebaseConfig.js";
 // import { doc, setDoc, getDoc } from "firebase/firestore";
 
@@ -56,7 +56,7 @@ function saveCatalogue() {
   if (currentUser) {
     const key = "wordCatalogue_" + currentUser;
     localStorage.setItem(key, JSON.stringify(wordCatalogue));
-    // Optionally, also update cloud sync:
+    // Uncomment the line below to also update cloud sync:
     // saveCatalogueCloud();
   }
 }
@@ -73,7 +73,7 @@ function loadUserCatalogue() {
       if (!wordObj.interval) wordObj.interval = 1;
     });
     saveCatalogue();
-    // Optionally, load from cloud:
+    // Uncomment the line below to load cloud data:
     // loadCatalogueCloud();
   }
 }
@@ -140,9 +140,13 @@ function loadWordOfTheDay() {
   }
 }
 
-// Use a guard flag to prevent repeated popups.
+// ---------------------------
+// Word of the Day click event
+// ---------------------------
 let wotdHandling = false;
-document.getElementById('wotd').addEventListener('click', () => {
+document.getElementById('wotd').addEventListener('click', (event) => {
+  event.preventDefault();
+  event.stopPropagation();
   if (wotdHandling) return;
   wotdHandling = true;
   const wotd = document.getElementById('wotd').textContent;
@@ -166,8 +170,7 @@ document.getElementById('wotd').addEventListener('click', () => {
         showNotification(`"${wotd}" is already in your catalogue`);
       }
     }
-    // Delay resetting the flag to prevent immediate re-opening.
-    setTimeout(() => { wotdHandling = false; }, 500);
+    wotdHandling = false;
   });
 });
 
@@ -476,8 +479,7 @@ document.getElementById('sound-toggle-btn').addEventListener('click', () => {
 
 // ---------------------------
 // Reveal Word on Prompt Tap
-// When the prompt is tapped:
-// - If sound is ON: reveal the word and speak it automatically.
+// - If sound is ON: reveal the word and automatically speak it.
 // - If sound is OFF: reveal only.
 document.getElementById('prompt').addEventListener('click', () => {
   if (currentWordObj) {
@@ -509,7 +511,10 @@ document.getElementById('talk-btn').addEventListener('click', () => {
 // ---------------------------
 // Enter Key Submission for Practice
 document.getElementById('spell-input').addEventListener('keydown', function(event) {
-  if (event.key === 'Enter') { event.preventDefault(); document.getElementById('submit-spelling-btn').click(); }
+  if (event.key === 'Enter') { 
+    event.preventDefault(); 
+    document.getElementById('submit-spelling-btn').click(); 
+  }
 });
 
 // ---------------------------
@@ -584,8 +589,9 @@ function loadWordOfTheDay() {
 }
 
 // When Word of the Day is clicked: fetch definition and prompt to add.
-
-document.getElementById('wotd').addEventListener('click', () => {
+document.getElementById('wotd').addEventListener('click', (event) => {
+  event.preventDefault();
+  event.stopPropagation();
   if (wotdHandling) return;
   wotdHandling = true;
   const wotd = document.getElementById('wotd').textContent;
@@ -609,8 +615,7 @@ document.getElementById('wotd').addEventListener('click', () => {
         showNotification(`"${wotd}" is already in your catalogue`);
       }
     }
-    // Delay resetting the flag to prevent immediate re-opening.
-    setTimeout(() => { wotdHandling = false; }, 500);
+    wotdHandling = false;
   });
 });
 
@@ -683,7 +688,7 @@ document.getElementById('help-btn').addEventListener('click', () => {
       helpText = "Add Word: Enter a new word to add to your catalogue and press 'Save Word'.";
       break;
     case "practice-screen":
-      helpText = "Practice Word: Toggle between Catalogue and Random modes using the Mode button. Click on the covered word to reveal it. If sound is ON, it will be spoken automatically; if OFF, it won't speak (press Talk to hear it). Note: Revealing the word reduces your score.";
+      helpText = "Practice Word: Toggle between Catalogue and Random modes using the Mode button. Click on the covered word to reveal it. If sound is ON, it will be spoken automatically; if OFF, it won't speak (press Talk to hear it). Revealing the word reduces your score.";
       break;
     case "stats-screen":
       helpText = "Stats: Review your catalogue with detailed stats. Use Export/Import to copy or paste your catalogue. Press 'Show Random Trials' to view random word attempts.";
