@@ -2,25 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <!-- CSP: allow resources from self and firebase CDN (adjust as needed) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; style-src 'self' 'unsafe-inline';">
   <!-- Disable predictive text on inputs via HTML attributes -->
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Lexcelerate</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
-  <!-- Prevent favicon 404 by specifying an empty favicon -->
+  <!-- Prevent favicon 404 error -->
   <link rel="icon" href="data:,">
 </head>
 <body>
-  <!-- Your existing HTML content (headers, screens, etc.) goes here -->
-  
+  <!-- Your existing HTML content goes here (headers, screens, etc.) -->
+  <!-- (Example: login screen, home screen, etc.) -->
+
   <!-- Footer with Version Number -->
   <footer>
-    <span id="version">v1.48.2α</span>
+    <span id="version">v1.49.2α</span>
   </footer>
 
-  <!-- External Firebase Initialization -->
+  <!-- Load Firebase initialization from an external file -->
   <script type="module" src="firebase-init.js"></script>
-  <!-- Your Main Application Code -->
+  <!-- Load your main application code -->
   <script type="module" src="app.js"></script>
 </body>
 </html>
