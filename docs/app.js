@@ -1,8 +1,19 @@
-// Wrap the entire code so it runs only after the DOM is loaded.
-document.getElementById('login-btn').addEventListener('click', () => {
+document.addEventListener("DOMContentLoaded", () => {
+
   // ---------------------------
-  // Cloud Sync Functions using Firestore (Optional)
+  // Global Variables for User & Catalogue
   // ---------------------------
+  let currentUser = localStorage.getItem('currentUser');
+  let wordCatalogue = []; // Loaded per user
+  let randomTrials = [];  // For random practice stats
+  let practiceMode = 'catalogue';  // 'catalogue' or 'random'
+  let currentRevealCount = 0; // For current word reveals
+  let wotdHandling = false;   // Guard flag for Word-of-the-Day clicks
+
+  // ---------------------------
+  // (Optional) Cloud Sync Functions using Firestore (Uncomment if using)
+  // ---------------------------
+  /*
   async function saveCatalogueCloud() {
     if (!currentUser) return;
     try {
@@ -20,8 +31,6 @@ document.getElementById('login-btn').addEventListener('click', () => {
       if (docSnap.exists()) {
         wordCatalogue = docSnap.data().catalogue;
         localStorage.setItem("wordCatalogue_" + currentUser, JSON.stringify(wordCatalogue));
-      } else {
-        console.log("No catalogue found in Firestore.");
       }
       if (callback) callback();
     } catch (error) {
@@ -29,9 +38,10 @@ document.getElementById('login-btn').addEventListener('click', () => {
       if (callback) callback();
     }
   }
+  */
 
   // ---------------------------
-  // Local Save/Load Functions (with Cloud Sync Option)
+  // Local Save/Load Functions (with optional Cloud Sync)
   // ---------------------------
   function saveCatalogue() {
     if (currentUser) {
@@ -60,7 +70,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
   }
 
   // ---------------------------
-  // Notification (Non-blocking)
+  // Notification Function
   // ---------------------------
   function showNotification(message) {
     const notif = document.getElementById('notification');
@@ -70,7 +80,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
   }
 
   // ---------------------------
-  // Login / Authentication Section
+  // Login / Authentication
   // ---------------------------
   function checkLogin() {
     currentUser = localStorage.getItem('currentUser');
@@ -105,7 +115,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
   });
 
   // ---------------------------
-  // Word of the Day: Persist for 24 hours
+  // Word of the Day (24-hour persistence)
   // ---------------------------
   function loadWordOfTheDay() {
     const defaultWords = ["serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous"];
@@ -123,7 +133,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
   }
 
   // ---------------------------
-  // Word of the Day Click Event
+  // Word of the Day Click: Fetch definition and prompt add
   // ---------------------------
   document.getElementById('wotd').addEventListener('click', (event) => {
     event.preventDefault();
@@ -156,7 +166,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
   });
 
   // ---------------------------
-  // fetchDefinition Function (with callback)
+  // fetchDefinition function (with callback)
   // ---------------------------
   function fetchDefinition(word, callback) {
     fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
@@ -176,7 +186,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
   }
 
   // ---------------------------
-  // Helper Functions for Lexcelerate
+  // Helper Functions
   // ---------------------------
   function getCoveredWord(word) {
     return "_".repeat(word.length);
@@ -190,12 +200,14 @@ document.getElementById('login-btn').addEventListener('click', () => {
   function generateSyllableHint(word, attemptCount) {
     let syllables = splitWordIntoSyllables(word);
     let syllablesToReveal = Math.min(attemptCount - 2, syllables.length);
-    let hintArray = syllables.map((syl, index) => index < syllablesToReveal ? syl : "_".repeat(syl.length));
+    let hintArray = syllables.map((syl, index) => 
+      index < syllablesToReveal ? syl : "_".repeat(syl.length)
+    );
     return hintArray.join("-");
   }
 
   // ---------------------------
-  // Global Variables for Practice Session & Sound
+  // Global Variables for Practice & Sound
   // ---------------------------
   let attemptCount = 0;
   let currentWordObj = null;
@@ -210,7 +222,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
   }
 
   // ---------------------------
-  // Progress & Navigation Functions
+  // Update Progress and Stats
   // ---------------------------
   function updateProgressSummary() {
     const summaryDiv = document.getElementById('progress-summary');
@@ -237,30 +249,29 @@ document.getElementById('login-btn').addEventListener('click', () => {
             <p>Total Attempts: ${wordObj.totalAttempts}</p>
             <p>Correct on First Try: ${wordObj.correctFirstTryCount}</p>
             <p>Streak: ${wordObj.streak}</p>
-            ${Object.keys(wordObj.mistakes).length > 0
+            ${Object.keys(wordObj.mistakes).length > 0 
               ? `<p>Mistakes:</p><ul>${Object.entries(wordObj.mistakes).map(([k, v]) => `<li>${k} : ${v} time(s)</li>`).join('')}</ul>`
               : `<p>No mistakes recorded.</p>`
             }
           </div>
         </div>`).join("");
     statsListDiv.innerHTML = html;
-    document.querySelectorAll('.toggle-details').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const idx = e.target.getAttribute('data-index');
+    
+    // Use event delegation on the stats-list container.
+    document.getElementById('stats-list').addEventListener('click', (event) => {
+      if (event.target.matches('.toggle-details')) {
+        const idx = event.target.getAttribute('data-index');
         const detailsDiv = document.getElementById('details-' + idx);
         detailsDiv.style.display = (detailsDiv.style.display === 'block') ? 'none' : 'block';
-        e.target.textContent = (detailsDiv.style.display === 'block') ? '▲' : '▼';
-      });
-    });
-    document.querySelectorAll('.delete-word').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const idx = e.target.getAttribute('data-index');
+        event.target.textContent = (detailsDiv.style.display === 'block') ? '▲' : '▼';
+      } else if (event.target.matches('.delete-word')) {
+        const idx = event.target.getAttribute('data-index');
         if (confirm(`Delete word "${wordCatalogue[idx].word}"?`)) {
           wordCatalogue.splice(idx, 1);
           saveCatalogue();
           updateStatsList();
         }
-      });
+      }
     });
   }
 
@@ -292,20 +303,22 @@ document.getElementById('login-btn').addEventListener('click', () => {
   });
 
   function showScreen(screenId) {
-    document.querySelectorAll('.screen, #home-screen, #login-screen').forEach(screen => screen.style.display = 'none');
+    document.querySelectorAll('.screen, #home-screen, #login-screen').forEach(screen => {
+      screen.style.display = 'none';
+    });
     document.getElementById(screenId).style.display = 'block';
     if (screenId === 'home-screen') updateProgressSummary();
     if (screenId === 'stats-screen') updateStatsList();
   }
 
   // ---------------------------
-  // Navigation Button Listeners
+  // Navigation Buttons
   // ---------------------------
   document.getElementById('add-word-btn').addEventListener('click', () => showScreen('add-word-screen'));
   document.getElementById('practice-btn').addEventListener('click', () => {
-    if (practiceMode === 'catalogue' && wordCatalogue.length === 0) { 
-      alert('Please add at least one word first!'); 
-      return; 
+    if (practiceMode === 'catalogue' && wordCatalogue.length === 0) {
+      alert('Please add at least one word first!');
+      return;
     }
     showScreen('practice-screen');
     loadPracticeWord();
@@ -332,7 +345,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
   });
 
   // ---------------------------
-  // Add Random Word to Catalogue (only in Random mode)
+  // Add Random Word to Catalogue (for Random mode)
   // ---------------------------
   document.getElementById('add-random-to-catalogue-btn').addEventListener('click', () => {
     if (currentWordObj) {
@@ -358,7 +371,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
   });
 
   // ---------------------------
-  // Add Word Functionality (Catalogue)
+  // Add Word Functionality
   // ---------------------------
   document.getElementById('save-word-btn').addEventListener('click', () => {
     const wordInput = document.getElementById('word-input');
@@ -384,7 +397,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
   });
 
   // ---------------------------
-  // Adaptive Learning with Ranking System
+  // Adaptive Learning / Ranking System
   // ---------------------------
   const maxScore = 100;
   function getRandomWord() {
@@ -407,7 +420,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
   }
 
   // ---------------------------
-  // Load Practice Word (based on mode)
+  // Load Practice Word
   // ---------------------------
   function loadPracticeWord() {
     if (practiceMode === 'random') {
@@ -423,7 +436,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
     document.getElementById('feedback').textContent = '';
     document.getElementById('spell-input').value = '';
     attemptCount = 0;
-    currentRevealCount = 0; // Reset reveal count for each new word
+    currentRevealCount = 0; // Reset for the new word
     document.getElementById('spell-input').disabled = false;
     if (soundEnabled) {
       const utterance = new SpeechSynthesisUtterance(actualWord);
@@ -432,14 +445,14 @@ document.getElementById('login-btn').addEventListener('click', () => {
   }
 
   // ---------------------------
-  // Dictionary Words for Random Mode
+  // Dictionary Function for Random Words
   // ---------------------------
   function getRandomDictionaryWord() {
     return { word: dictionaryWords[Math.floor(Math.random() * dictionaryWords.length)] };
   }
 
   // ---------------------------
-  // Sound Toggle with Icon Change
+  // Sound Toggle
   // ---------------------------
   document.getElementById('sound-toggle-btn').addEventListener('click', () => {
     soundEnabled = !soundEnabled;
@@ -448,8 +461,8 @@ document.getElementById('login-btn').addEventListener('click', () => {
 
   // ---------------------------
   // Reveal Word on Prompt Tap
-  // - If sound is ON: reveal the word and automatically speak it.
-  // - If sound is OFF: reveal the word only (you must press Talk to hear it).
+  // - If sound is ON: reveal the word and speak it.
+  // - If sound is OFF: reveal the word only.
   // ---------------------------
   document.getElementById('prompt').addEventListener('click', () => {
     if (currentWordObj) {
@@ -490,8 +503,7 @@ document.getElementById('login-btn').addEventListener('click', () => {
   });
 
   // ---------------------------
-  // Practice Submission Handler for Catalogue Practice
-  // Revealing the word reduces the points awarded.
+  // Practice Submission Handler
   // ---------------------------
   document.getElementById('submit-spelling-btn').addEventListener('click', () => {
     const actualWord = currentWordObj.word;
