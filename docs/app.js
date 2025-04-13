@@ -1,20 +1,5 @@
 // Wrap the entire code so it runs only after the DOM is loaded.
-document.addEventListener("DOMContentLoaded", () => {
-  // ---------------------------
-  // Import Firebase Firestore instance if needed (for cloud sync)
-  // Uncomment the next line if you need to use Firebase in app.js:
-  // import { db } from "./firebase-init.js";
-
-  // ---------------------------
-  // Global Variables for User & Catalogue
-  // ---------------------------
-  let currentUser = localStorage.getItem('currentUser');
-  let wordCatalogue = []; // Loaded per user
-  let randomTrials = [];  // For random practice stats
-  let practiceMode = 'catalogue';  // 'catalogue' or 'random'
-  let currentRevealCount = 0;        // For current word reveals
-  let wotdHandling = false;          // Guard flag for Word-of-the-Day clicks
-
+document.getElementById('login-btn').addEventListener('click', () => {
   // ---------------------------
   // Cloud Sync Functions using Firestore (Optional)
   // ---------------------------

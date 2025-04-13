@@ -2,28 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- CSP: allow resources from self and firebase CDN (adjust as needed) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; style-src 'self' 'unsafe-inline';">
-  <!-- Disable predictive text on inputs via HTML attributes -->
+  <!-- Content Security Policy: Allow self for scripts and images from self and data: -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Lexcelerate</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
-  <!-- Prevent favicon 404 error -->
-  <link rel="icon" href="data:,">
+  <!-- Optionally, if you have a favicon file, set its href here instead -->
+  <!-- <link rel="icon" href="favicon.ico"> -->
 </head>
 <body>
-  <!-- Your existing HTML content goes here (headers, screens, etc.) -->
-  <!-- (Example: login screen, home screen, etc.) -->
+  <!-- Your existing HTML content (screens, header, etc.) goes here -->
 
   <!-- Footer with Version Number -->
   <footer>
-    <span id="version">v1.49.2α</span>
+    <span id="version">v1.41.3α</span>
   </footer>
 
-  <!-- Load Firebase initialization from an external file -->
+  <!-- Load Firebase Initialization -->
   <script type="module" src="firebase-init.js"></script>
-  <!-- Load your main application code -->
+  <!-- Load your main app code (which uses DOMContentLoaded) -->
   <script type="module" src="app.js"></script>
 </body>
 </html>
