@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ---------------------------
-  // Word of the Day Click: Fetch definition and prompt add
+  // Word of the Day Click: Fetch Definition and Prompt Add
   // ---------------------------
   document.getElementById('wotd').addEventListener('click', (event) => {
     event.preventDefault();
@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function generateSyllableHint(word, attemptCount) {
     let syllables = splitWordIntoSyllables(word);
     let syllablesToReveal = Math.min(attemptCount - 2, syllables.length);
-    let hintArray = syllables.map((syl, index) => 
+    let hintArray = syllables.map((syl, index) =>
       index < syllablesToReveal ? syl : "_".repeat(syl.length)
     );
     return hintArray.join("-");

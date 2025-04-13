@@ -2,69 +2,73 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Content Security Policy: allow resources from self, Firebase CDN for scripts, allow inline styles, allow images from self and data: URIs -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+  <!-- Content Security Policy: allow self resources, unsafe eval for debugging, Firebase scripts, inline styles, and images from self and data URIs -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Lexcelerate</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
-  <!-- If you have a real favicon, use it here; otherwise, the CSP now allows data: URLs -->
+  <!-- Use a dummy favicon if you don't have one -->
   <link rel="icon" href="data:,">
 </head>
 <body>
-  <!-- Screens (example placeholders) -->
+  <!-- Login Screen -->
   <div id="login-screen" class="screen" style="display: none;">
-      <h2>Sign In to Lexcelerate</h2>
-      <input type="text" id="login-username" placeholder="Username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-      <input type="password" id="login-password" placeholder="Password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-      <button id="login-btn">Sign In</button>
+    <h2>Sign In to Lexcelerate</h2>
+    <input type="text" id="login-username" placeholder="Username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <input type="password" id="login-password" placeholder="Password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <button id="login-btn">Sign In</button>
   </div>
-  
+
+  <!-- Home Screen -->
   <div id="home-screen" class="screen" style="display: none;">
-      <h1>Lexcelerate</h1>
-      <div id="word-of-day" class="word-of-day">
-          <strong>Word of the Day:</strong> <span id="wotd" style="cursor:pointer;"></span>
-      </div>
-      <button id="add-word-btn">Add Word</button>
-      <button id="practice-btn">Practice Word</button>
-      <button id="stats-btn">Stats</button>
-      <button id="logout-btn">Log Out</button>
-      <div id="progress-summary"></div>
+    <h1>Lexcelerate</h1>
+    <div id="word-of-day" class="word-of-day">
+      <strong>Word of the Day:</strong> <span id="wotd" style="cursor:pointer;"></span>
+    </div>
+    <button id="add-word-btn">Add Word</button>
+    <button id="practice-btn">Practice Word</button>
+    <button id="stats-btn">Stats</button>
+    <button id="logout-btn">Log Out</button>
+    <div id="progress-summary"></div>
   </div>
-  
+
+  <!-- Add Word Screen -->
   <div id="add-word-screen" class="screen" style="display: none;">
-      <h2>Add Word</h2>
-      <input type="text" id="word-input" placeholder="Enter word" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-      <button id="save-word-btn">Save Word</button>
-      <button class="back-btn">Back</button>
+    <h2>Add Word</h2>
+    <input type="text" id="word-input" placeholder="Enter word" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <button id="save-word-btn">Save Word</button>
+    <button class="back-btn">Back</button>
   </div>
-  
+
+  <!-- Practice Screen -->
   <div id="practice-screen" class="screen" style="display: none;">
-      <h2>Practice Word</h2>
-      <button id="mode-toggle-btn">Mode: Catalogue</button>
-      <button id="add-random-to-catalogue-btn" style="display:none;">Add Random Word to Catalogue</button>
-      <div id="prompt" class="prompt" style="cursor:pointer;"></div>
-      <button id="sound-toggle-btn">🔊</button>
-      <button id="talk-btn">Talk</button>
-      <input type="text" id="spell-input" placeholder="Spell the word" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-      <button id="submit-spelling-btn">Submit</button>
-      <div id="feedback"></div>
-      <button class="back-btn">Back</button>
+    <h2>Practice Word</h2>
+    <button id="mode-toggle-btn">Mode: Catalogue</button>
+    <button id="add-random-to-catalogue-btn" style="display:none;">Add Random Word to Catalogue</button>
+    <div id="prompt" class="prompt" style="cursor:pointer;"></div>
+    <button id="sound-toggle-btn">🔊</button>
+    <button id="talk-btn">Talk</button>
+    <input type="text" id="spell-input" placeholder="Spell the word" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <button id="submit-spelling-btn">Submit</button>
+    <div id="feedback"></div>
+    <button class="back-btn">Back</button>
   </div>
-  
+
+  <!-- Statistics Screen -->
   <div id="stats-screen" class="screen" style="display: none;">
-      <h2>Stats</h2>
-      <button id="export-btn">Export Catalogue</button>
-      <button id="import-btn">Import Catalogue</button>
-      <button id="toggle-random-stats-btn">Show Random Trials</button>
-      <div id="stats-list"></div>
-      <div id="random-stats" style="display:none;"></div>
-      <button class="back-btn">Back</button>
+    <h2>Stats</h2>
+    <button id="export-btn">Export Catalogue</button>
+    <button id="import-btn">Import Catalogue</button>
+    <button id="toggle-random-stats-btn">Show Random Trials</button>
+    <div id="stats-list"></div>
+    <div id="random-stats" style="display:none;"></div>
+    <button class="back-btn">Back</button>
   </div>
 
   <!-- Footer with Version -->
   <footer>
-      <span id="version">v1.41.3α</span>
+    <span id="version">v1.41.3α</span>
   </footer>
 
   <!-- Load Firebase initialization -->
