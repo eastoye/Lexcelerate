@@ -2,11 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Disable predictive text on inputs via HTML attributes -->
+  <!-- For testing purposes, allow 'unsafe-eval'. Remove for production. -->
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval';">
+  <!-- Disable predictive text on inputs -->
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Lexcelerate</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico">
 </head>
 <body>
   <!-- Help Modal -->
@@ -14,9 +18,7 @@
     <div class="modal-content">
       <span id="help-close" class="close">&times;</span>
       <h2>Help</h2>
-      <div id="help-text">
-        <!-- Help text will load based on current screen -->
-      </div>
+      <div id="help-text"></div>
     </div>
   </div>
 
@@ -31,9 +33,11 @@
   <!-- Login Screen -->
   <div id="login-screen" class="screen" style="display: none;">
     <h2>Sign In to Lexcelerate</h2>
-    <input type="text" id="login-username" placeholder="Username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-    <input type="password" id="login-password" placeholder="Password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-    <button id="login-btn">Sign In</button>
+    <form id="login-form">
+      <input type="text" id="login-username" placeholder="Username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <input type="password" id="login-password" placeholder="Password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <button type="submit" id="login-btn">Sign In</button>
+    </form>
   </div>
 
   <!-- Home Screen -->
@@ -58,7 +62,7 @@
     <button class="back-btn">Back</button>
   </div>
 
-  <!-- Practice Screen (Combined Mode) -->
+  <!-- Practice Screen -->
   <div id="practice-screen" class="screen" style="display: none;">
     <h2>Practice Word</h2>
     <!-- Mode Toggle -->
@@ -88,7 +92,7 @@
 
   <!-- Footer with Version Number -->
   <footer>
-    <span id="version">v1.4α</span>
+    <span id="version">v1.41.2</span>
   </footer>
 
   <!-- Import app.js as a module -->
