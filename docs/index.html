@@ -7,18 +7,20 @@
   <title>Lexcelerate</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
+  <!-- Prevent favicon 404 by specifying an empty favicon -->
+  <link rel="icon" href="data:,">
 </head>
 <body>
   <!-- Your existing HTML content (headers, screens, etc.) goes here -->
   
   <!-- Footer with Version Number -->
   <footer>
-    <span id="version">v1.47α</span>
+    <span id="version">v1.48.2α</span>
   </footer>
 
-  <!-- Load Firebase via CDN from external file -->
+  <!-- External Firebase Initialization -->
   <script type="module" src="firebase-init.js"></script>
-  <!-- Then load your main application code -->
+  <!-- Your Main Application Code -->
   <script type="module" src="app.js"></script>
 </body>
 </html>
