@@ -439,12 +439,6 @@ function loadPracticeWord() {
   }
 }
 
-// ---------------------------
-// Dictionary Words for Random Mode
-// ---------------------------
-{
-  return { word: dictionaryWords[Math.floor(Math.random() * dictionaryWords.length)] };
-}
 
 // ---------------------------
 // Sound Toggle with Icon Change
