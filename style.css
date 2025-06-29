@@ -149,7 +149,8 @@ header {
   padding: var(--spacing-xl) var(--spacing-md);
 }
 
-.home-screen {
+.home-screen,
+.add-word-screen {
   background: var(--navy-light);
   border: 1px solid var(--gold-subtle);
   border-radius: var(--radius-xl);
@@ -161,7 +162,8 @@ header {
   position: relative;
 }
 
-.home-screen::before {
+.home-screen::before,
+.add-word-screen::before {
   content: '';
   position: absolute;
   top: -1px;
@@ -198,6 +200,248 @@ header {
   background: var(--gold-muted);
   border-radius: 1px;
   opacity: 0.8;
+}
+
+/* Page Title for Add Word */
+.page-title {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.page-subtitle {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--cream-dim);
+  margin-bottom: var(--spacing-2xl);
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Back Button */
+.back-btn {
+  background: transparent;
+  border: 1px solid var(--gold-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  color: var(--gold-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xl);
+  align-self: flex-start;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.back-btn:hover {
+  background: var(--gold-muted);
+  border-color: var(--gold);
+  color: var(--deep-navy);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-subtle-glow);
+}
+
+.back-icon {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Form Styles */
+.add-word-form {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.form-group {
+  margin-bottom: var(--spacing-xl);
+  text-align: left;
+}
+
+.form-label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--gold-muted);
+  margin-bottom: var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--cream-dim);
+  text-transform: none;
+  font-style: italic;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  background: var(--deep-navy);
+  border: 1px solid var(--gold-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--cream);
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: var(--shadow-subtle-glow);
+  background: rgba(26, 30, 39, 0.8);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--cream-dim);
+  opacity: 0.7;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+/* Add Button */
+.add-btn {
+  background: var(--mint);
+  color: var(--deep-navy);
+  border: 1px solid var(--gold-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-md);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--dark-mint);
+  transition: left var(--transition-normal);
+  z-index: -1;
+}
+
+.add-btn:hover::before {
+  left: 0;
+}
+
+.add-btn:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-mint-glow);
+}
+
+.add-btn:active {
+  transform: translateY(-1px);
+}
+
+.add-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+}
+
+/* Recent Additions */
+.recent-additions {
+  text-align: left;
+}
+
+.recent-title {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--gold-muted);
+  margin-bottom: var(--spacing-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.recent-item {
+  background: var(--deep-navy);
+  border: 1px solid var(--gold-very-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  transition: all var(--transition-normal);
+}
+
+.recent-item:hover {
+  border-color: var(--gold-subtle);
+  box-shadow: var(--shadow-sm);
+}
+
+.recent-word {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: var(--spacing-xs);
+}
+
+.recent-definition {
+  font-size: 0.9rem;
+  color: var(--cream-dim);
+  line-height: 1.4;
+  margin-bottom: var(--spacing-xs);
+}
+
+.recent-date {
+  font-size: 0.8rem;
+  color: var(--gold-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.no-recent {
+  text-align: center;
+  color: var(--cream-dim);
+  font-style: italic;
+  padding: var(--spacing-lg);
 }
 
 /* Word of the Day */
@@ -422,8 +666,6 @@ header {
   position: fixed;
   top: var(--spacing-lg);
   right: var(--spacing-lg);
-  background: var(--mint);
-  color: var(--deep-navy);
   border: 1px solid var(--gold-subtle);
   padding: var(--spacing-lg) var(--spacing-xl);
   border-radius: var(--radius-md);
@@ -433,6 +675,21 @@ header {
   animation: slideIn var(--transition-normal) ease;
   font-weight: 600;
   font-size: 0.95rem;
+}
+
+.notification.success {
+  background: var(--mint);
+  color: var(--deep-navy);
+}
+
+.notification.warning {
+  background: var(--gold-muted);
+  color: var(--deep-navy);
+}
+
+.notification.info {
+  background: var(--navy-light);
+  color: var(--cream);
 }
 
 @keyframes slideIn {
@@ -497,12 +754,17 @@ header {
     padding-bottom: 100px; /* Account for bottom nav */
   }
   
-  .home-screen {
+  .home-screen,
+  .add-word-screen {
     padding: var(--spacing-2xl) var(--spacing-lg);
   }
   
   .app-title {
     font-size: 2.2rem;
+  }
+  
+  .page-title {
+    font-size: 1.8rem;
   }
   
   .wotd-word {
@@ -534,11 +796,25 @@ header {
     height: 52px;
     font-size: 1.3rem;
   }
+  
+  .form-input,
+  .form-textarea {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  .add-btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
   .app-title {
     font-size: 2rem;
+  }
+  
+  .page-title {
+    font-size: 1.6rem;
   }
   
   .wotd-word {
@@ -566,7 +842,11 @@ header {
 .sound-toggle-header:focus,
 .nav-btn:focus,
 .nav-icon:focus,
-.word-of-day-card:focus {
+.word-of-day-card:focus,
+.back-btn:focus,
+.add-btn:focus,
+.form-input:focus,
+.form-textarea:focus {
   outline: 2px solid var(--gold-muted);
   outline-offset: 2px;
 }
@@ -595,7 +875,9 @@ header {
   .word-of-day-card:hover,
   .nav-btn:hover,
   .help-btn:hover,
-  .nav-icon:hover {
+  .nav-icon:hover,
+  .back-btn:hover,
+  .add-btn:hover {
     transform: none;
   }
 }

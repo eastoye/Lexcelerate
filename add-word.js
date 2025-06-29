@@ -2,18 +2,11 @@
 let soundEnabled = true;
 let wordCatalogue = [];
 
-// Word of the Day words list
-const defaultWords = [
-  "serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous",
-  "quintessential", "ubiquitous", "perspicacious", "magnanimous", "effervescent"
-];
-
 // Initialize app
 document.addEventListener('DOMContentLoaded', function() {
   loadSoundPreference();
   loadWordCatalogue();
-  loadWordOfTheDay();
-  updateProgressSummary();
+  updateRecentAdditions();
   setupEventListeners();
 });
 
@@ -64,29 +57,6 @@ function saveWordCatalogue() {
   localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
 }
 
-// Load Word of the Day (persists for 24 hours)
-function loadWordOfTheDay() {
-  const storedWOTD = localStorage.getItem('wotd');
-  const wotdTimestamp = localStorage.getItem('wotdTimestamp');
-  const now = Date.now();
-  const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-  
-  if (storedWOTD && wotdTimestamp && (now - parseInt(wotdTimestamp) < oneDay)) {
-    document.getElementById('wotd').textContent = storedWOTD;
-  } else {
-    const randomWord = defaultWords[Math.floor(Math.random() * defaultWords.length)];
-    localStorage.setItem('wotd', randomWord);
-    localStorage.setItem('wotdTimestamp', now.toString());
-    document.getElementById('wotd').textContent = randomWord;
-  }
-}
-
-// Update progress summary
-function updateProgressSummary() {
-  const wordCount = document.getElementById('word-count');
-  wordCount.textContent = wordCatalogue.length;
-}
-
 // Show notification
 function showNotification(message, type = 'success') {
   const notification = document.getElementById('notification');
@@ -108,33 +78,93 @@ async function fetchDefinition(word) {
     if (Array.isArray(data) && data[0].meanings && data[0].meanings.length > 0) {
       return data[0].meanings[0].definitions[0].definition;
     } else {
-      return "Definition not found.";
+      return null;
     }
   } catch (error) {
     console.error('Error fetching definition:', error);
-    return "Error fetching definition.";
+    return null;
   }
 }
 
 // Add word to catalogue
-function addWordToCatalogue(word, definition = '') {
+async function addWordToCatalogue(word, customDefinition = '') {
+  // Check if word already exists (case-insensitive)
   const existingWord = wordCatalogue.find(w => w.word.toLowerCase() === word.toLowerCase());
   
-  if (!existingWord) {
-    wordCatalogue.push({
-      word: word,
-      definition: definition,
-      score: 0,
-      streak: 0,
-      dateAdded: new Date().toISOString()
-    });
-    saveWordCatalogue();
-    updateProgressSummary();
-    showNotification(`"${word}" added to your catalogue!`);
-    return true;
-  } else {
-    showNotification(`"${word}" is already in your catalogue.`, 'warning');
+  if (existingWord) {
+    showNotification(`"${word}" is already in your catalogue!`, 'warning');
     return false;
+  }
+
+  // Get definition
+  let definition = customDefinition.trim();
+  if (!definition) {
+    showNotification('Fetching definition...', 'info');
+    definition = await fetchDefinition(word);
+    if (!definition) {
+      definition = 'Definition not available';
+    }
+  }
+
+  // Add word to catalogue
+  const newWord = {
+    word: word.trim(),
+    definition: definition,
+    score: 0,
+    streak: 0,
+    dateAdded: new Date().toISOString()
+  };
+
+  wordCatalogue.unshift(newWord); // Add to beginning for recent additions
+  saveWordCatalogue();
+  
+  showNotification(`"${word}" added successfully!`, 'success');
+  updateRecentAdditions();
+  
+  // Clear form
+  document.getElementById('word-input').value = '';
+  document.getElementById('definition-input').value = '';
+  
+  // Focus back to word input
+  document.getElementById('word-input').focus();
+  
+  return true;
+}
+
+// Update recent additions display
+function updateRecentAdditions() {
+  const recentList = document.getElementById('recent-list');
+  const recentWords = wordCatalogue.slice(0, 5); // Show last 5 added words
+  
+  if (recentWords.length === 0) {
+    recentList.innerHTML = '<p class="no-recent">No words added yet</p>';
+    return;
+  }
+  
+  recentList.innerHTML = recentWords.map(wordObj => `
+    <div class="recent-item">
+      <div class="recent-word">${wordObj.word}</div>
+      <div class="recent-definition">${wordObj.definition}</div>
+      <div class="recent-date">${formatDate(wordObj.dateAdded)}</div>
+    </div>
+  `).join('');
+}
+
+// Format date for display
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffTime = Math.abs(now - date);
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+  if (diffDays === 0) {
+    return 'Today';
+  } else if (diffDays === 1) {
+    return 'Yesterday';
+  } else if (diffDays < 7) {
+    return `${diffDays} days ago`;
+  } else {
+    return date.toLocaleDateString();
   }
 }
 
@@ -165,67 +195,60 @@ function setupEventListeners() {
     updateSoundToggle();
     showNotification(`Sound ${soundEnabled ? 'enabled' : 'disabled'}`, 'info');
   });
-  
-  // Word of the Day click
-  document.getElementById('word-of-day').addEventListener('click', async () => {
-    const wotd = document.getElementById('wotd').textContent;
-    
-    if (wotd && wotd !== 'Loading...') {
-      showNotification('Fetching definition...', 'info');
-      const definition = await fetchDefinition(wotd);
-      
-      const shouldAdd = confirm(
-        `Word: ${wotd}\n\nDefinition: ${definition}\n\nWould you like to add this word to your catalogue?`
-      );
-      
-      if (shouldAdd) {
-        addWordToCatalogue(wotd, definition);
-      }
-    }
-  });
-  
-  // Navigation buttons
-  document.getElementById('add-word-btn').addEventListener('click', () => {
-    window.location.href = 'add-word.html';
-  });
-  
-  document.getElementById('practice-btn').addEventListener('click', () => {
-    if (wordCatalogue.length === 0) {
-      alert('Please add some words to your catalogue first!');
-      return;
-    }
-    // For now, just show a message - you'll build this page next
-    alert('Practice Word page coming soon! You\'ll build this next.');
-    // Later: window.location.href = 'practice.html';
-  });
-  
-  document.getElementById('stats-btn').addEventListener('click', () => {
-    // For now, just show a message - you'll build this page next
-    alert('Stats page coming soon! You\'ll build this next.');
-    // Later: window.location.href = 'stats.html';
+
+  // Back button
+  document.getElementById('back-btn').addEventListener('click', () => {
+    window.location.href = 'index.html';
   });
 
-  // Bottom navigation icons
+  // Form submission
+  document.getElementById('add-word-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const wordInput = document.getElementById('word-input');
+    const definitionInput = document.getElementById('definition-input');
+    const word = wordInput.value.trim();
+    const definition = definitionInput.value.trim();
+    
+    if (!word) {
+      showNotification('Please enter a word', 'warning');
+      wordInput.focus();
+      return;
+    }
+    
+    // Disable submit button during processing
+    const submitBtn = document.getElementById('add-word-submit');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">Adding...</span>';
+    submitBtn.disabled = true;
+    
+    try {
+      await addWordToCatalogue(word, definition);
+    } finally {
+      // Re-enable submit button
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+
+  // Bottom navigation
   const navIcons = document.querySelectorAll('.nav-icon');
   navIcons.forEach((icon, index) => {
     icon.addEventListener('click', () => {
-      // Remove active class from all icons
-      navIcons.forEach(i => i.classList.remove('active'));
-      // Add active class to clicked icon
-      icon.classList.add('active');
-      
-      // Handle navigation based on index
       switch(index) {
         case 0: // Home
-          // Already on home
+          window.location.href = 'index.html';
           break;
-        case 1: // Add Word
-          document.getElementById('add-word-btn').click();
+        case 1: // Add Word (current page)
+          // Already on add word page
           break;
         case 2: // Stats
-          document.getElementById('stats-btn').click();
+          window.location.href = 'stats.html';
           break;
       }
     });
   });
+
+  // Auto-focus on word input
+  document.getElementById('word-input').focus();
 }
