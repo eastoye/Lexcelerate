@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stats - Lexcelerate</title>
+  <link rel="stylesheet" crossorigin href="/assets/style-CocA5UKQ.css">
+</head>
+<body>
+  <!-- Help Modal -->
+  <div id="help-modal" class="modal">
+    <div class="modal-content">
+      <span id="help-close" class="close">&times;</span>
+      <h2>Help - Statistics</h2>
+      <div id="help-text">
+        <p><strong>Your Learning Analytics Dashboard</strong></p>
+        <p><strong>Catalogue Overview:</strong> View all your saved words with scores and mistake indicators (!).</p>
+        <p><strong>Word Details:</strong> Click ▼/▲ to expand/collapse detailed statistics for each word.</p>
+        <p><strong>Delete Words:</strong> Remove words from your catalogue using the delete button.</p>
+        <p><strong>Export/Import:</strong> Backup your catalogue as JSON or restore from a backup.</p>
+        <p><strong>Random Trials:</strong> Toggle to view your random word practice attempts and success rates.</p>
+        <p><strong>Performance Tracking:</strong> Monitor your progress with detailed attempt and accuracy statistics.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div id="notification" class="notification"></div>
+
+  <!-- Header -->
+  <header>
+    <button id="sound-toggle-btn" class="sound-toggle-header" title="Toggle Sound">
+      <span id="sound-icon">🔊</span>
+    </button>
+    <button id="help-btn" class="help-btn" title="Help">❓</button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="stats-screen">
+      <!-- Back Button -->
+      <button id="back-btn" class="back-btn" title="Back to Home">
+        <span class="back-icon">←</span>
+        <span class="back-text">Back to Home</span>
+      </button>
+
+      <h1 class="page-title">Statistics</h1>
+      <p class="page-subtitle">Track your learning progress</p>
+      
+      <!-- Overall Stats Summary -->
+      <div class="stats-summary">
+        <div class="summary-card">
+          <span class="summary-label">Total Words</span>
+          <span id="total-words" class="summary-value">0</span>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">Average Score</span>
+          <span id="average-score" class="summary-value">0</span>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">Best Streak</span>
+          <span id="best-streak" class="summary-value">0</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button id="export-btn" class="action-btn export-btn">
+          <span class="btn-icon">📤</span>
+          <span class="btn-text">Export</span>
+        </button>
+        <button id="import-btn" class="action-btn import-btn">
+          <span class="btn-icon">📥</span>
+          <span class="btn-text">Import</span>
+        </button>
+        <button id="toggle-random-stats-btn" class="action-btn random-btn">
+          <span class="btn-icon">🎲</span>
+          <span class="btn-text">Show Random Trials</span>
+        </button>
+      </div>
+
+      <!-- Catalogue Words List -->
+      <div class="catalogue-section">
+        <h3 class="section-title">Word Catalogue</h3>
+        <div id="stats-list" class="stats-list">
+          <!-- Word statistics will be populated here -->
+        </div>
+      </div>
+
+      <!-- Random Trials Section (initially hidden) -->
+      <div id="random-stats" class="random-section" style="display: none;">
+        <h3 class="section-title">Random Word Trials</h3>
+        <div id="random-stats-list" class="random-stats-list">
+          <!-- Random trial statistics will be populated here -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <button class="nav-icon" title="Home">🏠</button>
+    <button class="nav-icon" title="Add Word">➕</button>
+    <button class="nav-icon active" title="Stats">📊</button>
+  </nav>
+
+  <!-- Import Modal -->
+  <div id="import-modal" class="modal">
+    <div class="modal-content">
+      <span id="import-close" class="close">&times;</span>
+      <h2>Import Catalogue</h2>
+      <div class="import-content">
+        <p><strong>Paste your catalogue JSON data below:</strong></p>
+        <textarea id="import-textarea" class="import-textarea" placeholder="Paste JSON data here..." rows="8"></textarea>
+        <div class="import-actions">
+          <button id="import-confirm-btn" class="import-confirm-btn">
+            <span class="btn-icon">✓</span>
+            <span class="btn-text">Import Data</span>
+          </button>
+          <button id="import-cancel-btn" class="import-cancel-btn">
+            <span class="btn-icon">✗</span>
+            <span class="btn-text">Cancel</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="stats.js"></script>
+</body>
+</html>

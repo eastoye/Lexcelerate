@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Practice Word - Lexcelerate</title>
+  <link rel="stylesheet" crossorigin href="/assets/style-CocA5UKQ.css">
+</head>
+<body>
+  <!-- Help Modal -->
+  <div id="help-modal" class="modal">
+    <div class="modal-content">
+      <span id="help-close" class="close">&times;</span>
+      <h2>Help - Practice Word</h2>
+      <div id="help-text">
+        <p><strong>Practice Your Vocabulary Skills</strong></p>
+        <p><strong>Modes:</strong> Toggle between "Catalogue" (your saved words) and "Random" (built-in dictionary words).</p>
+        <p><strong>Word Display:</strong> Words appear as underscores. Click to reveal for 3 seconds (with point penalty).</p>
+        <p><strong>Hints:</strong> After 2+ incorrect attempts, syllable hints appear (e.g., "func-tion-al-ity").</p>
+        <p><strong>Sound:</strong> Toggle 🔊/🔇 for automatic pronunciation. Use "Talk" button to hear word anytime.</p>
+        <p><strong>Scoring:</strong> First-try correct = full points. Reveals and mistakes reduce score. Streaks give bonuses.</p>
+        <p><strong>Random Mode:</strong> Use "Add to Catalogue" to save random words for future practice.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div id="notification" class="notification"></div>
+
+  <!-- Header -->
+  <header>
+    <button id="sound-toggle-btn" class="sound-toggle-header" title="Toggle Sound">
+      <span id="sound-icon">🔊</span>
+    </button>
+    <button id="help-btn" class="help-btn" title="Help">❓</button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="practice-screen">
+      <!-- Back Button -->
+      <button id="back-btn" class="back-btn" title="Back to Home">
+        <span class="back-icon">←</span>
+        <span class="back-text">Back to Home</span>
+      </button>
+
+      <h1 class="page-title">Practice Word</h1>
+      <p class="page-subtitle">Test your spelling skills</p>
+      
+      <!-- Mode Toggle Section -->
+      <div class="mode-section">
+        <button id="mode-toggle-btn" class="mode-toggle-btn">
+          <span class="mode-icon">📚</span>
+          <span class="mode-text">Mode: Catalogue</span>
+        </button>
+        
+        <!-- Add Random Word Button (only visible in Random mode) -->
+        <button id="add-random-to-catalogue-btn" class="add-random-btn" style="display: none;">
+          <span class="btn-icon">➕</span>
+          <span class="btn-text">Add to Catalogue</span>
+        </button>
+      </div>
+
+      <!-- Word Practice Area -->
+      <div class="practice-area">
+        <!-- Word Prompt (covered/revealed) -->
+        <div id="prompt" class="word-prompt" tabindex="0" role="button" aria-label="Click to reveal word">
+          <span class="prompt-text">_____</span>
+          <p class="prompt-hint">Click to reveal word</p>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="control-buttons">
+          <button id="talk-btn" class="control-btn talk-btn" title="Speak word aloud">
+            <span class="btn-icon">🔊</span>
+            <span class="btn-text">Talk</span>
+          </button>
+        </div>
+
+        <!-- Spelling Input -->
+        <div class="spelling-section">
+          <div class="input-group">
+            <input 
+              type="text" 
+              id="spell-input" 
+              class="spell-input" 
+              placeholder="Type your spelling here..."
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+            />
+            <button id="submit-spelling-btn" class="submit-btn">
+              <span class="btn-icon">✓</span>
+              <span class="btn-text">Submit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Feedback Area -->
+        <div id="feedback" class="feedback-area">
+          <!-- Feedback messages will appear here -->
+        </div>
+
+        <!-- Progress Info -->
+        <div class="progress-info">
+          <div class="score-display">
+            <span class="score-label">Score:</span>
+            <span id="current-score" class="score-value">0</span>
+          </div>
+          <div class="streak-display">
+            <span class="streak-label">Streak:</span>
+            <span id="current-streak" class="streak-value">0</span>
+          </div>
+          <div class="attempt-display">
+            <span class="attempt-label">Attempt:</span>
+            <span id="attempt-count" class="attempt-value">1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <button class="nav-icon" title="Home">🏠</button>
+    <button class="nav-icon" title="Add Word">➕</button>
+    <button class="nav-icon active" title="Practice">🎯</button>
+  </nav>
+
+  <script src="practice.js"></script>
+</body>
+</html>
