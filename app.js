@@ -194,9 +194,7 @@ function setupEventListeners() {
   });
   
   document.getElementById('stats-btn').addEventListener('click', () => {
-    // For now, just show a message - you'll build this page next
-    alert('Stats page coming soon! You\'ll build this next.');
-    // Later: window.location.href = 'stats.html';
+    window.location.href = 'stats.html';
   });
 
   // Bottom navigation icons
