@@ -194,9 +194,7 @@ function setupEventListeners() {
       alert('Please add some words to your catalogue first!');
       return;
     }
-    // For now, just show a message - you'll build this page next
-    alert('Practice Word page coming soon! You\'ll build this next.');
-    // Later: window.location.href = 'practice.html';
+    window.location.href = 'practice.html';
   });
   
   document.getElementById('stats-btn').addEventListener('click', () => {
