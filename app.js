@@ -32,16 +32,13 @@ function saveSoundPreference() {
 // Update sound toggle button appearance
 function updateSoundToggle() {
   const soundIcon = document.getElementById('sound-icon');
-  const soundText = document.getElementById('sound-text');
   const soundToggle = document.getElementById('sound-toggle-btn');
   
   if (soundEnabled) {
     soundIcon.textContent = '🔊';
-    soundText.textContent = 'Sound On';
     soundToggle.classList.remove('sound-off');
   } else {
     soundIcon.textContent = '🔇';
-    soundText.textContent = 'Sound Off';
     soundToggle.classList.add('sound-off');
   }
 }
@@ -203,5 +200,29 @@ function setupEventListeners() {
     // For now, just show a message - you'll build this page next
     alert('Stats page coming soon! You\'ll build this next.');
     // Later: window.location.href = 'stats.html';
+  });
+
+  // Bottom navigation icons
+  const navIcons = document.querySelectorAll('.nav-icon');
+  navIcons.forEach((icon, index) => {
+    icon.addEventListener('click', () => {
+      // Remove active class from all icons
+      navIcons.forEach(i => i.classList.remove('active'));
+      // Add active class to clicked icon
+      icon.classList.add('active');
+      
+      // Handle navigation based on index
+      switch(index) {
+        case 0: // Home
+          // Already on home
+          break;
+        case 1: // Add Word
+          document.getElementById('add-word-btn').click();
+          break;
+        case 2: // Stats
+          document.getElementById('stats-btn').click();
+          break;
+      }
+    });
   });
 }
