@@ -12,6 +12,9 @@
   --deep-navy: #0a0e17;
   --cream: #fdf6e3;
   --gold: #c4a000;
+  --gold-muted: #C5B358;
+  --gold-subtle: rgba(197, 179, 88, 0.5);
+  --gold-very-subtle: rgba(197, 179, 88, 0.3);
   --mint: #6bbba1;
   --dark-mint: #5a9d85;
   --gold-hover: #d4b000;
@@ -43,6 +46,7 @@
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
   --shadow-glow: 0 0 20px rgba(196, 160, 0, 0.3);
   --shadow-mint-glow: 0 0 20px rgba(107, 187, 161, 0.3);
+  --shadow-subtle-glow: 0 0 15px rgba(197, 179, 88, 0.2);
   
   /* Transitions */
   --transition-fast: 0.2s ease;
@@ -73,7 +77,7 @@ header {
 
 .help-btn {
   background: var(--deep-navy);
-  border: 2px solid var(--gold);
+  border: 1px solid var(--gold-subtle);
   border-radius: 50%;
   width: 48px;
   height: 48px;
@@ -81,7 +85,7 @@ header {
   cursor: pointer;
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-normal);
-  color: var(--gold);
+  color: var(--gold-muted);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -89,10 +93,11 @@ header {
 }
 
 .help-btn:hover {
-  background: var(--gold);
+  background: var(--gold-muted);
+  border-color: var(--gold);
   color: var(--deep-navy);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-subtle-glow);
 }
 
 .help-btn:active {
@@ -102,7 +107,7 @@ header {
 /* Sound Toggle in Header */
 .sound-toggle-header {
   background: var(--deep-navy);
-  border: 2px solid var(--gold);
+  border: 1px solid var(--gold-subtle);
   border-radius: 50%;
   width: 48px;
   height: 48px;
@@ -110,26 +115,28 @@ header {
   cursor: pointer;
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-normal);
-  color: var(--gold);
+  color: var(--gold-muted);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .sound-toggle-header:hover {
-  background: var(--gold);
+  background: var(--gold-muted);
+  border-color: var(--gold);
   color: var(--deep-navy);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-subtle-glow);
 }
 
 .sound-toggle-header.sound-off {
-  border-color: var(--cream-dim);
+  border-color: var(--gold-very-subtle);
   color: var(--cream-dim);
 }
 
 .sound-toggle-header.sound-off:hover {
   background: var(--cream-dim);
+  border-color: rgba(245, 237, 224, 0.6);
   color: var(--deep-navy);
 }
 
@@ -144,7 +151,7 @@ header {
 
 .home-screen {
   background: var(--navy-light);
-  border: 2px solid var(--gold);
+  border: 1px solid var(--gold-subtle);
   border-radius: var(--radius-xl);
   padding: var(--spacing-3xl) var(--spacing-2xl);
   box-shadow: var(--shadow-lg);
@@ -157,14 +164,14 @@ header {
 .home-screen::before {
   content: '';
   position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, var(--gold), var(--mint), var(--gold));
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(45deg, var(--gold-very-subtle), var(--gold-subtle), var(--gold-very-subtle));
   border-radius: var(--radius-xl);
   z-index: -1;
-  opacity: 0.3;
+  opacity: 0.6;
 }
 
 /* App Title */
@@ -188,8 +195,9 @@ header {
   transform: translateX(-50%);
   width: 60px;
   height: 2px;
-  background: var(--gold);
+  background: var(--gold-muted);
   border-radius: 1px;
+  opacity: 0.8;
 }
 
 /* Word of the Day */
@@ -209,7 +217,7 @@ header {
 
 .word-of-day-card {
   background: var(--mint);
-  border: 2px solid var(--gold);
+  border: 1px solid var(--gold-subtle);
   border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
   margin-bottom: var(--spacing-sm);
@@ -239,6 +247,7 @@ header {
   transform: translateY(-4px);
   box-shadow: var(--shadow-mint-glow);
   background: var(--dark-mint);
+  border-color: var(--gold-muted);
 }
 
 .word-of-day-card:active {
@@ -272,7 +281,7 @@ header {
 .nav-btn {
   background: var(--deep-navy);
   color: var(--cream);
-  border: 2px solid var(--gold);
+  border: 1px solid var(--gold-subtle);
   border-radius: var(--radius-md);
   padding: var(--spacing-lg) var(--spacing-xl);
   font-family: var(--font-sans);
@@ -294,7 +303,7 @@ header {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: var(--gold);
+  background: var(--gold-muted);
   transition: left var(--transition-normal);
   z-index: -1;
 }
@@ -305,34 +314,35 @@ header {
 
 .nav-btn:hover {
   color: var(--deep-navy);
+  border-color: var(--gold);
   transform: translateY(-3px);
-  box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-subtle-glow);
 }
 
 .nav-btn:active {
   transform: translateY(-1px);
 }
 
-/* Remove emoji icons from buttons */
-.nav-btn {
-  position: relative;
-}
-
 /* Progress Summary */
 .progress-summary {
   background: var(--navy-light);
-  border: 1px solid var(--gold);
+  border: 1px solid var(--gold-very-subtle);
   border-radius: var(--radius-md);
   padding: var(--spacing-lg);
   color: var(--cream-dim);
   font-size: 0.95rem;
   font-weight: 500;
   box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.progress-summary:hover {
+  border-color: var(--gold-subtle);
 }
 
 #word-count {
   font-weight: 700;
-  color: var(--gold);
+  color: var(--gold-muted);
   font-size: 1.1em;
 }
 
@@ -351,7 +361,7 @@ header {
 
 .modal-content {
   background: var(--navy-light);
-  border: 2px solid var(--gold);
+  border: 1px solid var(--gold-subtle);
   margin: 8% auto;
   padding: var(--spacing-2xl);
   border-radius: var(--radius-lg);
@@ -364,7 +374,7 @@ header {
 
 .modal-content h2 {
   font-family: var(--font-serif);
-  color: var(--gold);
+  color: var(--gold-muted);
   margin-bottom: var(--spacing-lg);
   font-size: 1.6rem;
   font-weight: 700;
@@ -379,7 +389,7 @@ header {
 }
 
 .modal-content strong {
-  color: var(--gold);
+  color: var(--gold-muted);
   font-weight: 600;
 }
 
@@ -402,8 +412,8 @@ header {
 }
 
 .close:hover {
-  color: var(--gold);
-  background: rgba(196, 160, 0, 0.1);
+  color: var(--gold-muted);
+  background: rgba(197, 179, 88, 0.1);
   transform: scale(1.1);
 }
 
@@ -414,7 +424,7 @@ header {
   right: var(--spacing-lg);
   background: var(--mint);
   color: var(--deep-navy);
-  border: 2px solid var(--gold);
+  border: 1px solid var(--gold-subtle);
   padding: var(--spacing-lg) var(--spacing-xl);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
@@ -443,7 +453,7 @@ header {
   left: 0;
   right: 0;
   background: var(--navy-light);
-  border-top: 2px solid var(--gold);
+  border-top: 1px solid var(--gold-subtle);
   padding: var(--spacing-md) 0;
   display: flex;
   justify-content: center;
@@ -453,28 +463,30 @@ header {
 
 .nav-icon {
   background: transparent;
-  border: 2px solid var(--gold);
+  border: 1px solid var(--gold-subtle);
   border-radius: 50%;
   width: 56px;
   height: 56px;
   font-size: 1.4rem;
   cursor: pointer;
   transition: all var(--transition-normal);
-  color: var(--gold);
+  color: var(--gold-muted);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .nav-icon:hover {
-  background: var(--gold);
+  background: var(--gold-muted);
+  border-color: var(--gold);
   color: var(--deep-navy);
   transform: translateY(-3px);
-  box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-subtle-glow);
 }
 
 .nav-icon.active {
-  background: var(--gold);
+  background: var(--gold-muted);
+  border-color: var(--gold);
   color: var(--deep-navy);
 }
 
@@ -555,7 +567,7 @@ header {
 .nav-btn:focus,
 .nav-icon:focus,
 .word-of-day-card:focus {
-  outline: 3px solid var(--gold);
+  outline: 2px solid var(--gold-muted);
   outline-offset: 2px;
 }
 
@@ -564,7 +576,8 @@ header {
   :root {
     --deep-navy: #000000;
     --cream: #ffffff;
-    --gold: #ffff00;
+    --gold-muted: #ffff00;
+    --gold-subtle: rgba(255, 255, 0, 0.8);
     --mint: #00ffff;
   }
 }
