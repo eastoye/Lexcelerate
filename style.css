@@ -4,6 +4,9 @@
   box-sizing: border-box;
 }
 
+/* Typography System - Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
 :root {
   /* Primary Colors */
   --deep-navy: #1B365D;
@@ -33,15 +36,81 @@
   --hover-purple: #5D1A8B;
   --hover-blue: #5A7FE8;
   --active-navy: #0F2847;
+
+  /* Typography Variables */
+  --font-serif: 'Playfair Display', 'Times New Roman', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  
+  /* Font Sizes */
+  --font-size-h1: 2.25rem; /* 36px */
+  --font-size-h2: 1.75rem; /* 28px */
+  --font-size-h3: 1.5rem;  /* 24px */
+  --font-size-base: 1rem;  /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-wotd: 3rem;   /* 48px */
+  --font-size-pronunciation: 1.5rem; /* 24px */
+  
+  /* Line Heights */
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+  
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 }
 
+/* Base Typography */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
   background: linear-gradient(135deg, var(--light-taupe) 0%, var(--soft-off-white) 100%);
   min-height: 100vh;
   color: var(--text-primary);
-  line-height: 1.6;
-  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Heading Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  margin-bottom: 0.5em;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.025em;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.02em;
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.015em;
+}
+
+/* Body Text */
+p {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: 1em;
+  color: var(--text-primary);
 }
 
 /* Header */
@@ -59,12 +128,13 @@ header {
   border-radius: 50%;
   width: 48px;
   height: 48px;
+  font-family: var(--font-sans);
   font-size: 1.3rem;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(27, 54, 93, 0.15);
   transition: all 0.3s ease;
   color: var(--deep-navy);
-  font-weight: 600;
 }
 
 .help-btn:hover {
@@ -114,30 +184,34 @@ header {
   background: linear-gradient(90deg, var(--deep-navy) 0%, var(--royal-blue) 50%, var(--imperial-purple) 100%);
 }
 
-/* App Title */
+/* App Title - Primary Heading */
 .app-title {
-  font-size: 2.8rem;
-  font-weight: 700;
+  font-family: var(--font-serif);
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
   background: linear-gradient(135deg, var(--deep-navy) 0%, var(--imperial-purple) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 2.5rem;
   text-shadow: 0 2px 4px rgba(27, 54, 93, 0.1);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
+  line-height: var(--line-height-tight);
 }
 
-/* Word of the Day */
+/* Word of the Day Typography */
 .word-of-day-section {
   margin-bottom: 2.5rem;
 }
 
 .word-of-day-section h2 {
-  font-size: 1.4rem;
+  font-family: var(--font-serif);
+  font-size: var(--font-size-h2);
   color: var(--text-secondary);
   margin-bottom: 1.2rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.02em;
+  line-height: var(--line-height-tight);
 }
 
 .word-of-day-card {
@@ -176,22 +250,55 @@ header {
   transform: translateY(-1px);
 }
 
+/* WOTD Word - Special Typography Treatment */
 .wotd-word {
-  font-size: 2rem;
-  font-weight: 700;
+  font-family: var(--font-serif);
+  font-size: var(--font-size-wotd);
+  font-weight: var(--font-weight-bold);
   color: white;
   text-shadow: 0 2px 8px rgba(27, 54, 93, 0.3);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  line-height: var(--line-height-tight);
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.wotd-word:hover {
+  transform: scale(1.02);
+  text-shadow: 0 4px 12px rgba(27, 54, 93, 0.4);
+}
+
+/* Pronunciation Guide Styling */
+.pronunciation-guide {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-pronunciation);
+  font-style: italic;
+  font-weight: var(--font-weight-normal);
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+/* Definition Text */
+.definition-text {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-relaxed);
+  color: var(--text-primary);
+  margin-top: 1rem;
 }
 
 .wotd-hint {
+  font-family: var(--font-sans);
   font-size: 0.95rem;
   color: var(--text-muted);
   font-style: italic;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
 }
 
-/* Sound Toggle */
+/* Sound Toggle Typography */
 .sound-toggle-section {
   margin-bottom: 2.5rem;
 }
@@ -201,8 +308,9 @@ header {
   border: 2px solid var(--warm-amber);
   border-radius: 28px;
   padding: 1rem 1.8rem;
-  font-size: 1rem;
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -211,6 +319,7 @@ header {
   margin: 0 auto;
   color: var(--text-primary);
   box-shadow: 0 4px 12px rgba(255, 179, 71, 0.2);
+  line-height: var(--line-height-normal);
 }
 
 .sound-toggle:hover {
@@ -234,7 +343,7 @@ header {
   color: var(--text-primary);
 }
 
-/* Navigation Buttons */
+/* Navigation Button Typography */
 .nav-buttons {
   display: flex;
   flex-direction: column;
@@ -248,14 +357,16 @@ header {
   border: none;
   border-radius: 16px;
   padding: 1.2rem 2rem;
+  font-family: var(--font-sans);
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 6px 20px rgba(65, 105, 225, 0.3);
   position: relative;
   overflow: hidden;
   letter-spacing: -0.01em;
+  line-height: var(--line-height-normal);
 }
 
 .nav-btn::before {
@@ -307,20 +418,22 @@ header {
   color: var(--deep-navy);
 }
 
-/* Progress Summary */
+/* Progress Summary Typography */
 .progress-summary {
   background: white;
   border: 1px solid rgba(129, 216, 208, 0.3);
   border-radius: 14px;
   padding: 1.5rem;
   color: var(--text-muted);
-  font-size: 1rem;
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
   box-shadow: 0 4px 12px rgba(129, 216, 208, 0.1);
+  line-height: var(--line-height-normal);
 }
 
 #word-count {
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--mint-green);
   background: linear-gradient(135deg, var(--soft-teal) 0%, var(--mint-green) 100%);
   -webkit-background-clip: text;
@@ -329,7 +442,7 @@ header {
   font-size: 1.1em;
 }
 
-/* Modal Styles */
+/* Modal Typography */
 .modal {
   display: none;
   position: fixed;
@@ -366,33 +479,37 @@ header {
 }
 
 .modal-content h2 {
+  font-family: var(--font-serif);
   background: linear-gradient(135deg, var(--deep-navy) 0%, var(--imperial-purple) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 1.5rem;
-  font-size: 1.6rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+  line-height: var(--line-height-tight);
 }
 
 .modal-content p {
   margin-bottom: 1rem;
-  line-height: 1.7;
+  line-height: var(--line-height-relaxed);
   color: var(--text-primary);
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
 }
 
 .modal-content strong {
   color: var(--text-secondary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .close {
   color: var(--text-light);
   float: right;
   font-size: 1.8rem;
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
   cursor: pointer;
   position: absolute;
   top: 1.5rem;
@@ -404,6 +521,7 @@ header {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  font-family: var(--font-sans);
 }
 
 .close:hover {
@@ -412,7 +530,7 @@ header {
   transform: scale(1.1);
 }
 
-/* Notification */
+/* Notification Typography */
 .notification {
   position: fixed;
   top: 24px;
@@ -425,8 +543,11 @@ header {
   z-index: 1001;
   display: none;
   animation: slideIn 0.4s ease;
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
   border: 1px solid rgba(129, 216, 208, 0.5);
+  line-height: var(--line-height-normal);
 }
 
 @keyframes slideIn {
@@ -440,8 +561,17 @@ header {
   }
 }
 
-/* Responsive Design */
+/* Responsive Typography */
 @media (max-width: 600px) {
+  :root {
+    --font-size-h1: 1.875rem; /* 30px */
+    --font-size-h2: 1.5rem;   /* 24px */
+    --font-size-h3: 1.25rem;  /* 20px */
+    --font-size-wotd: 2.25rem; /* 36px */
+    --font-size-pronunciation: 1.25rem; /* 20px */
+    --font-size-lg: 1rem;     /* 16px */
+  }
+  
   .container {
     padding: 1rem;
   }
@@ -449,15 +579,6 @@ header {
   .home-screen {
     padding: 2.5rem 2rem;
     border-radius: 20px;
-  }
-  
-  .app-title {
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
-  }
-  
-  .wotd-word {
-    font-size: 1.6rem;
   }
   
   .modal-content {
@@ -479,20 +600,18 @@ header {
 }
 
 @media (max-width: 480px) {
+  :root {
+    --font-size-h1: 1.75rem;  /* 28px */
+    --font-size-wotd: 2rem;   /* 32px */
+    --font-size-pronunciation: 1.125rem; /* 18px */
+  }
+  
   .home-screen {
     padding: 2rem 1.5rem;
   }
   
-  .app-title {
-    font-size: 2rem;
-  }
-  
   .word-of-day-card {
     padding: 1.5rem 1rem;
-  }
-  
-  .wotd-word {
-    font-size: 1.4rem;
   }
   
   .sound-toggle {
@@ -538,5 +657,9 @@ header {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  
+  .wotd-word:hover {
+    transform: none;
   }
 }
