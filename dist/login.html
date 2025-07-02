@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In - Lexcelerate</title>
+  <script type="module" crossorigin src="/assets/login-BHluF97N.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/firestore-utils-B_MIlV0d.js">
+  <link rel="stylesheet" crossorigin href="/assets/style-Cnu3nA1c.css">
+</head>
+<body>
+  <!-- Notification -->
+  <div id="notification" class="notification"></div>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="auth-screen">
+      <h1 class="app-title">Lexcelerate</h1>
+      <p class="auth-subtitle">Sign in to sync your vocabulary across devices</p>
+      
+      <!-- Auth Toggle -->
+      <div class="auth-toggle">
+        <button id="signin-tab" class="auth-tab active">Sign In</button>
+        <button id="signup-tab" class="auth-tab">Sign Up</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="signin-form" class="auth-form">
+        <div class="form-group">
+          <label for="signin-email" class="form-label">Email</label>
+          <input 
+            type="email" 
+            id="signin-email" 
+            class="form-input" 
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="signin-password" class="form-label">Password</label>
+          <input 
+            type="password" 
+            id="signin-password" 
+            class="form-input" 
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+
+        <button type="submit" id="signin-submit" class="auth-btn">
+          <span class="btn-icon">🔑</span>
+          <span class="btn-text">Sign In</span>
+        </button>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form id="signup-form" class="auth-form" style="display: none;">
+        <div class="form-group">
+          <label for="signup-name" class="form-label">Name <span class="optional">(Optional)</span></label>
+          <input 
+            type="text" 
+            id="signup-name" 
+            class="form-input" 
+            placeholder="Enter your name"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="signup-email" class="form-label">Email</label>
+          <input 
+            type="email" 
+            id="signup-email" 
+            class="form-input" 
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="signup-password" class="form-label">Password</label>
+          <input 
+            type="password" 
+            id="signup-password" 
+            class="form-input" 
+            placeholder="Create a password (min. 6 characters)"
+            minlength="6"
+            required
+          />
+        </div>
+
+        <button type="submit" id="signup-submit" class="auth-btn">
+          <span class="btn-icon">✨</span>
+          <span class="btn-text">Create Account</span>
+        </button>
+      </form>
+
+      <!-- Continue as Guest -->
+      <div class="guest-option">
+        <button id="guest-btn" class="guest-btn">
+          <span class="btn-icon">👤</span>
+          <span class="btn-text">Continue as Guest</span>
+        </button>
+        <p class="guest-note">Your data will be stored locally only</p>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
