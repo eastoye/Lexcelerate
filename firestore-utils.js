@@ -1,4 +1,5 @@
 import { db } from './firebase.js';
+import { getCurrentUser } from './auth-utils.js';
 import { 
   collection, 
   doc, 
@@ -18,12 +19,17 @@ const COLLECTIONS = {
   RANDOM_TRIALS: 'randomTrials'
 };
 
-// User ID helper (you can replace this with actual user authentication later)
+// User ID helper - now uses Firebase Auth
 function getUserId() {
-  // For now, use a simple identifier stored in localStorage
+  const user = getCurrentUser();
+  if (user) {
+    return user.uid;
+  }
+  
+  // Fallback for anonymous users (backward compatibility)
   let userId = localStorage.getItem('lexcelerate_user_id');
   if (!userId) {
-    userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    userId = 'anonymous_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     localStorage.setItem('lexcelerate_user_id', userId);
   }
   return userId;
@@ -155,5 +161,43 @@ export async function syncRandomTrials(localRandomTrials) {
     console.error('Error syncing random trials:', error);
     // Fall back to localStorage data
     return localRandomTrials;
+  }
+}
+
+// Migration function to move anonymous data to authenticated user
+export async function migrateAnonymousDataToUser(anonymousUserId) {
+  try {
+    const currentUserId = getUserId();
+    
+    if (anonymousUserId === currentUserId) {
+      return; // No migration needed
+    }
+    
+    // Load data from anonymous user
+    const anonymousWordCatalogueRef = doc(db, COLLECTIONS.WORD_CATALOGUES, anonymousUserId);
+    const anonymousRandomTrialsRef = doc(db, COLLECTIONS.RANDOM_TRIALS, anonymousUserId);
+    
+    const [wordCatalogueSnap, randomTrialsSnap] = await Promise.all([
+      getDoc(anonymousWordCatalogueRef),
+      getDoc(anonymousRandomTrialsRef)
+    ]);
+    
+    // Migrate word catalogue
+    if (wordCatalogueSnap.exists()) {
+      const wordCatalogueData = wordCatalogueSnap.data();
+      await saveWordCatalogueToFirestore(wordCatalogueData.words || []);
+      await deleteDoc(anonymousWordCatalogueRef);
+    }
+    
+    // Migrate random trials
+    if (randomTrialsSnap.exists()) {
+      const randomTrialsData = randomTrialsSnap.data();
+      await saveRandomTrialsToFirestore(randomTrialsData.trials || []);
+      await deleteDoc(anonymousRandomTrialsRef);
+    }
+    
+    console.log('Successfully migrated anonymous data to authenticated user');
+  } catch (error) {
+    console.error('Error migrating anonymous data:', error);
   }
 }

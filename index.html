@@ -21,6 +21,7 @@
         <p><strong>Sound Toggle:</strong> Turn pronunciation on/off (saved to your preferences).</p>
         <p><strong>Word of the Day:</strong> Click on it to see the definition and optionally add it to your catalogue.</p>
         <p><strong>Cloud Sync:</strong> Your data is automatically synced to the cloud for backup and access across devices.</p>
+        <p><strong>Account:</strong> Sign in to sync your data across devices or continue as a guest.</p>
       </div>
     </div>
   </div>
@@ -30,6 +31,11 @@
 
   <!-- Header -->
   <header>
+    <div id="user-info" class="user-info" style="display: none;">
+      <div id="user-avatar" class="user-avatar">U</div>
+      <span id="user-name">User</span>
+      <button id="logout-btn" class="logout-btn">Sign Out</button>
+    </div>
     <button id="sound-toggle-btn" class="sound-toggle-header" title="Toggle Sound">
       <span id="sound-icon">🔊</span>
     </button>
@@ -79,268 +85,315 @@
   </nav>
 
   <script type="module">
-// Global variables
-let soundEnabled = true;
-let wordCatalogue = [];
+    // Global variables
+    let soundEnabled = true;
+    let wordCatalogue = [];
+    let currentUser = null;
 
-// Import Firebase utilities
-import { syncWordCatalogue, saveWordCatalogueToFirestore } from './firestore-utils.js';
+    // Import Firebase utilities
+    import { syncWordCatalogue, saveWordCatalogueToFirestore } from './firestore-utils.js';
+    import { onAuthStateChange, getCurrentUser, logOut } from './auth-utils.js';
 
-// Word of the Day words list
-const defaultWords = [
-  "serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous",
-  "quintessential", "ubiquitous", "perspicacious", "magnanimous", "effervescent"
-];
+    // Word of the Day words list
+    const defaultWords = [
+      "serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous",
+      "quintessential", "ubiquitous", "perspicacious", "magnanimous", "effervescent"
+    ];
 
-// Initialize app
-document.addEventListener('DOMContentLoaded', function() {
-  loadSoundPreference();
-  loadWordCatalogue();
-  loadWordOfTheDay();
-  setupEventListeners();
-});
-
-// Load sound preference from localStorage
-function loadSoundPreference() {
-  const savedSound = localStorage.getItem('soundEnabled');
-  soundEnabled = savedSound !== null ? JSON.parse(savedSound) : true;
-  updateSoundToggle();
-}
-
-// Save sound preference to localStorage
-function saveSoundPreference() {
-  localStorage.setItem('soundEnabled', JSON.stringify(soundEnabled));
-}
-
-// Update sound toggle button appearance
-function updateSoundToggle() {
-  const soundIcon = document.getElementById('sound-icon');
-  const soundToggle = document.getElementById('sound-toggle-btn');
-  
-  if (soundEnabled) {
-    soundIcon.textContent = '🔊';
-    soundToggle.classList.remove('sound-off');
-  } else {
-    soundIcon.textContent = '🔇';
-    soundToggle.classList.add('sound-off');
-  }
-}
-
-// Load user's word catalogue with Firebase sync
-async function loadWordCatalogue() {
-  const syncStatus = document.getElementById('sync-status');
-  syncStatus.textContent = '🔄 Syncing...';
-  syncStatus.style.color = 'var(--warning-orange)';
-  
-  try {
-    // Load from localStorage first
-    const saved = localStorage.getItem('wordCatalogue');
-    const localWordCatalogue = saved ? JSON.parse(saved) : [];
-    
-    // Ensure each word has required fields
-    localWordCatalogue.forEach(wordObj => {
-      if (typeof wordObj.score !== 'number') wordObj.score = 0;
-      if (typeof wordObj.streak !== 'number') wordObj.streak = 0;
-      if (!wordObj.definition) wordObj.definition = '';
-      if (!wordObj.dateAdded) wordObj.dateAdded = new Date().toISOString();
+    // Initialize app
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSoundPreference();
+      setupAuthStateListener();
+      setupEventListeners();
     });
-    
-    // Sync with Firebase
-    wordCatalogue = await syncWordCatalogue(localWordCatalogue);
-    
-    // Update localStorage with synced data
-    localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
-    
-    syncStatus.textContent = '☁️ Synced';
-    syncStatus.style.color = 'var(--success-green)';
-    
-    updateProgressSummary();
-  } catch (error) {
-    console.error('Error loading word catalogue:', error);
-    syncStatus.textContent = '⚠️ Offline';
-    syncStatus.style.color = 'var(--error-red)';
-    
-    // Fall back to localStorage only
-    const saved = localStorage.getItem('wordCatalogue');
-    wordCatalogue = saved ? JSON.parse(saved) : [];
-    updateProgressSummary();
-  }
-}
 
-// Save word catalogue to both localStorage and Firebase
-async function saveWordCatalogue() {
-  localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
-  
-  try {
-    await saveWordCatalogueToFirestore(wordCatalogue);
-    const syncStatus = document.getElementById('sync-status');
-    syncStatus.textContent = '☁️ Synced';
-    syncStatus.style.color = 'var(--success-green)';
-  } catch (error) {
-    console.error('Error saving to Firebase:', error);
-    const syncStatus = document.getElementById('sync-status');
-    syncStatus.textContent = '⚠️ Offline';
-    syncStatus.style.color = 'var(--error-red)';
-  }
-}
-
-// Load Word of the Day (persists for 24 hours)
-function loadWordOfTheDay() {
-  const storedWOTD = localStorage.getItem('wotd');
-  const wotdTimestamp = localStorage.getItem('wotdTimestamp');
-  const now = Date.now();
-  const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-  
-  if (storedWOTD && wotdTimestamp && (now - parseInt(wotdTimestamp) < oneDay)) {
-    document.getElementById('wotd').textContent = storedWOTD;
-  } else {
-    const randomWord = defaultWords[Math.floor(Math.random() * defaultWords.length)];
-    localStorage.setItem('wotd', randomWord);
-    localStorage.setItem('wotdTimestamp', now.toString());
-    document.getElementById('wotd').textContent = randomWord;
-  }
-}
-
-// Update progress summary
-function updateProgressSummary() {
-  const wordCount = document.getElementById('word-count');
-  wordCount.textContent = wordCatalogue.length;
-}
-
-// Show notification
-function showNotification(message, type = 'success') {
-  const notification = document.getElementById('notification');
-  notification.textContent = message;
-  notification.className = `notification ${type}`;
-  notification.style.display = 'block';
-  
-  setTimeout(() => {
-    notification.style.display = 'none';
-  }, 3000);
-}
-
-// Fetch definition from dictionary API
-async function fetchDefinition(word) {
-  try {
-    const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-    const data = await response.json();
-    
-    if (Array.isArray(data) && data[0].meanings && data[0].meanings.length > 0) {
-      return data[0].meanings[0].definitions[0].definition;
-    } else {
-      return "Definition not found.";
+    // Setup authentication state listener
+    function setupAuthStateListener() {
+      onAuthStateChange(async (user) => {
+        currentUser = user;
+        
+        if (user) {
+          // User is signed in
+          updateUserInfo(user);
+          await loadWordCatalogue();
+          loadWordOfTheDay();
+        } else {
+          // User is signed out - redirect to login
+          window.location.href = 'login.html';
+        }
+      });
     }
-  } catch (error) {
-    console.error('Error fetching definition:', error);
-    return "Error fetching definition.";
-  }
-}
 
-// Add word to catalogue
-async function addWordToCatalogue(word, definition = '') {
-  const existingWord = wordCatalogue.find(w => w.word.toLowerCase() === word.toLowerCase());
-  
-  if (!existingWord) {
-    wordCatalogue.push({
-      word: word,
-      definition: definition,
-      score: 0,
-      streak: 0,
-      dateAdded: new Date().toISOString()
-    });
-    await saveWordCatalogue();
-    updateProgressSummary();
-    showNotification(`"${word}" added to your catalogue!`);
-    return true;
-  } else {
-    showNotification(`"${word}" is already in your catalogue.`, 'warning');
-    return false;
-  }
-}
-
-// Setup event listeners
-function setupEventListeners() {
-  // Help button
-  document.getElementById('help-btn').addEventListener('click', () => {
-    document.getElementById('help-modal').style.display = 'block';
-  });
-  
-  // Close help modal
-  document.getElementById('help-close').addEventListener('click', () => {
-    document.getElementById('help-modal').style.display = 'none';
-  });
-  
-  // Close modal when clicking outside
-  window.addEventListener('click', (event) => {
-    const modal = document.getElementById('help-modal');
-    if (event.target === modal) {
-      modal.style.display = 'none';
-    }
-  });
-  
-  // Sound toggle
-  document.getElementById('sound-toggle-btn').addEventListener('click', () => {
-    soundEnabled = !soundEnabled;
-    saveSoundPreference();
-    updateSoundToggle();
-    showNotification(`Sound ${soundEnabled ? 'enabled' : 'disabled'}`, 'info');
-  });
-  
-  // Word of the Day click
-  document.getElementById('word-of-day').addEventListener('click', async () => {
-    const wotd = document.getElementById('wotd').textContent;
-    
-    if (wotd && wotd !== 'Loading...') {
-      showNotification('Fetching definition...', 'info');
-      const definition = await fetchDefinition(wotd);
+    // Update user info in header
+    function updateUserInfo(user) {
+      const userInfo = document.getElementById('user-info');
+      const userAvatar = document.getElementById('user-avatar');
+      const userName = document.getElementById('user-name');
       
-      const shouldAdd = confirm(
-        `Word: ${wotd}\n\nDefinition: ${definition}\n\nWould you like to add this word to your catalogue?`
-      );
-      
-      if (shouldAdd) {
-        await addWordToCatalogue(wotd, definition);
+      if (user) {
+        const displayName = user.displayName || user.email.split('@')[0];
+        const initials = displayName.charAt(0).toUpperCase();
+        
+        userAvatar.textContent = initials;
+        userName.textContent = displayName;
+        userInfo.style.display = 'flex';
+      } else {
+        userInfo.style.display = 'none';
       }
     }
-  });
-  
-  // Navigation buttons
-  document.getElementById('add-word-btn').addEventListener('click', () => {
-    window.location.href = 'add-word.html';
-  });
-  
-  document.getElementById('practice-btn').addEventListener('click', () => {
-    window.location.href = 'practice.html';
-  });
-  
-  document.getElementById('stats-btn').addEventListener('click', () => {
-    window.location.href = 'stats.html';
-  });
 
-  // Bottom navigation icons
-  const navIcons = document.querySelectorAll('.nav-icon');
-  navIcons.forEach((icon, index) => {
-    icon.addEventListener('click', () => {
-      // Remove active class from all icons
-      navIcons.forEach(i => i.classList.remove('active'));
-      // Add active class to clicked icon
-      icon.classList.add('active');
+    // Load sound preference from localStorage
+    function loadSoundPreference() {
+      const savedSound = localStorage.getItem('soundEnabled');
+      soundEnabled = savedSound !== null ? JSON.parse(savedSound) : true;
+      updateSoundToggle();
+    }
+
+    // Save sound preference to localStorage
+    function saveSoundPreference() {
+      localStorage.setItem('soundEnabled', JSON.stringify(soundEnabled));
+    }
+
+    // Update sound toggle button appearance
+    function updateSoundToggle() {
+      const soundIcon = document.getElementById('sound-icon');
+      const soundToggle = document.getElementById('sound-toggle-btn');
       
-      // Handle navigation based on index
-      switch(index) {
-        case 0: // Home
-          // Already on home
-          break;
-        case 1: // Add Word
-          document.getElementById('add-word-btn').click();
-          break;
-        case 2: // Stats
-          document.getElementById('stats-btn').click();
-          break;
+      if (soundEnabled) {
+        soundIcon.textContent = '🔊';
+        soundToggle.classList.remove('sound-off');
+      } else {
+        soundIcon.textContent = '🔇';
+        soundToggle.classList.add('sound-off');
       }
-    });
-  });
-}
+    }
+
+    // Load user's word catalogue with Firebase sync
+    async function loadWordCatalogue() {
+      const syncStatus = document.getElementById('sync-status');
+      syncStatus.textContent = '🔄 Syncing...';
+      syncStatus.style.color = 'var(--warning-orange)';
+      
+      try {
+        // Load from localStorage first
+        const saved = localStorage.getItem('wordCatalogue');
+        const localWordCatalogue = saved ? JSON.parse(saved) : [];
+        
+        // Ensure each word has required fields
+        localWordCatalogue.forEach(wordObj => {
+          if (typeof wordObj.score !== 'number') wordObj.score = 0;
+          if (typeof wordObj.streak !== 'number') wordObj.streak = 0;
+          if (!wordObj.definition) wordObj.definition = '';
+          if (!wordObj.dateAdded) wordObj.dateAdded = new Date().toISOString();
+        });
+        
+        // Sync with Firebase
+        wordCatalogue = await syncWordCatalogue(localWordCatalogue);
+        
+        // Update localStorage with synced data
+        localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
+        
+        syncStatus.textContent = '☁️ Synced';
+        syncStatus.style.color = 'var(--success-green)';
+        
+        updateProgressSummary();
+      } catch (error) {
+        console.error('Error loading word catalogue:', error);
+        syncStatus.textContent = '⚠️ Offline';
+        syncStatus.style.color = 'var(--error-red)';
+        
+        // Fall back to localStorage only
+        const saved = localStorage.getItem('wordCatalogue');
+        wordCatalogue = saved ? JSON.parse(saved) : [];
+        updateProgressSummary();
+      }
+    }
+
+    // Save word catalogue to both localStorage and Firebase
+    async function saveWordCatalogue() {
+      localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
+      
+      try {
+        await saveWordCatalogueToFirestore(wordCatalogue);
+        const syncStatus = document.getElementById('sync-status');
+        syncStatus.textContent = '☁️ Synced';
+        syncStatus.style.color = 'var(--success-green)';
+      } catch (error) {
+        console.error('Error saving to Firebase:', error);
+        const syncStatus = document.getElementById('sync-status');
+        syncStatus.textContent = '⚠️ Offline';
+        syncStatus.style.color = 'var(--error-red)';
+      }
+    }
+
+    // Load Word of the Day (persists for 24 hours)
+    function loadWordOfTheDay() {
+      const storedWOTD = localStorage.getItem('wotd');
+      const wotdTimestamp = localStorage.getItem('wotdTimestamp');
+      const now = Date.now();
+      const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+      
+      if (storedWOTD && wotdTimestamp && (now - parseInt(wotdTimestamp) < oneDay)) {
+        document.getElementById('wotd').textContent = storedWOTD;
+      } else {
+        const randomWord = defaultWords[Math.floor(Math.random() * defaultWords.length)];
+        localStorage.setItem('wotd', randomWord);
+        localStorage.setItem('wotdTimestamp', now.toString());
+        document.getElementById('wotd').textContent = randomWord;
+      }
+    }
+
+    // Update progress summary
+    function updateProgressSummary() {
+      const wordCount = document.getElementById('word-count');
+      wordCount.textContent = wordCatalogue.length;
+    }
+
+    // Show notification
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.className = `notification ${type}`;
+      notification.style.display = 'block';
+      
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000);
+    }
+
+    // Fetch definition from dictionary API
+    async function fetchDefinition(word) {
+      try {
+        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+        const data = await response.json();
+        
+        if (Array.isArray(data) && data[0].meanings && data[0].meanings.length > 0) {
+          return data[0].meanings[0].definitions[0].definition;
+        } else {
+          return "Definition not found.";
+        }
+      } catch (error) {
+        console.error('Error fetching definition:', error);
+        return "Error fetching definition.";
+      }
+    }
+
+    // Add word to catalogue
+    async function addWordToCatalogue(word, definition = '') {
+      const existingWord = wordCatalogue.find(w => w.word.toLowerCase() === word.toLowerCase());
+      
+      if (!existingWord) {
+        wordCatalogue.push({
+          word: word,
+          definition: definition,
+          score: 0,
+          streak: 0,
+          dateAdded: new Date().toISOString()
+        });
+        await saveWordCatalogue();
+        updateProgressSummary();
+        showNotification(`"${word}" added to your catalogue!`);
+        return true;
+      } else {
+        showNotification(`"${word}" is already in your catalogue.`, 'warning');
+        return false;
+      }
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Help button
+      document.getElementById('help-btn').addEventListener('click', () => {
+        document.getElementById('help-modal').style.display = 'block';
+      });
+      
+      // Close help modal
+      document.getElementById('help-close').addEventListener('click', () => {
+        document.getElementById('help-modal').style.display = 'none';
+      });
+      
+      // Close modal when clicking outside
+      window.addEventListener('click', (event) => {
+        const modal = document.getElementById('help-modal');
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+      
+      // Sound toggle
+      document.getElementById('sound-toggle-btn').addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        saveSoundPreference();
+        updateSoundToggle();
+        showNotification(`Sound ${soundEnabled ? 'enabled' : 'disabled'}`, 'info');
+      });
+
+      // Logout button
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        const result = await logOut();
+        if (result.success) {
+          showNotification('Signed out successfully', 'info');
+          // Redirect will happen automatically via auth state listener
+        } else {
+          showNotification('Error signing out', 'warning');
+        }
+      });
+      
+      // Word of the Day click
+      document.getElementById('word-of-day').addEventListener('click', async () => {
+        const wotd = document.getElementById('wotd').textContent;
+        
+        if (wotd && wotd !== 'Loading...') {
+          showNotification('Fetching definition...', 'info');
+          const definition = await fetchDefinition(wotd);
+          
+          const shouldAdd = confirm(
+            `Word: ${wotd}\n\nDefinition: ${definition}\n\nWould you like to add this word to your catalogue?`
+          );
+          
+          if (shouldAdd) {
+            await addWordToCatalogue(wotd, definition);
+          }
+        }
+      });
+      
+      // Navigation buttons
+      document.getElementById('add-word-btn').addEventListener('click', () => {
+        window.location.href = 'add-word.html';
+      });
+      
+      document.getElementById('practice-btn').addEventListener('click', () => {
+        window.location.href = 'practice.html';
+      });
+      
+      document.getElementById('stats-btn').addEventListener('click', () => {
+        window.location.href = 'stats.html';
+      });
+
+      // Bottom navigation icons
+      const navIcons = document.querySelectorAll('.nav-icon');
+      navIcons.forEach((icon, index) => {
+        icon.addEventListener('click', () => {
+          // Remove active class from all icons
+          navIcons.forEach(i => i.classList.remove('active'));
+          // Add active class to clicked icon
+          icon.classList.add('active');
+          
+          // Handle navigation based on index
+          switch(index) {
+            case 0: // Home
+              // Already on home
+              break;
+            case 1: // Add Word
+              document.getElementById('add-word-btn').click();
+              break;
+            case 2: // Stats
+              document.getElementById('stats-btn').click();
+              break;
+          }
+        });
+      });
+    }
   </script>
 </body>
 </html>

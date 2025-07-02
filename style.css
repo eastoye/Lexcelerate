@@ -143,6 +143,51 @@ header {
   color: var(--deep-navy);
 }
 
+/* User Info in Header */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--navy-light);
+  border: 1px solid var(--gold-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 0.9rem;
+  color: var(--cream-dim);
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gold-muted);
+  color: var(--deep-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1px solid var(--gold-very-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  color: var(--cream-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.logout-btn:hover {
+  background: var(--error-red);
+  border-color: var(--error-red);
+  color: var(--deep-navy);
+}
+
 /* Main Container */
 .container {
   display: flex;
@@ -155,7 +200,8 @@ header {
 .home-screen,
 .add-word-screen,
 .practice-screen,
-.stats-screen {
+.stats-screen,
+.auth-screen {
   background: var(--navy-light);
   border: 1px solid var(--gold-subtle);
   border-radius: var(--radius-xl);
@@ -175,7 +221,8 @@ header {
 .home-screen::before,
 .add-word-screen::before,
 .practice-screen::before,
-.stats-screen::before {
+.stats-screen::before,
+.auth-screen::before {
   content: '';
   position: absolute;
   top: -1px;
@@ -235,6 +282,130 @@ header {
   font-weight: 400;
   font-style: italic;
   text-align: center;
+}
+
+/* Auth Styles */
+.auth-subtitle {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--cream-dim);
+  margin-bottom: var(--spacing-2xl);
+  font-weight: 400;
+  font-style: italic;
+}
+
+.auth-toggle {
+  display: flex;
+  background: var(--deep-navy);
+  border: 1px solid var(--gold-subtle);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-2xl);
+  overflow: hidden;
+}
+
+.auth-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  color: var(--cream-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.auth-tab.active {
+  background: var(--gold-muted);
+  color: var(--deep-navy);
+}
+
+.auth-tab:hover:not(.active) {
+  background: var(--gold-very-subtle);
+  color: var(--cream);
+}
+
+.auth-form {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.auth-btn {
+  background: var(--mint);
+  color: var(--deep-navy);
+  border: 1px solid var(--gold-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-md);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.auth-btn:hover {
+  background: var(--dark-mint);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-mint-glow);
+}
+
+.auth-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.guest-option {
+  border-top: 1px solid var(--gold-very-subtle);
+  padding-top: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+}
+
+.guest-btn {
+  background: transparent;
+  border: 1px solid var(--gold-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  margin: 0 auto var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.guest-btn:hover {
+  background: var(--gold-muted);
+  border-color: var(--gold);
+  color: var(--deep-navy);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-subtle-glow);
+}
+
+.guest-note {
+  font-size: 0.8rem;
+  color: var(--cream-dim);
+  font-style: italic;
+  margin-top: var(--spacing-sm);
 }
 
 /* Back Button */
@@ -1538,7 +1709,8 @@ header {
   .home-screen,
   .add-word-screen,
   .practice-screen,
-  .stats-screen {
+  .stats-screen,
+  .auth-screen {
     padding: var(--spacing-2xl) var(--spacing-lg);
   }
   
@@ -1591,7 +1763,8 @@ header {
   }
   
   .add-btn,
-  .submit-btn {
+  .submit-btn,
+  .auth-btn {
     padding: var(--spacing-md) var(--spacing-xl);
     font-size: 1rem;
   }
@@ -1636,6 +1809,16 @@ header {
   
   .import-actions {
     flex-direction: column;
+  }
+  
+  .auth-toggle {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .user-info {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
   }
 }
 
@@ -1704,7 +1887,11 @@ header {
 .toggle-details:focus,
 .delete-word:focus,
 .import-confirm-btn:focus,
-.import-cancel-btn:focus {
+.import-cancel-btn:focus,
+.auth-btn:focus,
+.auth-tab:focus,
+.guest-btn:focus,
+.logout-btn:focus {
   outline: 2px solid var(--gold-muted);
   outline-offset: 2px;
 }
@@ -1745,7 +1932,11 @@ header {
   .toggle-details:hover,
   .delete-word:hover,
   .import-confirm-btn:hover,
-  .import-cancel-btn:hover {
+  .import-cancel-btn:hover,
+  .auth-btn:hover,
+  .auth-tab:hover,
+  .guest-btn:hover,
+  .logout-btn:hover {
     transform: none;
   }
 }
