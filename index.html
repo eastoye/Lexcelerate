@@ -20,6 +20,7 @@
         <p><strong>Stats:</strong> View your progress and performance statistics.</p>
         <p><strong>Sound Toggle:</strong> Turn pronunciation on/off (saved to your preferences).</p>
         <p><strong>Word of the Day:</strong> Click on it to see the definition and optionally add it to your catalogue.</p>
+        <p><strong>Cloud Sync:</strong> Your data is automatically synced to the cloud for backup and access across devices.</p>
       </div>
     </div>
   </div>
@@ -65,6 +66,7 @@
       <!-- Progress Summary -->
       <div id="progress-summary" class="progress-summary">
         <p>Words in catalogue: <span id="word-count">0</span></p>
+        <p id="sync-status" class="sync-status">🔄 Syncing...</p>
       </div>
     </div>
   </main>
@@ -76,10 +78,13 @@
     <button class="nav-icon" title="Stats">📊</button>
   </nav>
 
-  <script>
+  <script type="module">
 // Global variables
 let soundEnabled = true;
 let wordCatalogue = [];
+
+// Import Firebase utilities
+import { syncWordCatalogue, saveWordCatalogueToFirestore } from './firestore-utils.js';
 
 // Word of the Day words list
 const defaultWords = [
@@ -92,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function() {
   loadSoundPreference();
   loadWordCatalogue();
   loadWordOfTheDay();
-  updateProgressSummary();
   setupEventListeners();
 });
 
@@ -122,25 +126,62 @@ function updateSoundToggle() {
   }
 }
 
-// Load user's word catalogue from localStorage
-function loadWordCatalogue() {
-  const saved = localStorage.getItem('wordCatalogue');
-  wordCatalogue = saved ? JSON.parse(saved) : [];
+// Load user's word catalogue with Firebase sync
+async function loadWordCatalogue() {
+  const syncStatus = document.getElementById('sync-status');
+  syncStatus.textContent = '🔄 Syncing...';
+  syncStatus.style.color = 'var(--warning-orange)';
   
-  // Ensure each word has required fields
-  wordCatalogue.forEach(wordObj => {
-    if (typeof wordObj.score !== 'number') wordObj.score = 0;
-    if (typeof wordObj.streak !== 'number') wordObj.streak = 0;
-    if (!wordObj.definition) wordObj.definition = '';
-    if (!wordObj.dateAdded) wordObj.dateAdded = new Date().toISOString();
-  });
-  
-  saveWordCatalogue();
+  try {
+    // Load from localStorage first
+    const saved = localStorage.getItem('wordCatalogue');
+    const localWordCatalogue = saved ? JSON.parse(saved) : [];
+    
+    // Ensure each word has required fields
+    localWordCatalogue.forEach(wordObj => {
+      if (typeof wordObj.score !== 'number') wordObj.score = 0;
+      if (typeof wordObj.streak !== 'number') wordObj.streak = 0;
+      if (!wordObj.definition) wordObj.definition = '';
+      if (!wordObj.dateAdded) wordObj.dateAdded = new Date().toISOString();
+    });
+    
+    // Sync with Firebase
+    wordCatalogue = await syncWordCatalogue(localWordCatalogue);
+    
+    // Update localStorage with synced data
+    localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
+    
+    syncStatus.textContent = '☁️ Synced';
+    syncStatus.style.color = 'var(--success-green)';
+    
+    updateProgressSummary();
+  } catch (error) {
+    console.error('Error loading word catalogue:', error);
+    syncStatus.textContent = '⚠️ Offline';
+    syncStatus.style.color = 'var(--error-red)';
+    
+    // Fall back to localStorage only
+    const saved = localStorage.getItem('wordCatalogue');
+    wordCatalogue = saved ? JSON.parse(saved) : [];
+    updateProgressSummary();
+  }
 }
 
-// Save word catalogue to localStorage
-function saveWordCatalogue() {
+// Save word catalogue to both localStorage and Firebase
+async function saveWordCatalogue() {
   localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
+  
+  try {
+    await saveWordCatalogueToFirestore(wordCatalogue);
+    const syncStatus = document.getElementById('sync-status');
+    syncStatus.textContent = '☁️ Synced';
+    syncStatus.style.color = 'var(--success-green)';
+  } catch (error) {
+    console.error('Error saving to Firebase:', error);
+    const syncStatus = document.getElementById('sync-status');
+    syncStatus.textContent = '⚠️ Offline';
+    syncStatus.style.color = 'var(--error-red)';
+  }
 }
 
 // Load Word of the Day (persists for 24 hours)
@@ -196,7 +237,7 @@ async function fetchDefinition(word) {
 }
 
 // Add word to catalogue
-function addWordToCatalogue(word, definition = '') {
+async function addWordToCatalogue(word, definition = '') {
   const existingWord = wordCatalogue.find(w => w.word.toLowerCase() === word.toLowerCase());
   
   if (!existingWord) {
@@ -207,7 +248,7 @@ function addWordToCatalogue(word, definition = '') {
       streak: 0,
       dateAdded: new Date().toISOString()
     });
-    saveWordCatalogue();
+    await saveWordCatalogue();
     updateProgressSummary();
     showNotification(`"${word}" added to your catalogue!`);
     return true;
@@ -258,7 +299,7 @@ function setupEventListeners() {
       );
       
       if (shouldAdd) {
-        addWordToCatalogue(wotd, definition);
+        await addWordToCatalogue(wotd, definition);
       }
     }
   });

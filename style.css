@@ -1364,6 +1364,13 @@ header {
   font-size: 1.1em;
 }
 
+/* Sync Status */
+.sync-status {
+  font-size: 0.85rem;
+  margin-top: var(--spacing-xs);
+  font-weight: 500;
+}
+
 /* Modal Styles */
 .modal {
   display: none;
