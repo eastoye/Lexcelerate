@@ -71,7 +71,7 @@ header {
   position: fixed;
   top: 0;
   right: 0;
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   z-index: 100;
   display: flex;
   gap: var(--spacing-sm);
@@ -108,58 +108,25 @@ header {
   transform: translateY(0);
 }
 
-/* Sound Toggle in Header */
-.sound-toggle-header {
-  background: var(--deep-navy);
-  border: 1px solid var(--gold-subtle);
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-normal);
-  color: var(--gold-muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sound-toggle-header:hover {
-  background: var(--gold-muted);
-  border-color: var(--gold);
-  color: var(--deep-navy);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-subtle-glow);
-}
-
-.sound-toggle-header.sound-off {
-  border-color: var(--gold-very-subtle);
-  color: var(--cream-dim);
-}
-
-.sound-toggle-header.sound-off:hover {
-  background: var(--cream-dim);
-  border-color: rgba(245, 237, 224, 0.6);
-  color: var(--deep-navy);
-}
-
-/* User Info in Header */
+/* User Info in Header - Minimized */
 .user-info {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
   background: var(--navy-light);
   border: 1px solid var(--gold-subtle);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: 0.9rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.8rem;
   color: var(--cream-dim);
+  position: absolute;
+  top: var(--spacing-sm);
+  left: var(--spacing-md);
 }
 
 .user-avatar {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--gold-muted);
   color: var(--deep-navy);
@@ -167,10 +134,10 @@ header {
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
 }
 
-/* Logout Button - Mobile Optimized */
+/* Logout Button - Circular Icon */
 .logout-btn {
   background: var(--deep-navy);
   border: 1px solid var(--gold-subtle);
@@ -1784,8 +1751,14 @@ header {
     justify-content: flex-end;
   }
   
+  .user-info {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-bottom: var(--spacing-sm);
+  }
+  
   .help-btn,
-  .sound-toggle-header,
   .logout-btn {
     width: 44px;
     height: 44px;
@@ -1861,12 +1834,6 @@ header {
     margin-bottom: var(--spacing-lg);
   }
   
-  .user-info {
-    flex-direction: column;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-xs) var(--spacing-sm);
-  }
-  
   .guest-text {
     flex-direction: column;
     gap: var(--spacing-xs);
@@ -1922,7 +1889,6 @@ header {
   }
   
   .help-btn,
-  .sound-toggle-header,
   .logout-btn {
     width: 40px;
     height: 40px;
@@ -1932,7 +1898,6 @@ header {
 
 /* Focus states for accessibility */
 .help-btn:focus,
-.sound-toggle-header:focus,
 .logout-btn:focus,
 .nav-btn:focus,
 .nav-icon:focus,

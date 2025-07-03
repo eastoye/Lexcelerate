@@ -1,6 +1,5 @@
 // Word of the Day service - centralized for all users
-const WORD_OF_DAY_API = 'https://api.wordnik.com/v4/words.json/wordOfTheDay';
-const WORDNIK_API_KEY = 'YOUR_WORDNIK_API_KEY'; // Replace with your Wordnik API key
+const BACKEND_WORD_API = '/api/word-of-day'; // Backend endpoint for word of the day
 
 // Fallback words if API fails
 const FALLBACK_WORDS = [
@@ -21,10 +20,10 @@ function getCurrentDateString() {
   return new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
 }
 
-// Fetch word of the day from API
+// Fetch word of the day from backend API
 async function fetchWordOfTheDayFromAPI() {
   try {
-    const response = await fetch(`${WORD_OF_DAY_API}?api_key=${WORDNIK_API_KEY}`);
+    const response = await fetch(BACKEND_WORD_API);
     
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
@@ -34,9 +33,7 @@ async function fetchWordOfTheDayFromAPI() {
     
     return {
       word: data.word,
-      definition: data.definitions && data.definitions.length > 0 
-        ? data.definitions[0].text 
-        : "Definition not available"
+      definition: data.definition || "Definition not available"
     };
   } catch (error) {
     console.error('Error fetching word of the day from API:', error);
@@ -67,7 +64,7 @@ export async function getWordOfTheDay() {
     }
   }
   
-  // Try to fetch from API
+  // Try to fetch from backend API
   let wordData = await fetchWordOfTheDayFromAPI();
   
   // If API fails, use fallback
