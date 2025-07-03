@@ -108,33 +108,40 @@ header {
   transform: translateY(0);
 }
 
-/* User Info in Header - Minimized */
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  background: var(--navy-light);
+/* Sound Toggle in Header (Practice page only) */
+.sound-toggle-header {
+  background: var(--deep-navy);
   border: 1px solid var(--gold-subtle);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  font-size: 0.8rem;
-  color: var(--cream-dim);
-  position: absolute;
-  top: var(--spacing-sm);
-  left: var(--spacing-md);
-}
-
-.user-avatar {
-  width: 24px;
-  height: 24px;
   border-radius: 50%;
-  background: var(--gold-muted);
-  color: var(--deep-navy);
+  width: 48px;
+  height: 48px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  color: var(--gold-muted);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 0.7rem;
+}
+
+.sound-toggle-header:hover {
+  background: var(--gold-muted);
+  border-color: var(--gold);
+  color: var(--deep-navy);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-subtle-glow);
+}
+
+.sound-toggle-header.sound-off {
+  border-color: var(--gold-very-subtle);
+  color: var(--cream-dim);
+}
+
+.sound-toggle-header.sound-off:hover {
+  background: var(--cream-dim);
+  border-color: rgba(245, 237, 224, 0.6);
+  color: var(--deep-navy);
 }
 
 /* Logout Button - Circular Icon */
@@ -1751,15 +1758,9 @@ header {
     justify-content: flex-end;
   }
   
-  .user-info {
-    position: relative;
-    top: auto;
-    left: auto;
-    margin-bottom: var(--spacing-sm);
-  }
-  
   .help-btn,
-  .logout-btn {
+  .logout-btn,
+  .sound-toggle-header {
     width: 44px;
     height: 44px;
     font-size: 1.1rem;
@@ -1889,7 +1890,8 @@ header {
   }
   
   .help-btn,
-  .logout-btn {
+  .logout-btn,
+  .sound-toggle-header {
     width: 40px;
     height: 40px;
     font-size: 1rem;
@@ -1899,6 +1901,7 @@ header {
 /* Focus states for accessibility */
 .help-btn:focus,
 .logout-btn:focus,
+.sound-toggle-header:focus,
 .nav-btn:focus,
 .nav-icon:focus,
 .word-of-day-card:focus,
@@ -1965,7 +1968,8 @@ header {
   .auth-btn:hover,
   .auth-tab:hover,
   .guest-btn:hover,
-  .logout-btn:hover {
+  .logout-btn:hover,
+  .sound-toggle-header:hover {
     transform: none;
   }
 }

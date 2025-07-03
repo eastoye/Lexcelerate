@@ -18,7 +18,6 @@
         <p><strong>Add Word:</strong> Add new words to your personal catalogue for practice.</p>
         <p><strong>Practice Word:</strong> Test your spelling skills with words from your catalogue.</p>
         <p><strong>Stats:</strong> View your progress and performance statistics.</p>
-        <p><strong>Sound Toggle:</strong> Turn pronunciation on/off (saved to your preferences).</p>
         <p><strong>Word of the Day:</strong> Click on it to see the definition and optionally add it to your catalogue.</p>
         <p><strong>Cloud Sync:</strong> Your data is automatically synced to the cloud for backup and access across devices.</p>
         <p><strong>Account:</strong> Sign in to sync your data across devices or continue as a guest.</p>
@@ -53,10 +52,6 @@
 
   <!-- Header -->
   <header>
-    <div id="user-info" class="user-info" style="display: none;">
-      <div id="user-avatar" class="user-avatar">U</div>
-      <span id="user-name">User</span>
-    </div>
     <button id="help-btn" class="help-btn" title="Help">❓</button>
     <button id="logout-btn" class="logout-btn" style="display: none;" title="Sign Out">
       <span class="logout-icon">🚪</span>
@@ -153,21 +148,11 @@
 
     // Update user info in header
     function updateUserInfo(user) {
-      const userInfo = document.getElementById('user-info');
-      const userAvatar = document.getElementById('user-avatar');
-      const userName = document.getElementById('user-name');
       const logoutBtn = document.getElementById('logout-btn');
       
       if (user) {
-        const displayName = user.displayName || user.email.split('@')[0];
-        const initials = displayName.charAt(0).toUpperCase();
-        
-        userAvatar.textContent = initials;
-        userName.textContent = displayName;
-        userInfo.style.display = 'flex';
         logoutBtn.style.display = 'flex';
       } else {
-        userInfo.style.display = 'none';
         logoutBtn.style.display = 'none';
       }
     }
