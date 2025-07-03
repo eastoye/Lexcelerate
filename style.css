@@ -74,8 +74,9 @@ header {
   padding: var(--spacing-lg);
   z-index: 100;
   display: flex;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .help-btn {
@@ -169,23 +170,65 @@ header {
   font-size: 0.9rem;
 }
 
+/* Logout Button - Mobile Optimized */
 .logout-btn {
-  background: transparent;
-  border: 1px solid var(--gold-very-subtle);
-  border-radius: var(--radius-sm);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  font-size: 0.8rem;
+  background: var(--deep-navy);
+  border: 1px solid var(--gold-subtle);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 1.2rem;
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
   transition: all var(--transition-normal);
-  color: var(--cream-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: var(--error-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logout-btn:hover {
   background: var(--error-red);
   border-color: var(--error-red);
   color: var(--deep-navy);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-subtle-glow);
+}
+
+/* Guest Notice */
+.guest-notice {
+  background: var(--navy-light);
+  border: 1px solid var(--gold-very-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+  text-align: center;
+}
+
+.guest-text {
+  font-size: 0.9rem;
+  color: var(--cream-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.guest-icon {
+  font-size: 1.1rem;
+}
+
+.sign-in-link {
+  color: var(--mint);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--transition-normal);
+}
+
+.sign-in-link:hover {
+  color: var(--dark-mint);
+  text-decoration: underline;
 }
 
 /* Main Container */
@@ -1737,10 +1780,13 @@ header {
   
   header {
     padding: var(--spacing-md);
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
   
   .help-btn,
-  .sound-toggle-header {
+  .sound-toggle-header,
+  .logout-btn {
     width: 44px;
     height: 44px;
     font-size: 1.1rem;
@@ -1820,6 +1866,11 @@ header {
     gap: var(--spacing-xs);
     padding: var(--spacing-xs) var(--spacing-sm);
   }
+  
+  .guest-text {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
 }
 
 @media (max-width: 480px) {
@@ -1865,11 +1916,24 @@ header {
   .summary-value {
     font-size: 1.5rem;
   }
+  
+  header {
+    gap: var(--spacing-xs);
+  }
+  
+  .help-btn,
+  .sound-toggle-header,
+  .logout-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
 }
 
 /* Focus states for accessibility */
 .help-btn:focus,
 .sound-toggle-header:focus,
+.logout-btn:focus,
 .nav-btn:focus,
 .nav-icon:focus,
 .word-of-day-card:focus,
@@ -1891,7 +1955,7 @@ header {
 .auth-btn:focus,
 .auth-tab:focus,
 .guest-btn:focus,
-.logout-btn:focus {
+.sign-in-link:focus {
   outline: 2px solid var(--gold-muted);
   outline-offset: 2px;
 }

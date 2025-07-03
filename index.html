@@ -34,12 +34,14 @@
     <div id="user-info" class="user-info" style="display: none;">
       <div id="user-avatar" class="user-avatar">U</div>
       <span id="user-name">User</span>
-      <button id="logout-btn" class="logout-btn">Sign Out</button>
     </div>
     <button id="sound-toggle-btn" class="sound-toggle-header" title="Toggle Sound">
       <span id="sound-icon">🔊</span>
     </button>
     <button id="help-btn" class="help-btn" title="Help">❓</button>
+    <button id="logout-btn" class="logout-btn" style="display: none;" title="Sign Out">
+      <span class="logout-icon">🚪</span>
+    </button>
   </header>
 
   <!-- Main Content -->
@@ -74,6 +76,14 @@
         <p>Words in catalogue: <span id="word-count">0</span></p>
         <p id="sync-status" class="sync-status">🔄 Syncing...</p>
       </div>
+
+      <!-- Guest Mode Notice -->
+      <div id="guest-notice" class="guest-notice" style="display: none;">
+        <p class="guest-text">
+          <span class="guest-icon">👤</span>
+          Guest Mode - <a href="login.html" class="sign-in-link">Sign in</a> to sync across devices
+        </p>
+      </div>
     </div>
   </main>
 
@@ -90,21 +100,17 @@
     let wordCatalogue = [];
     let currentUser = null;
 
-    // Import Firebase utilities
-    import { syncWordCatalogue, saveWordCatalogueToFirestore } from './firestore-utils.js';
+    // Import utilities
+    import { syncWordCatalogueWithAirtable, saveWordCatalogueToAirtable } from './airtable-utils.js';
+    import { getWordOfTheDay } from './word-of-day-service.js';
     import { onAuthStateChange, getCurrentUser, logOut } from './auth-utils.js';
-
-    // Word of the Day words list
-    const defaultWords = [
-      "serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous",
-      "quintessential", "ubiquitous", "perspicacious", "magnanimous", "effervescent"
-    ];
 
     // Initialize app
     document.addEventListener('DOMContentLoaded', function() {
       loadSoundPreference();
       setupAuthStateListener();
       setupEventListeners();
+      loadWordOfTheDay();
     });
 
     // Setup authentication state listener
@@ -116,10 +122,12 @@
           // User is signed in
           updateUserInfo(user);
           await loadWordCatalogue();
-          loadWordOfTheDay();
+          document.getElementById('guest-notice').style.display = 'none';
         } else {
-          // User is signed out - redirect to login
-          window.location.href = 'login.html';
+          // User is signed out - continue as guest
+          updateUserInfo(null);
+          await loadWordCatalogue();
+          document.getElementById('guest-notice').style.display = 'block';
         }
       });
     }
@@ -129,6 +137,7 @@
       const userInfo = document.getElementById('user-info');
       const userAvatar = document.getElementById('user-avatar');
       const userName = document.getElementById('user-name');
+      const logoutBtn = document.getElementById('logout-btn');
       
       if (user) {
         const displayName = user.displayName || user.email.split('@')[0];
@@ -137,8 +146,10 @@
         userAvatar.textContent = initials;
         userName.textContent = displayName;
         userInfo.style.display = 'flex';
+        logoutBtn.style.display = 'flex';
       } else {
         userInfo.style.display = 'none';
+        logoutBtn.style.display = 'none';
       }
     }
 
@@ -168,7 +179,7 @@
       }
     }
 
-    // Load user's word catalogue with Firebase sync
+    // Load user's word catalogue with Airtable sync
     async function loadWordCatalogue() {
       const syncStatus = document.getElementById('sync-status');
       syncStatus.textContent = '🔄 Syncing...';
@@ -187,14 +198,20 @@
           if (!wordObj.dateAdded) wordObj.dateAdded = new Date().toISOString();
         });
         
-        // Sync with Firebase
-        wordCatalogue = await syncWordCatalogue(localWordCatalogue);
+        // Sync with Airtable (or use localStorage for guests)
+        const userUid = currentUser ? currentUser.uid : null;
+        wordCatalogue = await syncWordCatalogueWithAirtable(localWordCatalogue, userUid);
         
         // Update localStorage with synced data
         localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
         
-        syncStatus.textContent = '☁️ Synced';
-        syncStatus.style.color = 'var(--success-green)';
+        if (currentUser) {
+          syncStatus.textContent = '☁️ Synced';
+          syncStatus.style.color = 'var(--success-green)';
+        } else {
+          syncStatus.textContent = '💾 Local Storage';
+          syncStatus.style.color = 'var(--gold-muted)';
+        }
         
         updateProgressSummary();
       } catch (error) {
@@ -209,37 +226,37 @@
       }
     }
 
-    // Save word catalogue to both localStorage and Firebase
+    // Save word catalogue to both localStorage and Airtable
     async function saveWordCatalogue() {
       localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
       
-      try {
-        await saveWordCatalogueToFirestore(wordCatalogue);
-        const syncStatus = document.getElementById('sync-status');
-        syncStatus.textContent = '☁️ Synced';
-        syncStatus.style.color = 'var(--success-green)';
-      } catch (error) {
-        console.error('Error saving to Firebase:', error);
-        const syncStatus = document.getElementById('sync-status');
-        syncStatus.textContent = '⚠️ Offline';
-        syncStatus.style.color = 'var(--error-red)';
+      if (currentUser) {
+        try {
+          await saveWordCatalogueToAirtable(wordCatalogue, currentUser.uid);
+          const syncStatus = document.getElementById('sync-status');
+          syncStatus.textContent = '☁️ Synced';
+          syncStatus.style.color = 'var(--success-green)';
+        } catch (error) {
+          console.error('Error saving to Airtable:', error);
+          const syncStatus = document.getElementById('sync-status');
+          syncStatus.textContent = '⚠️ Offline';
+          syncStatus.style.color = 'var(--error-red)';
+        }
       }
     }
 
-    // Load Word of the Day (persists for 24 hours)
-    function loadWordOfTheDay() {
-      const storedWOTD = localStorage.getItem('wotd');
-      const wotdTimestamp = localStorage.getItem('wotdTimestamp');
-      const now = Date.now();
-      const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-      
-      if (storedWOTD && wotdTimestamp && (now - parseInt(wotdTimestamp) < oneDay)) {
-        document.getElementById('wotd').textContent = storedWOTD;
-      } else {
-        const randomWord = defaultWords[Math.floor(Math.random() * defaultWords.length)];
-        localStorage.setItem('wotd', randomWord);
-        localStorage.setItem('wotdTimestamp', now.toString());
-        document.getElementById('wotd').textContent = randomWord;
+    // Load Word of the Day
+    async function loadWordOfTheDay() {
+      try {
+        const wordData = await getWordOfTheDay();
+        document.getElementById('wotd').textContent = wordData.word;
+        
+        // Store definition for later use
+        document.getElementById('wotd').dataset.definition = wordData.definition;
+      } catch (error) {
+        console.error('Error loading word of the day:', error);
+        document.getElementById('wotd').textContent = 'serendipity';
+        document.getElementById('wotd').dataset.definition = 'The occurrence and development of events by chance in a happy or beneficial way.';
       }
     }
 
@@ -259,23 +276,6 @@
       setTimeout(() => {
         notification.style.display = 'none';
       }, 3000);
-    }
-
-    // Fetch definition from dictionary API
-    async function fetchDefinition(word) {
-      try {
-        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-        const data = await response.json();
-        
-        if (Array.isArray(data) && data[0].meanings && data[0].meanings.length > 0) {
-          return data[0].meanings[0].definitions[0].definition;
-        } else {
-          return "Definition not found.";
-        }
-      } catch (error) {
-        console.error('Error fetching definition:', error);
-        return "Error fetching definition.";
-      }
     }
 
     // Add word to catalogue
@@ -333,7 +333,7 @@
         const result = await logOut();
         if (result.success) {
           showNotification('Signed out successfully', 'info');
-          // Redirect will happen automatically via auth state listener
+          // Auth state listener will handle the UI update
         } else {
           showNotification('Error signing out', 'warning');
         }
@@ -341,18 +341,17 @@
       
       // Word of the Day click
       document.getElementById('word-of-day').addEventListener('click', async () => {
-        const wotd = document.getElementById('wotd').textContent;
+        const wotdElement = document.getElementById('wotd');
+        const word = wotdElement.textContent;
+        const definition = wotdElement.dataset.definition;
         
-        if (wotd && wotd !== 'Loading...') {
-          showNotification('Fetching definition...', 'info');
-          const definition = await fetchDefinition(wotd);
-          
+        if (word && word !== 'Loading...') {
           const shouldAdd = confirm(
-            `Word: ${wotd}\n\nDefinition: ${definition}\n\nWould you like to add this word to your catalogue?`
+            `Word: ${word}\n\nDefinition: ${definition}\n\nWould you like to add this word to your catalogue?`
           );
           
           if (shouldAdd) {
-            await addWordToCatalogue(wotd, definition);
+            await addWordToCatalogue(word, definition);
           }
         }
       });
