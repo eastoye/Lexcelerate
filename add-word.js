@@ -1,80 +1,60 @@
 // Global variables
+let soundEnabled = true;
 let wordCatalogue = [];
-let currentUser = null;
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', function() {
-  setupAuthStateListener();
+  loadSoundPreference();
+  loadWordCatalogue();
+  updateRecentAdditions();
   setupEventListeners();
 });
 
-// Setup authentication state listener
-function setupAuthStateListener() {
-  // Import auth utilities dynamically
-  import('./auth-utils.js').then(({ onAuthStateChange, getCurrentUser }) => {
-    onAuthStateChange(async (user) => {
-      currentUser = user;
-      await loadWordCatalogue();
-      updateRecentAdditions();
-    });
-  }).catch(error => {
-    console.error('Error loading auth utilities:', error);
-    // Fallback to localStorage only
-    loadWordCatalogue();
-    updateRecentAdditions();
-  });
+// Load sound preference from localStorage
+function loadSoundPreference() {
+  const savedSound = localStorage.getItem('soundEnabled');
+  soundEnabled = savedSound !== null ? JSON.parse(savedSound) : true;
+  updateSoundToggle();
 }
 
-// Load user's word catalogue with backend sync
-async function loadWordCatalogue() {
-  try {
-    // Load from localStorage first
-    const saved = localStorage.getItem('wordCatalogue');
-    const localWordCatalogue = saved ? JSON.parse(saved) : [];
-    
-    // Ensure each word has required fields
-    localWordCatalogue.forEach(wordObj => {
-      if (typeof wordObj.score !== 'number') wordObj.score = 0;
-      if (typeof wordObj.streak !== 'number') wordObj.streak = 0;
-      if (!wordObj.definition) wordObj.definition = '';
-      if (!wordObj.dateAdded) wordObj.dateAdded = new Date().toISOString();
-    });
-    
-    // Sync with backend if user is authenticated
-    if (currentUser) {
-      try {
-        const { syncWordCatalogueWithBackend } = await import('./backend-utils.js');
-        wordCatalogue = await syncWordCatalogueWithBackend(localWordCatalogue, currentUser.uid);
-        localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
-      } catch (error) {
-        console.error('Error syncing with backend:', error);
-        wordCatalogue = localWordCatalogue;
-      }
-    } else {
-      wordCatalogue = localWordCatalogue;
-    }
-    
-    saveWordCatalogue();
-  } catch (error) {
-    console.error('Error loading word catalogue:', error);
-    // Fall back to localStorage only
-    const saved = localStorage.getItem('wordCatalogue');
-    wordCatalogue = saved ? JSON.parse(saved) : [];
-  }
+// Save sound preference to localStorage
+function saveSoundPreference() {
+  localStorage.setItem('soundEnabled', JSON.stringify(soundEnabled));
 }
 
-// Save word catalogue to both localStorage and backend
-async function saveWordCatalogue() {
-  localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
+// Update sound toggle button appearance
+function updateSoundToggle() {
+  const soundIcon = document.getElementById('sound-icon');
+  const soundToggle = document.getElementById('sound-toggle-btn');
   
-  if (currentUser) {
-    try {
-      const { saveWordCatalogueToBackend } = await import('./backend-utils.js');
-      await saveWordCatalogueToBackend(wordCatalogue, currentUser.uid);
-    } catch (error) {
-      console.error('Error saving to backend:', error);
-    }
+  if (soundEnabled) {
+    soundIcon.textContent = '🔊';
+    soundToggle.classList.remove('sound-off');
+  } else {
+    soundIcon.textContent = '🔇';
+    soundToggle.classList.add('sound-off');
   }
+}
+
+// Load user's word catalogue from localStorage
+function loadWordCatalogue() {
+  const saved = localStorage.getItem('wordCatalogue');
+  wordCatalogue = saved ? JSON.parse(saved) : [];
+  
+  // Ensure each word has required fields
+  wordCatalogue.forEach(wordObj => {
+    if (typeof wordObj.score !== 'number') wordObj.score = 0;
+    if (typeof wordObj.streak !== 'number') wordObj.streak = 0;
+    if (!wordObj.definition) wordObj.definition = '';
+    if (!wordObj.dateAdded) wordObj.dateAdded = new Date().toISOString();
+  });
+  
+  saveWordCatalogue();
+}
+
+// Save word catalogue to localStorage
+function saveWordCatalogue() {
+  localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
 }
 
 // Show notification
@@ -136,7 +116,7 @@ async function addWordToCatalogue(word, customDefinition = '') {
   };
 
   wordCatalogue.unshift(newWord); // Add to beginning for recent additions
-  await saveWordCatalogue();
+  saveWordCatalogue();
   
   showNotification(`"${word}" added successfully!`, 'success');
   updateRecentAdditions();
@@ -206,6 +186,14 @@ function setupEventListeners() {
     if (event.target === modal) {
       modal.style.display = 'none';
     }
+  });
+  
+  // Sound toggle
+  document.getElementById('sound-toggle-btn').addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    saveSoundPreference();
+    updateSoundToggle();
+    showNotification(`Sound ${soundEnabled ? 'enabled' : 'disabled'}`, 'info');
   });
 
   // Back button
