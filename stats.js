@@ -30,12 +30,15 @@ function updateSoundToggle() {
   const soundIcon = document.getElementById('sound-icon');
   const soundToggle = document.getElementById('sound-toggle-btn');
   
-  if (soundEnabled) {
-    soundIcon.textContent = '🔊';
-    soundToggle.classList.remove('sound-off');
-  } else {
-    soundIcon.textContent = '🔇';
-    soundToggle.classList.add('sound-off');
+  // Check if elements exist before trying to manipulate them
+  if (soundIcon && soundToggle) {
+    if (soundEnabled) {
+      soundIcon.textContent = '🔊';
+      soundToggle.classList.remove('sound-off');
+    } else {
+      soundIcon.textContent = '🔇';
+      soundToggle.classList.add('sound-off');
+    }
   }
 }
 
@@ -387,13 +390,16 @@ function setupEventListeners() {
     }
   });
   
-  // Sound toggle
-  document.getElementById('sound-toggle-btn').addEventListener('click', () => {
-    soundEnabled = !soundEnabled;
-    saveSoundPreference();
-    updateSoundToggle();
-    showNotification(`Sound ${soundEnabled ? 'enabled' : 'disabled'}`, 'info');
-  });
+  // Sound toggle - only add listener if element exists
+  const soundToggleBtn = document.getElementById('sound-toggle-btn');
+  if (soundToggleBtn) {
+    soundToggleBtn.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      saveSoundPreference();
+      updateSoundToggle();
+      showNotification(`Sound ${soundEnabled ? 'enabled' : 'disabled'}`, 'info');
+    });
+  }
 
   // Back button
   document.getElementById('back-btn').addEventListener('click', () => {
