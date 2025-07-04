@@ -1,11 +1,9 @@
 // Global variables
-let soundEnabled = true;
 let wordCatalogue = [];
 let currentUser = null;
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', function() {
-  loadSoundPreference();
   setupAuthStateListener();
   setupEventListeners();
 });
@@ -25,34 +23,6 @@ function setupAuthStateListener() {
     loadWordCatalogue();
     updateRecentAdditions();
   });
-}
-
-// Load sound preference from localStorage
-function loadSoundPreference() {
-  const savedSound = localStorage.getItem('soundEnabled');
-  soundEnabled = savedSound !== null ? JSON.parse(savedSound) : true;
-  updateSoundToggle();
-}
-
-// Save sound preference to localStorage
-function saveSoundPreference() {
-  localStorage.setItem('soundEnabled', JSON.stringify(soundEnabled));
-}
-
-// Update sound toggle button appearance
-function updateSoundToggle() {
-  const soundIcon = document.getElementById('sound-icon');
-  const soundToggle = document.getElementById('sound-toggle-btn');
-  
-  if (soundIcon && soundToggle) {
-    if (soundEnabled) {
-      soundIcon.textContent = '🔊';
-      soundToggle.classList.remove('sound-off');
-    } else {
-      soundIcon.textContent = '🔇';
-      soundToggle.classList.add('sound-off');
-    }
-  }
 }
 
 // Load user's word catalogue with backend sync
@@ -237,17 +207,6 @@ function setupEventListeners() {
       modal.style.display = 'none';
     }
   });
-  
-  // Sound toggle - only add listener if element exists
-  const soundToggleBtn = document.getElementById('sound-toggle-btn');
-  if (soundToggleBtn) {
-    soundToggleBtn.addEventListener('click', () => {
-      soundEnabled = !soundEnabled;
-      saveSoundPreference();
-      updateSoundToggle();
-      showNotification(`Sound ${soundEnabled ? 'enabled' : 'disabled'}`, 'info');
-    });
-  }
 
   // Back button
   document.getElementById('back-btn').addEventListener('click', () => {
