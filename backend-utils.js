@@ -1,5 +1,5 @@
 // Backend integration utilities for secure API handling
-const BACKEND_BASE_URL = '/api'; // Your backend API endpoint
+const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_API_URL || '/api'; // Your backend API endpoint
 
 // Save word catalogue to backend
 export async function saveWordCatalogueToBackend(wordCatalogue, userUid) {
