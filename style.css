@@ -71,12 +71,11 @@ header {
   position: fixed;
   top: 0;
   right: 0;
-  padding: var(--spacing-md);
+  padding: var(--spacing-lg);
   z-index: 100;
   display: flex;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
   align-items: center;
-  flex-wrap: wrap;
 }
 
 .help-btn {
@@ -108,7 +107,7 @@ header {
   transform: translateY(0);
 }
 
-/* Sound Toggle in Header (Practice page only) */
+/* Sound Toggle in Header */
 .sound-toggle-header {
   background: var(--deep-navy);
   border: 1px solid var(--gold-subtle);
@@ -144,67 +143,6 @@ header {
   color: var(--deep-navy);
 }
 
-/* Logout Button - Circular Icon */
-.logout-btn {
-  background: var(--deep-navy);
-  border: 1px solid var(--gold-subtle);
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-normal);
-  color: var(--error-red);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logout-btn:hover {
-  background: var(--error-red);
-  border-color: var(--error-red);
-  color: var(--deep-navy);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-subtle-glow);
-}
-
-/* Guest Notice */
-.guest-notice {
-  background: var(--navy-light);
-  border: 1px solid var(--gold-very-subtle);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-md);
-  margin-top: var(--spacing-lg);
-  text-align: center;
-}
-
-.guest-text {
-  font-size: 0.9rem;
-  color: var(--cream-dim);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
-  flex-wrap: wrap;
-}
-
-.guest-icon {
-  font-size: 1.1rem;
-}
-
-.sign-in-link {
-  color: var(--mint);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color var(--transition-normal);
-}
-
-.sign-in-link:hover {
-  color: var(--dark-mint);
-  text-decoration: underline;
-}
-
 /* Main Container */
 .container {
   display: flex;
@@ -217,8 +155,7 @@ header {
 .home-screen,
 .add-word-screen,
 .practice-screen,
-.stats-screen,
-.auth-screen {
+.stats-screen {
   background: var(--navy-light);
   border: 1px solid var(--gold-subtle);
   border-radius: var(--radius-xl);
@@ -238,8 +175,7 @@ header {
 .home-screen::before,
 .add-word-screen::before,
 .practice-screen::before,
-.stats-screen::before,
-.auth-screen::before {
+.stats-screen::before {
   content: '';
   position: absolute;
   top: -1px;
@@ -299,130 +235,6 @@ header {
   font-weight: 400;
   font-style: italic;
   text-align: center;
-}
-
-/* Auth Styles */
-.auth-subtitle {
-  font-family: var(--font-sans);
-  font-size: 1rem;
-  color: var(--cream-dim);
-  margin-bottom: var(--spacing-2xl);
-  font-weight: 400;
-  font-style: italic;
-}
-
-.auth-toggle {
-  display: flex;
-  background: var(--deep-navy);
-  border: 1px solid var(--gold-subtle);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-2xl);
-  overflow: hidden;
-}
-
-.auth-tab {
-  flex: 1;
-  background: transparent;
-  border: none;
-  padding: var(--spacing-md) var(--spacing-lg);
-  font-family: var(--font-sans);
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-  color: var(--cream-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.auth-tab.active {
-  background: var(--gold-muted);
-  color: var(--deep-navy);
-}
-
-.auth-tab:hover:not(.active) {
-  background: var(--gold-very-subtle);
-  color: var(--cream);
-}
-
-.auth-form {
-  margin-bottom: var(--spacing-2xl);
-}
-
-.auth-btn {
-  background: var(--mint);
-  color: var(--deep-navy);
-  border: 1px solid var(--gold-subtle);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-lg) var(--spacing-2xl);
-  font-family: var(--font-sans);
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-  box-shadow: var(--shadow-md);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  justify-content: center;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.auth-btn:hover {
-  background: var(--dark-mint);
-  border-color: var(--gold);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-mint-glow);
-}
-
-.auth-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.guest-option {
-  border-top: 1px solid var(--gold-very-subtle);
-  padding-top: var(--spacing-xl);
-  margin-top: var(--spacing-xl);
-}
-
-.guest-btn {
-  background: transparent;
-  border: 1px solid var(--gold-subtle);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-md) var(--spacing-xl);
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-  color: var(--cream);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  justify-content: center;
-  margin: 0 auto var(--spacing-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.guest-btn:hover {
-  background: var(--gold-muted);
-  border-color: var(--gold);
-  color: var(--deep-navy);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-subtle-glow);
-}
-
-.guest-note {
-  font-size: 0.8rem;
-  color: var(--cream-dim);
-  font-style: italic;
-  margin-top: var(--spacing-sm);
 }
 
 /* Back Button */
@@ -1552,13 +1364,6 @@ header {
   font-size: 1.1em;
 }
 
-/* Sync Status */
-.sync-status {
-  font-size: 0.85rem;
-  margin-top: var(--spacing-xs);
-  font-weight: 500;
-}
-
 /* Modal Styles */
 .modal {
   display: none;
@@ -1726,8 +1531,7 @@ header {
   .home-screen,
   .add-word-screen,
   .practice-screen,
-  .stats-screen,
-  .auth-screen {
+  .stats-screen {
     padding: var(--spacing-2xl) var(--spacing-lg);
   }
   
@@ -1754,12 +1558,9 @@ header {
   
   header {
     padding: var(--spacing-md);
-    flex-wrap: wrap;
-    justify-content: flex-end;
   }
   
   .help-btn,
-  .logout-btn,
   .sound-toggle-header {
     width: 44px;
     height: 44px;
@@ -1783,8 +1584,7 @@ header {
   }
   
   .add-btn,
-  .submit-btn,
-  .auth-btn {
+  .submit-btn {
     padding: var(--spacing-md) var(--spacing-xl);
     font-size: 1rem;
   }
@@ -1829,15 +1629,6 @@ header {
   
   .import-actions {
     flex-direction: column;
-  }
-  
-  .auth-toggle {
-    margin-bottom: var(--spacing-lg);
-  }
-  
-  .guest-text {
-    flex-direction: column;
-    gap: var(--spacing-xs);
   }
 }
 
@@ -1884,23 +1675,10 @@ header {
   .summary-value {
     font-size: 1.5rem;
   }
-  
-  header {
-    gap: var(--spacing-xs);
-  }
-  
-  .help-btn,
-  .logout-btn,
-  .sound-toggle-header {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
 }
 
 /* Focus states for accessibility */
 .help-btn:focus,
-.logout-btn:focus,
 .sound-toggle-header:focus,
 .nav-btn:focus,
 .nav-icon:focus,
@@ -1919,11 +1697,7 @@ header {
 .toggle-details:focus,
 .delete-word:focus,
 .import-confirm-btn:focus,
-.import-cancel-btn:focus,
-.auth-btn:focus,
-.auth-tab:focus,
-.guest-btn:focus,
-.sign-in-link:focus {
+.import-cancel-btn:focus {
   outline: 2px solid var(--gold-muted);
   outline-offset: 2px;
 }
@@ -1964,12 +1738,7 @@ header {
   .toggle-details:hover,
   .delete-word:hover,
   .import-confirm-btn:hover,
-  .import-cancel-btn:hover,
-  .auth-btn:hover,
-  .auth-tab:hover,
-  .guest-btn:hover,
-  .logout-btn:hover,
-  .sound-toggle-header:hover {
+  .import-cancel-btn:hover {
     transform: none;
   }
 }
