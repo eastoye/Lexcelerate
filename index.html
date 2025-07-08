@@ -116,6 +116,7 @@ let currentUser = null;
 
 // Import utilities
 import { onAuthStateChange, getCurrentUser, logOut } from './auth-utils.js';
+import { syncWordCatalogueWithAirtable, saveToAirtable } from './airtable-utils.js';
 
 // Word of the Day words list
 const defaultWords = [
@@ -167,17 +168,23 @@ async function loadWordCatalogue() {
   syncStatus.style.color = 'var(--warning-orange)';
   
   try {
-    // Load from localStorage
+    // Load from localStorage first
     const saved = localStorage.getItem('wordCatalogue');
-    wordCatalogue = saved ? JSON.parse(saved) : [];
+    const localWordCatalogue = saved ? JSON.parse(saved) : [];
     
     // Ensure each word has required fields
-    wordCatalogue.forEach(wordObj => {
+    localWordCatalogue.forEach(wordObj => {
       if (typeof wordObj.score !== 'number') wordObj.score = 0;
       if (typeof wordObj.streak !== 'number') wordObj.streak = 0;
       if (!wordObj.definition) wordObj.definition = '';
       if (!wordObj.dateAdded) wordObj.dateAdded = new Date().toISOString();
     });
+    
+    // Sync with Airtable (or use localStorage for guests)
+    wordCatalogue = await syncWordCatalogueWithAirtable(localWordCatalogue);
+    
+    // Update localStorage with synced data
+    localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
     
     if (currentUser) {
       syncStatus.textContent = '☁️ Synced';
@@ -192,6 +199,10 @@ async function loadWordCatalogue() {
     console.error('Error loading word catalogue:', error);
     syncStatus.textContent = '⚠️ Offline';
     syncStatus.style.color = 'var(--error-red)';
+    
+    // Fall back to localStorage only
+    const saved = localStorage.getItem('wordCatalogue');
+    wordCatalogue = saved ? JSON.parse(saved) : [];
     updateProgressSummary();
   }
 }
@@ -202,11 +213,12 @@ async function saveWordCatalogue() {
   
   if (currentUser) {
     try {
+      await saveToAirtable(wordCatalogue);
       const syncStatus = document.getElementById('sync-status');
       syncStatus.textContent = '☁️ Synced';
       syncStatus.style.color = 'var(--success-green)';
     } catch (error) {
-      console.error('Error saving to cloud:', error);
+      console.error('Error saving to Airtable:', error);
       const syncStatus = document.getElementById('sync-status');
       syncStatus.textContent = '⚠️ Offline';
       syncStatus.style.color = 'var(--error-red)';
