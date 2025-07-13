@@ -6,11 +6,7 @@ let currentWordObj = null;
 let attemptCount = 0;
 let currentRevealCount = 0;
 let randomTrials = [];
-let currentUser = null;
 
-// Import utilities
-import { getCurrentUser } from './auth-utils.js';
-import { saveToAirtable } from './airtable-utils.js';
 // Built-in dictionary for random mode
 const dictionaryWords = [
   "serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous",
@@ -24,7 +20,6 @@ const dictionaryWords = [
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', function() {
-  currentUser = getCurrentUser();
   loadSoundPreference();
   loadWordCatalogue();
   loadRandomTrials();
@@ -78,17 +73,8 @@ function loadWordCatalogue() {
 }
 
 // Save word catalogue to localStorage
-async function saveWordCatalogue() {
+function saveWordCatalogue() {
   localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
-  
-  // Save to Airtable if user is authenticated
-  if (currentUser) {
-    try {
-      await saveToAirtable(wordCatalogue);
-    } catch (error) {
-      console.error('Error saving to Airtable:', error);
-    }
-  }
 }
 
 // Load random trials from localStorage

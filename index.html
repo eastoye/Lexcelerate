@@ -18,31 +18,8 @@
         <p><strong>Add Word:</strong> Add new words to your personal catalogue for practice.</p>
         <p><strong>Practice Word:</strong> Test your spelling skills with words from your catalogue.</p>
         <p><strong>Stats:</strong> View your progress and performance statistics.</p>
+        <p><strong>Sound Toggle:</strong> Turn pronunciation on/off (saved to your preferences).</p>
         <p><strong>Word of the Day:</strong> Click on it to see the definition and optionally add it to your catalogue.</p>
-        <p><strong>Cloud Sync:</strong> Your data is automatically synced to the cloud for backup and access across devices.</p>
-        <p><strong>Account:</strong> Sign in to sync your data across devices or continue as a guest.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Logout Confirmation Modal -->
-  <div id="logout-modal" class="modal">
-    <div class="modal-content">
-      <span id="logout-close" class="close">&times;</span>
-      <h2>Sign Out</h2>
-      <div id="logout-text">
-        <p>Are you sure you want to sign out?</p>
-        <p>Your data will remain synced to your account.</p>
-        <div class="import-actions" style="margin-top: 1.5rem;">
-          <button id="logout-confirm-btn" class="import-confirm-btn">
-            <span class="btn-icon">✓</span>
-            <span class="btn-text">Sign Out</span>
-          </button>
-          <button id="logout-cancel-btn" class="import-cancel-btn">
-            <span class="btn-icon">✗</span>
-            <span class="btn-text">Cancel</span>
-          </button>
-        </div>
       </div>
     </div>
   </div>
@@ -52,10 +29,10 @@
 
   <!-- Header -->
   <header>
-    <button id="help-btn" class="help-btn" title="Help">❓</button>
-    <button id="logout-btn" class="logout-btn" style="display: none;" title="Sign Out">
-      <span class="logout-icon">🚪</span>
+    <button id="sound-toggle-btn" class="sound-toggle-header" title="Toggle Sound">
+      <span id="sound-icon">🔊</span>
     </button>
+    <button id="help-btn" class="help-btn" title="Help">❓</button>
   </header>
 
   <!-- Main Content -->
@@ -88,15 +65,6 @@
       <!-- Progress Summary -->
       <div id="progress-summary" class="progress-summary">
         <p>Words in catalogue: <span id="word-count">0</span></p>
-        <p id="sync-status" class="sync-status">🔄 Syncing...</p>
-      </div>
-
-      <!-- Guest Mode Notice -->
-      <div id="guest-notice" class="guest-notice" style="display: none;">
-        <p class="guest-text">
-          <span class="guest-icon">👤</span>
-          Guest Mode - <a href="login.html" class="sign-in-link">Sign in</a> to sync across devices
-        </p>
       </div>
     </div>
   </main>
@@ -108,15 +76,10 @@
     <button class="nav-icon" title="Stats">📊</button>
   </nav>
 
-  <script type="module">
+  <script>
 // Global variables
 let soundEnabled = true;
 let wordCatalogue = [];
-let currentUser = null;
-
-// Import utilities
-import { onAuthStateChange, getCurrentUser, logOut } from './auth-utils.js';
-import { syncWordCatalogueWithAirtable, saveToAirtable } from './airtable-utils.js';
 
 // Word of the Day words list
 const defaultWords = [
@@ -126,104 +89,58 @@ const defaultWords = [
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', function() {
-  setupAuthStateListener();
+  loadSoundPreference();
+  loadWordCatalogue();
   loadWordOfTheDay();
+  updateProgressSummary();
   setupEventListeners();
 });
 
-// Setup authentication state listener
-function setupAuthStateListener() {
-  onAuthStateChange(async (user) => {
-    currentUser = user;
-    
-    if (user) {
-      // User is signed in
-      updateUserInfo(user);
-      await loadWordCatalogue();
-      document.getElementById('guest-notice').style.display = 'none';
-    } else {
-      // User is signed out - continue as guest
-      updateUserInfo(null);
-      await loadWordCatalogue();
-      document.getElementById('guest-notice').style.display = 'block';
-    }
-  });
+// Load sound preference from localStorage
+function loadSoundPreference() {
+  const savedSound = localStorage.getItem('soundEnabled');
+  soundEnabled = savedSound !== null ? JSON.parse(savedSound) : true;
+  updateSoundToggle();
 }
 
-// Update user info in header
-function updateUserInfo(user) {
-  const logoutBtn = document.getElementById('logout-btn');
+// Save sound preference to localStorage
+function saveSoundPreference() {
+  localStorage.setItem('soundEnabled', JSON.stringify(soundEnabled));
+}
+
+// Update sound toggle button appearance
+function updateSoundToggle() {
+  const soundIcon = document.getElementById('sound-icon');
+  const soundToggle = document.getElementById('sound-toggle-btn');
   
-  if (user) {
-    logoutBtn.style.display = 'flex';
+  if (soundEnabled) {
+    soundIcon.textContent = '🔊';
+    soundToggle.classList.remove('sound-off');
   } else {
-    logoutBtn.style.display = 'none';
+    soundIcon.textContent = '🔇';
+    soundToggle.classList.add('sound-off');
   }
 }
 
-// Load user's word catalogue
-async function loadWordCatalogue() {
-  const syncStatus = document.getElementById('sync-status');
-  syncStatus.textContent = '🔄 Syncing...';
-  syncStatus.style.color = 'var(--warning-orange)';
+// Load user's word catalogue from localStorage
+function loadWordCatalogue() {
+  const saved = localStorage.getItem('wordCatalogue');
+  wordCatalogue = saved ? JSON.parse(saved) : [];
   
-  try {
-    // Load from localStorage first
-    const saved = localStorage.getItem('wordCatalogue');
-    const localWordCatalogue = saved ? JSON.parse(saved) : [];
-    
-    // Ensure each word has required fields
-    localWordCatalogue.forEach(wordObj => {
-      if (typeof wordObj.score !== 'number') wordObj.score = 0;
-      if (typeof wordObj.streak !== 'number') wordObj.streak = 0;
-      if (!wordObj.definition) wordObj.definition = '';
-      if (!wordObj.dateAdded) wordObj.dateAdded = new Date().toISOString();
-    });
-    
-    // Sync with Airtable (or use localStorage for guests)
-    wordCatalogue = await syncWordCatalogueWithAirtable(localWordCatalogue);
-    
-    // Update localStorage with synced data
-    localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
-    
-    if (currentUser) {
-      syncStatus.textContent = '☁️ Synced';
-      syncStatus.style.color = 'var(--success-green)';
-    } else {
-      syncStatus.textContent = '💾 Local Storage';
-      syncStatus.style.color = 'var(--gold-muted)';
-    }
-    
-    updateProgressSummary();
-  } catch (error) {
-    console.error('Error loading word catalogue:', error);
-    syncStatus.textContent = '⚠️ Offline';
-    syncStatus.style.color = 'var(--error-red)';
-    
-    // Fall back to localStorage only
-    const saved = localStorage.getItem('wordCatalogue');
-    wordCatalogue = saved ? JSON.parse(saved) : [];
-    updateProgressSummary();
-  }
+  // Ensure each word has required fields
+  wordCatalogue.forEach(wordObj => {
+    if (typeof wordObj.score !== 'number') wordObj.score = 0;
+    if (typeof wordObj.streak !== 'number') wordObj.streak = 0;
+    if (!wordObj.definition) wordObj.definition = '';
+    if (!wordObj.dateAdded) wordObj.dateAdded = new Date().toISOString();
+  });
+  
+  saveWordCatalogue();
 }
 
 // Save word catalogue to localStorage
-async function saveWordCatalogue() {
+function saveWordCatalogue() {
   localStorage.setItem('wordCatalogue', JSON.stringify(wordCatalogue));
-  
-  if (currentUser) {
-    try {
-      await saveToAirtable(wordCatalogue);
-      const syncStatus = document.getElementById('sync-status');
-      syncStatus.textContent = '☁️ Synced';
-      syncStatus.style.color = 'var(--success-green)';
-    } catch (error) {
-      console.error('Error saving to Airtable:', error);
-      const syncStatus = document.getElementById('sync-status');
-      syncStatus.textContent = '⚠️ Offline';
-      syncStatus.style.color = 'var(--error-red)';
-    }
-  }
 }
 
 // Load Word of the Day (persists for 24 hours)
@@ -279,7 +196,7 @@ async function fetchDefinition(word) {
 }
 
 // Add word to catalogue
-async function addWordToCatalogue(word, definition = '') {
+function addWordToCatalogue(word, definition = '') {
   const existingWord = wordCatalogue.find(w => w.word.toLowerCase() === word.toLowerCase());
   
   if (!existingWord) {
@@ -290,7 +207,7 @@ async function addWordToCatalogue(word, definition = '') {
       streak: 0,
       dateAdded: new Date().toISOString()
     });
-    await saveWordCatalogue();
+    saveWordCatalogue();
     updateProgressSummary();
     showNotification(`"${word}" added to your catalogue!`);
     return true;
@@ -314,40 +231,18 @@ function setupEventListeners() {
   
   // Close modal when clicking outside
   window.addEventListener('click', (event) => {
-    const helpModal = document.getElementById('help-modal');
-    const logoutModal = document.getElementById('logout-modal');
-    if (event.target === helpModal) {
-      helpModal.style.display = 'none';
-    }
-    if (event.target === logoutModal) {
-      logoutModal.style.display = 'none';
+    const modal = document.getElementById('help-modal');
+    if (event.target === modal) {
+      modal.style.display = 'none';
     }
   });
   
-  // Logout button - show confirmation
-  document.getElementById('logout-btn').addEventListener('click', () => {
-    document.getElementById('logout-modal').style.display = 'block';
-  });
-
-  // Logout confirmation
-  document.getElementById('logout-confirm-btn').addEventListener('click', async () => {
-    document.getElementById('logout-modal').style.display = 'none';
-    const result = await logOut();
-    if (result.success) {
-      showNotification('Signed out successfully', 'info');
-    } else {
-      showNotification('Error signing out', 'warning');
-    }
-  });
-
-  // Logout cancel
-  document.getElementById('logout-cancel-btn').addEventListener('click', () => {
-    document.getElementById('logout-modal').style.display = 'none';
-  });
-
-  // Close logout modal
-  document.getElementById('logout-close').addEventListener('click', () => {
-    document.getElementById('logout-modal').style.display = 'none';
+  // Sound toggle
+  document.getElementById('sound-toggle-btn').addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    saveSoundPreference();
+    updateSoundToggle();
+    showNotification(`Sound ${soundEnabled ? 'enabled' : 'disabled'}`, 'info');
   });
   
   // Word of the Day click
@@ -363,7 +258,7 @@ function setupEventListeners() {
       );
       
       if (shouldAdd) {
-        await addWordToCatalogue(wotd, definition);
+        addWordToCatalogue(wotd, definition);
       }
     }
   });
