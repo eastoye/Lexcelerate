@@ -1,3 +1,4 @@
+import 'dotenv/config';
 // Simple development server
 import { createServer } from 'http';
 import { readFileSync, existsSync } from 'fs';
@@ -6,6 +7,24 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// Helper to parse request body
+function parseBody(req) {
+  return new Promise((resolve, reject) => {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    req.on('end', () => {
+      try {
+        req.body = JSON.parse(body);
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  });
+}
 
 const server = createServer((req, res) => {
   // Handle API routes
@@ -61,6 +80,17 @@ async function handleApiRequest(req, res) {
     return;
   }
 
+  // Parse request body for POST requests
+  if (req.method === 'POST') {
+    try {
+      await parseBody(req);
+    } catch (error) {
+      res.writeHead(400);
+      res.end(JSON.stringify({ error: 'Invalid JSON' }));
+      return;
+    }
+  }
+
   try {
     if (req.url === '/api/saveCatalogue') {
       const { default: handler } = await import('./api/saveCatalogue.js');
@@ -81,39 +111,6 @@ async function handleApiRequest(req, res) {
     res.end(JSON.stringify({ error: 'Internal server error' }));
   }
 }
-
-// Helper to parse request body
-function parseBody(req) {
-  return new Promise((resolve, reject) => {
-    let body = '';
-    req.on('data', chunk => {
-      body += chunk.toString();
-    });
-    req.on('end', () => {
-      try {
-        req.body = JSON.parse(body);
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  });
-}
-
-// Modify the API handlers to parse body
-const originalHandleApiRequest = handleApiRequest;
-handleApiRequest = async function(req, res) {
-  if (req.method === 'POST') {
-    try {
-      await parseBody(req);
-    } catch (error) {
-      res.writeHead(400);
-      res.end(JSON.stringify({ error: 'Invalid JSON' }));
-      return;
-    }
-  }
-  return originalHandleApiRequest(req, res);
-};
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
