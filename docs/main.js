@@ -110,8 +110,8 @@ document.getElementById('auth-submit-btn').addEventListener('click', async () =>
   }
 });
 
-// Toggle between sign in and sign up
-document.getElementById('auth-toggle-link').addEventListener('click', (e) => {
+// Toggle between sign in and sign up - define as named function
+function handleAuthToggle(e) {
   e.preventDefault();
   isSignUpMode = !isSignUpMode;
   
@@ -131,13 +131,16 @@ document.getElementById('auth-toggle-link').addEventListener('click', (e) => {
   }
   
   // Re-attach event listener to the new link
-  document.getElementById('auth-toggle-link').addEventListener('click', arguments.callee);
+  document.getElementById('auth-toggle-link').addEventListener('click', handleAuthToggle);
   
   // Clear form and errors
   document.getElementById('auth-email').value = '';
   document.getElementById('auth-password').value = '';
   document.getElementById('auth-error').style.display = 'none';
-});
+}
+
+// Initial event listener attachment
+document.getElementById('auth-toggle-link').addEventListener('click', handleAuthToggle);
 
 // Show auth error
 function showAuthError(message) {
