@@ -1,5 +1,5 @@
 // Backend API endpoint to save catalogue to Airtable
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
+const AIRTABLE_API_KEY = 'patYnEVoObhelX4uf.cc77a892ec2881021a4621b37c288521d6430fda53f3cee42f74881c45978f0e';
 const BASE_ID = 'appr8D2hvSbwcNU8N';
 const TABLE_NAME = 'WordCatalogues';
 
