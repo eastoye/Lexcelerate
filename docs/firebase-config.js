@@ -8,8 +8,8 @@ const firebaseConfig = {
   projectId: "lexcelerate-35eba",
   storageBucket: "lexcelerate-35eba.firebasestorage.app",
   messagingSenderId: "352872440845",
-  appId: "1:352872440845:web:3531762a2cc65441e9a144",
-  measurementId: "G-FKTS29MLMS"
+  appId: "1:352872440845:web:a4988a04f81d4c13e9a144",
+  measurementId: "G-P1JQJS0E3K"
 };
 
 // Initialize Firebase
