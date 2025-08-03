@@ -3,7 +3,7 @@ const BASE_ID = 'appr8D2hvSbwcNU8N';
 const TABLE_NAME = 'WordCatalogues';
 
 export default async function handler(req, res) {
-  const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY || 'patYnEVoObhelX4uf.cc77a892ec2881021a4621b37c288521d6430fda53f3cee42f74881c45978f0e';
+  const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
   
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
