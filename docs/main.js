@@ -26,6 +26,16 @@ onAuthStateChange(async (user) => {
   }
 });
 
+// Initialize the app - show auth screen by default
+document.addEventListener('DOMContentLoaded', () => {
+  // If no user is signed in, show auth screen immediately
+  if (!auth.currentUser) {
+    showScreen('auth-screen');
+  }
+});
+
+// Also ensure auth screen shows on initial load
+showScreen('auth-screen');
 // Load user's catalogue from Airtable
 async function loadUserCatalogueFromAirtable() {
   const result = await loadFromAirtable();

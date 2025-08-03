@@ -620,4 +620,3 @@ window.addEventListener('click', (event) => {
 // ---------------------------
 // On Initial Load - Auth is now handled by main.js
 // ---------------------------
-// Firebase auth state listener in main.js will handle initial screen display
