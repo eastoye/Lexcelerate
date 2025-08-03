@@ -1,7 +1,7 @@
 // ---------------------------
 // Global Variables for User & Catalogue
 // ---------------------------
-let currentUser = localStorage.getItem('currentUser');
+let currentUser = null; // Now managed by Firebase Auth
 let wordCatalogue = []; // Loaded per user
 
 // Global variable for random trials (for random practice stats)
@@ -14,27 +14,10 @@ let practiceMode = 'catalogue';
 let currentRevealCount = 0;
 
 // ---------------------------
-// Load the current user’s catalogue (or initialize it)
-function loadUserCatalogue() {
-  if (currentUser) {
-    const key = "wordCatalogue_" + currentUser;
-    wordCatalogue = JSON.parse(localStorage.getItem(key)) || [];
-    wordCatalogue.forEach(wordObj => {
-      if (typeof wordObj.score !== 'number') wordObj.score = 0;
-      if (typeof wordObj.streak !== 'number') wordObj.streak = 0;
-      if (!wordObj.mistakes) wordObj.mistakes = {};
-      if (!wordObj.nextReview) wordObj.nextReview = Date.now();
-      if (!wordObj.interval) wordObj.interval = 1;
-    });
-    saveCatalogue();
-  }
-}
-
-// Save catalogue for current user.
+// Save catalogue for current user (now uses Airtable via main.js)
 function saveCatalogue() {
-  if (currentUser) {
-    const key = "wordCatalogue_" + currentUser;
-    localStorage.setItem(key, JSON.stringify(wordCatalogue));
+  if (window.saveUserCatalogueToAirtable) {
+    window.saveUserCatalogueToAirtable();
   }
 }
 
@@ -48,39 +31,9 @@ function showNotification(message) {
 }
 
 // ---------------------------
-// Login / Authentication Section
+// Authentication is now handled by main.js and Firebase
 // ---------------------------
-function checkLogin() {
-  currentUser = localStorage.getItem('currentUser');
-  if (currentUser) {
-    loadUserCatalogue();
-    showScreen('home-screen');
-    loadWordOfTheDay();
-  } else {
-    showScreen('login-screen');
-  }
-}
-
-document.getElementById('login-btn').addEventListener('click', () => {
-  const username = document.getElementById('login-username').value.trim();
-  const password = document.getElementById('login-password').value.trim();
-  if (username === "" || password === "") {
-    alert("Please enter both a username and password.");
-    return;
-  }
-  localStorage.setItem('currentUser', username);
-  currentUser = username;
-  loadUserCatalogue();
-  showScreen('home-screen');
-  loadWordOfTheDay();
-});
-
-document.getElementById('logout-btn').addEventListener('click', () => {
-  localStorage.removeItem('currentUser');
-  wordCatalogue = [];
-  currentUser = null;
-  showScreen('login-screen');
-});
+// Authentication logic moved to main.js
 
 // ---------------------------
 // Word of the Day: Persist for 24 hours
@@ -287,6 +240,8 @@ function showScreen(screenId) {
   document.querySelectorAll('.screen, #home-screen, #login-screen').forEach(screen => {
     screen.style.display = 'none';
   });
+  // Handle the renamed auth screen
+  if (screenId === 'login-screen') screenId = 'auth-screen';
   document.getElementById(screenId).style.display = 'block';
   if (screenId === 'home-screen') updateProgressSummary();
   if (screenId === 'stats-screen') updateStatsList();
@@ -663,6 +618,6 @@ window.addEventListener('click', (event) => {
 });
 
 // ---------------------------
-// On Initial Load
+// On Initial Load - Auth is now handled by main.js
 // ---------------------------
-checkLogin();
+// Firebase auth state listener in main.js will handle initial screen display

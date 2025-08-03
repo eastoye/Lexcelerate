@@ -1,0 +1,15 @@
+{
+  "name": "lexcelerate",
+  "version": "1.0.0",
+  "description": "Spelling practice app with Firebase Auth and Airtable storage",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "firebase": "^10.7.1"
+  },
+  "devDependencies": {},
+  "type": "module"
+}

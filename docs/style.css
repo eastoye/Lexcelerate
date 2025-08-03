@@ -139,3 +139,34 @@ footer {
   border-radius: 4px;
   cursor: pointer;
 }
+
+/* Auth form styles */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 0.75rem;
+  margin: 1rem 0;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+#auth-toggle {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+#auth-toggle a {
+  color: #007BFF;
+  text-decoration: none;
+}
+
+#auth-toggle a:hover {
+  text-decoration: underline;
+}
+
+#auth-loading {
+  margin-top: 1rem;
+  font-style: italic;
+  color: #666;
+}
