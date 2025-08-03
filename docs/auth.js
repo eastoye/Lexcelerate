@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword, 
   signOut, 
   onAuthStateChanged 
-} from 'firebase/auth';
+} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
 // Sign up function
 export const signUp = async (email, password) => {
