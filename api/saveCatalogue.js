@@ -10,23 +10,27 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
+    res.writeHead(200);
+    res.end();
     return;
   }
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    res.writeHead(405, {'Content-Type': 'application/json'});
+    return res.end(JSON.stringify({ error: 'Method not allowed' }));
   }
 
   if (!AIRTABLE_API_KEY) {
-    return res.status(500).json({ error: 'Airtable API key not configured' });
+    res.writeHead(500, {'Content-Type': 'application/json'});
+    return res.end(JSON.stringify({ error: 'Airtable API key not configured' }));
   }
 
   try {
     const { uid, email, wordCatalogue } = req.body;
 
     if (!uid || !wordCatalogue) {
-      return res.status(400).json({ error: 'Missing required fields' });
+      res.writeHead(400, {'Content-Type': 'application/json'});
+      return res.end(JSON.stringify({ error: 'Missing required fields' }));
     }
 
     // First, check if a record exists for this user
@@ -96,17 +100,19 @@ export default async function handler(req, res) {
       result = createData.records[0];
     }
 
-    res.status(200).json({ 
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end(JSON.stringify({ 
       success: true, 
       recordId: result.id,
       message: 'Catalogue saved successfully' 
-    });
+    }));
 
   } catch (error) {
     console.error('Error saving to Airtable:', error);
-    res.status(500).json({ 
+    res.writeHead(500, {'Content-Type': 'application/json'});
+    res.end(JSON.stringify({ 
       error: 'Failed to save catalogue',
       details: error.message 
-    });
+    }));
   }
 }

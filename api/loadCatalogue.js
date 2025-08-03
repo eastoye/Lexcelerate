@@ -10,23 +10,27 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
+    res.writeHead(200);
+    res.end();
     return;
   }
 
   if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    res.writeHead(405, {'Content-Type': 'application/json'});
+    return res.end(JSON.stringify({ error: 'Method not allowed' }));
   }
 
   if (!AIRTABLE_API_KEY) {
-    return res.status(500).json({ error: 'Airtable API key not configured' });
+    res.writeHead(500, {'Content-Type': 'application/json'});
+    return res.end(JSON.stringify({ error: 'Airtable API key not configured' }));
   }
 
   try {
     const { uid } = req.query;
 
     if (!uid) {
-      return res.status(400).json({ error: 'Missing uid parameter' });
+      res.writeHead(400, {'Content-Type': 'application/json'});
+      return res.end(JSON.stringify({ error: 'Missing uid parameter' }));
     }
 
     // Search for the user's record
@@ -46,7 +50,8 @@ export default async function handler(req, res) {
     const data = await response.json();
     
     if (!data.records || data.records.length === 0) {
-      return res.status(404).json({ error: 'No catalogue found for this user' });
+      res.writeHead(404, {'Content-Type': 'application/json'});
+      return res.end(JSON.stringify({ error: 'No catalogue found for this user' }));
     }
 
     const record = data.records[0];
@@ -62,17 +67,19 @@ export default async function handler(req, res) {
       }
     }
 
-    res.status(200).json({ 
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end(JSON.stringify({ 
       success: true,
       wordCatalogue: wordCatalogue,
       lastUpdated: record.fields.lastUpdated
-    });
+    }));
 
   } catch (error) {
     console.error('Error loading from Airtable:', error);
-    res.status(500).json({ 
+    res.writeHead(500, {'Content-Type': 'application/json'});
+    res.end(JSON.stringify({ 
       error: 'Failed to load catalogue',
       details: error.message 
-    });
+    }));
   }
 }
