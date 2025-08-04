@@ -1,8 +1,6 @@
-// Main application entry point with Firebase Auth integration
-import { auth } from './firebase-config.js';
+// Main application entry point with Supabase Auth integration
 import { signUp, signIn, logOut, onAuthStateChange } from './auth.js';
 import { saveToSupabase, loadFromSupabase } from './supabase-api.js';
-import { supabase } from './supabase-config.js';
 
 // Global variables
 let currentUser = null;
@@ -14,18 +12,7 @@ onAuthStateChange(async (user) => {
     currentUser = user;
     console.log('User signed in:', user.email);
     
-    // Set Supabase session with Firebase ID token
-    try {
-      const idToken = await user.getIdToken();
-      await supabase.auth.setSession({
-        access_token: idToken,
-        refresh_token: idToken
-      });
-    } catch (error) {
-      console.error('Error setting Supabase session:', error);
-    }
-    
-    // Load user's catalogue from Airtable
+    // Load user's catalogue from Supabase
     await loadUserCatalogueFromSupabase();
     
     showScreen('home-screen');
@@ -34,9 +21,6 @@ onAuthStateChange(async (user) => {
     currentUser = null;
     console.log('User signed out');
     
-    // Clear Supabase session
-    await supabase.auth.signOut();
-    
     wordCatalogue = [];
     showScreen('auth-screen');
   }
@@ -44,15 +28,10 @@ onAuthStateChange(async (user) => {
 
 // Initialize the app - show auth screen by default
 document.addEventListener('DOMContentLoaded', () => {
-  // If no user is signed in, show auth screen immediately
-  if (!auth.currentUser) {
-    showScreen('auth-screen');
-  }
+  showScreen('auth-screen');
 });
 
-// Also ensure auth screen shows on initial load
-showScreen('auth-screen');
-// Load user's catalogue from Airtable
+// Load user's catalogue from Supabase
 async function loadUserCatalogueFromSupabase() {
   const result = await loadFromSupabase();
   if (result.success) {
@@ -72,7 +51,7 @@ async function loadUserCatalogueFromSupabase() {
   }
 }
 
-// Save user's catalogue to Airtable
+// Save user's catalogue to Supabase
 async function saveUserCatalogueToSupabase() {
   if (!currentUser) return;
   
@@ -165,7 +144,7 @@ function showAuthError(message) {
   errorDiv.style.display = 'block';
 }
 
-// Update logout button to use Firebase auth
+// Update logout button to use Supabase auth
 document.getElementById('logout-btn').addEventListener('click', async () => {
   const result = await logOut();
   if (!result.success) {

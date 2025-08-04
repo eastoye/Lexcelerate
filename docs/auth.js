@@ -1,17 +1,19 @@
-// Authentication functions
-import { auth } from './firebase-config.js';
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut, 
-  onAuthStateChanged 
-} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+// Supabase Authentication functions
+import { supabase } from './supabase-config.js';
 
 // Sign up function
 export const signUp = async (email, password) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    return { success: true, user: userCredential.user };
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
+    
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    
+    return { success: true, user: data.user };
   } catch (error) {
     return { success: false, error: error.message };
   }
@@ -20,8 +22,16 @@ export const signUp = async (email, password) => {
 // Sign in function
 export const signIn = async (email, password) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return { success: true, user: userCredential.user };
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+    
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    
+    return { success: true, user: data.user };
   } catch (error) {
     return { success: false, error: error.message };
   }
@@ -30,7 +40,12 @@ export const signIn = async (email, password) => {
 // Sign out function
 export const logOut = async () => {
   try {
-    await signOut(auth);
+    const { error } = await supabase.auth.signOut();
+    
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    
     return { success: true };
   } catch (error) {
     return { success: false, error: error.message };
@@ -39,5 +54,7 @@ export const logOut = async () => {
 
 // Auth state observer
 export const onAuthStateChange = (callback) => {
-  return onAuthStateChanged(auth, callback);
+  return supabase.auth.onAuthStateChange((event, session) => {
+    callback(session?.user || null);
+  });
 };

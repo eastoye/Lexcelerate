@@ -1,19 +1,20 @@
 // Supabase API functions
 import { supabase } from './supabase-config.js';
-import { auth } from './firebase-config.js';
 
 // Save word catalogue to Supabase
 export const saveToSupabase = async (wordCatalogue) => {
   try {
-    if (!auth.currentUser) {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
       throw new Error('User not authenticated');
     }
 
     const { data, error } = await supabase
       .from('word_catalogues')
       .upsert({
-        uid: auth.currentUser.uid,
-        email: auth.currentUser.email,
+        uid: user.id,
+        email: user.email,
         word_catalogue: wordCatalogue,
         updated_at: new Date().toISOString()
       }, {
@@ -34,14 +35,16 @@ export const saveToSupabase = async (wordCatalogue) => {
 // Load word catalogue from Supabase
 export const loadFromSupabase = async () => {
   try {
-    if (!auth.currentUser) {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
       throw new Error('User not authenticated');
     }
 
     const { data, error } = await supabase
       .from('word_catalogues')
       .select('word_catalogue, updated_at')
-      .eq('uid', auth.currentUser.uid)
+      .eq('uid', user.id)
       .maybeSingle();
 
     if (error) {
