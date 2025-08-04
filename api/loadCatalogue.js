@@ -1,6 +1,6 @@
 // Backend API endpoint to load catalogue from Airtable
 const BASE_ID = 'appr8D2hvSbwcNU8N';
-const TABLE_NAME = 'WordCatalogues';
+const TABLE_NAME = 'Table 1';
 
 export default async function handler(req, res) {
   const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
