@@ -250,6 +250,9 @@ function showScreen(screenId) {
 // Make showScreen globally accessible
 window.showScreen = showScreen;
 
+// Make loadWordOfTheDay globally accessible
+window.loadWordOfTheDay = loadWordOfTheDay;
+
 // ---------------------------
 // Navigation Button Listeners
 // ---------------------------
