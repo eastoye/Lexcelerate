@@ -2,8 +2,8 @@
 
 // ⚠️ For Bolt.new preview only — hard-coded token.
 // Remove this and switch to process.env.AIRTABLE_API_KEY before any real deploy!
-const AIRTABLE_API_KEY = 'patytJhnMGmt8Qv9z.1422fd014db0cc195f5e67178a453465174fd47e792faf703f34653eed60acc7';
-const BASE_ID          = 'appm9iGdIBKGBzzeF';
+const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY || 'patYnEVoObhelX4uf.cc77a892ec2881021a4621b37c288521d6430fda53f3cee42f74881c45978f0e';
+const BASE_ID          = 'appr8D2hvSbwcNU8N';
 const TABLE_NAME       = 'Table%201'; // URL encoded "Table 1"
 
 export default async function handler(req, res) {
