@@ -1,6 +1,7 @@
 // Main application entry point with Supabase Auth integration
 import { signUp, signIn, logOut, onAuthStateChange, createProfile, getUserProfile } from './auth.js';
 import { saveToSupabase, loadFromSupabase } from './supabase-api.js';
+import './app.js';
 
 // Global variables
 let currentUser = null;
