@@ -475,24 +475,6 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
 });
 
 // ---------------------------
-// Word of the Day Functionality (from fixed list, persists 24 hrs)
-function loadWordOfTheDay() {
-  const defaultWords = ["serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous"];
-  const storedWOTD = localStorage.getItem('wotd');
-  const wotdTimestamp = localStorage.getItem('wotdTimestamp');
-  const now = Date.now();
-  if (storedWOTD && wotdTimestamp && (now - wotdTimestamp < 86400000)) {
-    document.getElementById('wotd').textContent = storedWOTD;
-  } else {
-    let wotd = defaultWords[Math.floor(Math.random() * defaultWords.length)];
-    localStorage.setItem('wotd', wotd);
-    localStorage.setItem('wotdTimestamp', now);
-    document.getElementById('wotd').textContent = wotd;
-  }
-}
-
-// When Word of the Day is clicked: fetch definition and prompt to add.
-
 document.getElementById('wotd').addEventListener('click', () => {
   if (wotdHandling) return;
   wotdHandling = true;
