@@ -50,7 +50,7 @@ export default async function handler(req, res) {
 
     const data = JSON.parse(text);
     // field storing JSON string must match your column name; adjust if yours is "WordCatalogues"
-    const recordJson = data.records[0]?.fields?.wordCatalogue;
+    const recordJson = data.records[0]?.fields?.WordCatalogues;
     const wordCatalogue = recordJson ? JSON.parse(recordJson) : [];
 
     res.writeHead(200, { 'Content-Type':'application/json' });

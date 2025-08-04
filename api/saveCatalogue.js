@@ -33,7 +33,7 @@ export default async function handler(req, res) {
       {
         fields: {
           uid,
-          wordCatalogue: JSON.stringify(wordCatalogue),
+          WordCatalogues: JSON.stringify(wordCatalogue),
           lastUpdated: new Date().toISOString()
         }
       }
