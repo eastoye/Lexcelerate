@@ -504,25 +504,6 @@ document.getElementById('wotd').addEventListener('click', () => {
 });
 
 // ---------------------------
-// Fetch definition via dictionaryapi.dev (with callback)
-function fetchDefinition(word, callback) {
-  fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
-    .then(response => response.json())
-    .then(data => {
-      let definition = "Definition not found.";
-      if (Array.isArray(data) && data[0].meanings && data[0].meanings.length > 0) {
-        definition = data[0].meanings[0].definitions[0].definition;
-      }
-      if (callback) callback(definition);
-      else showNotification(`Definition of "${word}": ${definition}`);
-    })
-    .catch(err => {
-      console.error(err);
-      showNotification(`Error fetching definition for "${word}".`);
-    });
-}
-
-// ---------------------------
 // Export/Import Catalogue Functionality
 document.getElementById('export-btn').addEventListener('click', () => {
   const exportData = JSON.stringify(wordCatalogue, null, 2);
