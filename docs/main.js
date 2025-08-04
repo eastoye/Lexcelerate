@@ -1,7 +1,7 @@
 // Main application entry point with Firebase Auth integration
 import { auth } from './firebase-config.js';
 import { signUp, signIn, logOut, onAuthStateChange } from './auth.js';
-import { saveToAirtable, loadFromAirtable } from './airtable-api.js';
+import { saveToSupabase, loadFromSupabase } from './supabase-api.js';
 
 // Global variables
 let currentUser = null;
@@ -14,7 +14,7 @@ onAuthStateChange(async (user) => {
     console.log('User signed in:', user.email);
     
     // Load user's catalogue from Airtable
-    await loadUserCatalogueFromAirtable();
+    await loadUserCatalogueFromSupabase();
     
     showScreen('home-screen');
     loadWordOfTheDay();
@@ -37,8 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // Also ensure auth screen shows on initial load
 showScreen('auth-screen');
 // Load user's catalogue from Airtable
-async function loadUserCatalogueFromAirtable() {
-  const result = await loadFromAirtable();
+async function loadUserCatalogueFromSupabase() {
+  const result = await loadFromSupabase();
   if (result.success) {
     wordCatalogue = result.data;
     // Ensure all word objects have required properties
@@ -49,28 +49,28 @@ async function loadUserCatalogueFromAirtable() {
       if (!wordObj.nextReview) wordObj.nextReview = Date.now();
       if (!wordObj.interval) wordObj.interval = 1;
     });
-    console.log('Catalogue loaded from Airtable:', wordCatalogue.length, 'words');
+    console.log('Catalogue loaded from Supabase:', wordCatalogue.length, 'words');
   } else {
-    console.error('Failed to load catalogue from Airtable:', result.error);
+    console.error('Failed to load catalogue from Supabase:', result.error);
     wordCatalogue = [];
   }
 }
 
 // Save user's catalogue to Airtable
-async function saveUserCatalogueToAirtable() {
+async function saveUserCatalogueToSupabase() {
   if (!currentUser) return;
   
-  const result = await saveToAirtable(wordCatalogue);
+  const result = await saveToSupabase(wordCatalogue);
   if (result.success) {
-    console.log('Catalogue saved to Airtable');
+    console.log('Catalogue saved to Supabase');
   } else {
-    console.error('Failed to save catalogue to Airtable:', result.error);
+    console.error('Failed to save catalogue to Supabase:', result.error);
     showNotification('Failed to save to cloud storage');
   }
 }
 
-// Override the original saveCatalogue function to use Airtable
-window.saveCatalogue = saveUserCatalogueToAirtable;
+// Override the original saveCatalogue function to use Supabase
+window.saveCatalogue = saveUserCatalogueToSupabase;
 
 // Auth form handling
 document.getElementById('auth-submit-btn').addEventListener('click', async () => {
@@ -175,5 +175,5 @@ document.getElementById('auth-password').addEventListener('keydown', (e) => {
 
 // Make functions available globally for the existing app.js
 window.currentUser = currentUser;
-window.saveUserCatalogueToAirtable = saveUserCatalogueToAirtable;
-window.loadUserCatalogueFromAirtable = loadUserCatalogueFromAirtable;
+window.saveUserCatalogueToSupabase = saveUserCatalogueToSupabase;
+window.loadUserCatalogueFromSupabase = loadUserCatalogueFromSupabase;

@@ -9,7 +9,8 @@
     "build": "echo 'Static assets are already built in docs/ directory'"
   },
   "dependencies": {
-    "dotenv": "^17.2.1",
+    "@supabase/supabase-js": "^2.53.0",
+    "@supabase/supabase-js": "^2.39.0",
     "firebase": "^10.7.1"
   },
   "type": "module"

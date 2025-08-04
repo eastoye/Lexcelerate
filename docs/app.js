@@ -14,10 +14,10 @@ let practiceMode = 'catalogue';
 let currentRevealCount = 0;
 
 // ---------------------------
-// Save catalogue for current user (now uses Airtable via main.js)
+// Save catalogue for current user (now uses Supabase via main.js)
 function saveCatalogue() {
-  if (window.saveUserCatalogueToAirtable) {
-    window.saveUserCatalogueToAirtable();
+  if (window.saveUserCatalogueToSupabase) {
+    window.saveUserCatalogueToSupabase();
   }
 }
 
