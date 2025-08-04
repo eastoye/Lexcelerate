@@ -170,3 +170,20 @@ footer {
   font-style: italic;
   color: #666;
 }
+
+/* Username setup styles */
+#username-loading {
+  margin-top: 1rem;
+  font-style: italic;
+  color: #666;
+}
+
+#welcome-message {
+  color: #007BFF;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+input[type="text"]#username-input {
+  width: 80%;
+}

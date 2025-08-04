@@ -46,6 +46,7 @@
   <!-- Home Screen -->
   <div id="home-screen" class="screen" style="display: none;">
     <h1>Lexcelerate</h1>
+    <p id="welcome-message"></p>
     <!-- Word of the Day Section -->
     <div id="word-of-day" class="word-of-day">
       <strong>Word of the Day:</strong> <span id="wotd" style="cursor:pointer;"></span>
@@ -55,6 +56,16 @@
     <button id="stats-btn">Stats</button>
     <button id="logout-btn">Log Out</button>
     <div id="progress-summary"></div>
+  </div>
+
+  <!-- Username Setup Screen -->
+  <div id="username-setup-screen" class="screen" style="display: none;">
+    <h2>Choose Your Username</h2>
+    <p>Please choose a username to complete your account setup.</p>
+    <div id="username-error" class="error-message" style="display: none;"></div>
+    <input type="text" id="username-input" placeholder="Enter username" autocomplete="username" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <button id="username-submit-btn">Save Username</button>
+    <div id="username-loading" style="display: none;">Saving...</div>
   </div>
 
   <!-- Add Word Screen -->

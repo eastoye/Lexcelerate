@@ -1,9 +1,10 @@
 // Main application entry point with Supabase Auth integration
-import { signUp, signIn, logOut, onAuthStateChange } from './auth.js';
+import { signUp, signIn, logOut, onAuthStateChange, createProfile, getUserProfile } from './auth.js';
 import { saveToSupabase, loadFromSupabase } from './supabase-api.js';
 
 // Global variables
 let currentUser = null;
+let userProfile = null;
 let isSignUpMode = false;
 
 // Initialize auth state listener
@@ -12,6 +13,21 @@ onAuthStateChange(async (user) => {
     currentUser = user;
     console.log('User signed in:', user.email);
     
+    // Load user profile
+    const profileResult = await getUserProfile();
+    if (profileResult.success) {
+      userProfile = profileResult.data;
+      
+      // If user doesn't have a username, show username setup
+      if (!userProfile.username) {
+        showScreen('username-setup-screen');
+        return;
+      }
+      
+      // Update welcome message with username
+      document.getElementById('welcome-message').textContent = `Welcome back, ${userProfile.username}!`;
+    }
+    
     // Load user's catalogue from Supabase
     await loadUserCatalogueFromSupabase();
     
@@ -19,6 +35,7 @@ onAuthStateChange(async (user) => {
     loadWordOfTheDay();
   } else {
     currentUser = null;
+    userProfile = null;
     console.log('User signed out');
     
     wordCatalogue = [];
@@ -168,7 +185,79 @@ document.getElementById('auth-password').addEventListener('keydown', (e) => {
   }
 });
 
+// Username setup handling
+document.getElementById('username-submit-btn').addEventListener('click', async () => {
+  const username = document.getElementById('username-input').value.trim();
+  const errorDiv = document.getElementById('username-error');
+  const loadingDiv = document.getElementById('username-loading');
+  
+  if (!username) {
+    showUsernameError('Please enter a username.');
+    return;
+  }
+  
+  if (username.length < 3) {
+    showUsernameError('Username must be at least 3 characters long.');
+    return;
+  }
+  
+  if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+    showUsernameError('Username can only contain letters, numbers, and underscores.');
+    return;
+  }
+  
+  // Show loading state
+  loadingDiv.style.display = 'block';
+  document.getElementById('username-submit-btn').disabled = true;
+  errorDiv.style.display = 'none';
+  
+  try {
+    const result = await createProfile(username);
+    
+    if (!result.success) {
+      if (result.error.includes('duplicate key')) {
+        showUsernameError('This username is already taken. Please choose another.');
+      } else {
+        showUsernameError(result.error);
+      }
+    } else {
+      // Success - reload profile and continue to home
+      const profileResult = await getUserProfile();
+      if (profileResult.success) {
+        userProfile = profileResult.data;
+        document.getElementById('welcome-message').textContent = `Welcome, ${userProfile.username}!`;
+      }
+      
+      await loadUserCatalogueFromSupabase();
+      showScreen('home-screen');
+      loadWordOfTheDay();
+    }
+  } catch (error) {
+    showUsernameError('An unexpected error occurred. Please try again.');
+    console.error('Username setup error:', error);
+  } finally {
+    loadingDiv.style.display = 'none';
+    document.getElementById('username-submit-btn').disabled = false;
+  }
+});
+
+// Enter key handling for username setup
+document.getElementById('username-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('username-submit-btn').click();
+  }
+});
+
+// Show username error
+function showUsernameError(message) {
+  const errorDiv = document.getElementById('username-error');
+  errorDiv.textContent = message;
+  errorDiv.style.display = 'block';
+}
+
 // Make functions available globally for the existing app.js
 window.currentUser = currentUser;
+window.userProfile = userProfile;
 window.saveUserCatalogueToSupabase = saveUserCatalogueToSupabase;
 window.loadUserCatalogueFromSupabase = loadUserCatalogueFromSupabase;
