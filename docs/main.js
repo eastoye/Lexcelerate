@@ -31,40 +31,40 @@ onAuthStateChange(async (user) => {
     // Load user's catalogue from Supabase
     await loadUserCatalogueFromSupabase();
     
-    showScreen('home-screen');
+    window.showScreen('home-screen');
     loadWordOfTheDay();
   } else {
     currentUser = null;
     userProfile = null;
     console.log('User signed out');
     
-    wordCatalogue = [];
-    showScreen('auth-screen');
+    window.wordCatalogue = [];
+    window.showScreen('auth-screen');
   }
 });
 
 // Initialize the app - show auth screen by default
 document.addEventListener('DOMContentLoaded', () => {
-  showScreen('auth-screen');
+  window.showScreen('auth-screen');
 });
 
 // Load user's catalogue from Supabase
 async function loadUserCatalogueFromSupabase() {
   const result = await loadFromSupabase();
   if (result.success) {
-    wordCatalogue = result.data;
+    window.wordCatalogue = result.data;
     // Ensure all word objects have required properties
-    wordCatalogue.forEach(wordObj => {
+    window.wordCatalogue.forEach(wordObj => {
       if (typeof wordObj.score !== 'number') wordObj.score = 0;
       if (typeof wordObj.streak !== 'number') wordObj.streak = 0;
       if (!wordObj.mistakes) wordObj.mistakes = {};
       if (!wordObj.nextReview) wordObj.nextReview = Date.now();
       if (!wordObj.interval) wordObj.interval = 1;
     });
-    console.log('Catalogue loaded from Supabase:', wordCatalogue.length, 'words');
+    console.log('Catalogue loaded from Supabase:', window.wordCatalogue.length, 'words');
   } else {
     console.error('Failed to load catalogue from Supabase:', result.error);
-    wordCatalogue = [];
+    window.wordCatalogue = [];
   }
 }
 
@@ -72,7 +72,7 @@ async function loadUserCatalogueFromSupabase() {
 async function saveUserCatalogueToSupabase() {
   if (!currentUser) return;
   
-  const result = await saveToSupabase(wordCatalogue);
+  const result = await saveToSupabase(window.wordCatalogue);
   if (result.success) {
     console.log('Catalogue saved to Supabase');
   } else {
@@ -229,7 +229,7 @@ document.getElementById('username-submit-btn').addEventListener('click', async (
       }
       
       await loadUserCatalogueFromSupabase();
-      showScreen('home-screen');
+      window.showScreen('home-screen');
       loadWordOfTheDay();
     }
   } catch (error) {

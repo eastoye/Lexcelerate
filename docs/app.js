@@ -2,7 +2,7 @@
 // Global Variables for User & Catalogue
 // ---------------------------
 let currentUser = null; // Now managed by Firebase Auth
-let wordCatalogue = []; // Loaded per user
+window.wordCatalogue = []; // Loaded per user - make globally accessible
 
 // Global variable for random trials (for random practice stats)
 let randomTrials = [];
@@ -246,6 +246,9 @@ function showScreen(screenId) {
   if (screenId === 'home-screen') updateProgressSummary();
   if (screenId === 'stats-screen') updateStatsList();
 }
+
+// Make showScreen globally accessible
+window.showScreen = showScreen;
 
 // ---------------------------
 // Navigation Button Listeners
