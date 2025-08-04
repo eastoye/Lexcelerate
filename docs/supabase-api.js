@@ -9,15 +9,6 @@ export const saveToSupabase = async (wordCatalogue) => {
       throw new Error('User not authenticated');
     }
 
-    // Get Firebase ID token for Supabase RLS
-    const idToken = await auth.currentUser.getIdToken();
-    
-    // Set the JWT token for RLS
-    await supabase.auth.setSession({
-      access_token: idToken,
-      refresh_token: 'dummy' // Not used but required
-    });
-
     const { data, error } = await supabase
       .from('word_catalogues')
       .upsert({
@@ -47,30 +38,21 @@ export const loadFromSupabase = async () => {
       throw new Error('User not authenticated');
     }
 
-    // Get Firebase ID token for Supabase RLS
-    const idToken = await auth.currentUser.getIdToken();
-    
-    // Set the JWT token for RLS
-    await supabase.auth.setSession({
-      access_token: idToken,
-      refresh_token: 'dummy' // Not used but required
-    });
-
     const { data, error } = await supabase
       .from('word_catalogues')
       .select('word_catalogue, updated_at')
-      .eq('uid', auth.currentUser.uid)
-      .single();
+      .eq('uid', auth.currentUser.uid);
 
     if (error) {
-      if (error.code === 'PGRST116') {
-        // No data found, return empty array
-        return { success: true, data: [] };
-      }
       throw error;
     }
 
-    return { success: true, data: data.word_catalogue || [] };
+    // If no data found, return empty array
+    if (!data || data.length === 0) {
+      return { success: true, data: [] };
+    }
+
+    return { success: true, data: data[0].word_catalogue || [] };
   } catch (error) {
     console.error('Error loading from Supabase:', error);
     return { success: false, error: error.message };
