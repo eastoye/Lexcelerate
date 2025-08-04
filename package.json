@@ -4,8 +4,8 @@
   "description": "Spelling practice app with Firebase Auth and Airtable storage",
   "main": "index.js",
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js",
+    "dev": "http-server docs",
+    "start": "http-server docs",
     "build": "echo 'Static assets are already built in docs/ directory'"
   },
   "dependencies": {
