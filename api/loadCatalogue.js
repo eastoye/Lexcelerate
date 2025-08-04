@@ -1,101 +1,63 @@
-// Backend API endpoint to load catalogue from Airtable
-import 'dotenv/config';
+// api/loadCatalogue.js
 
-// Debug environment loading
-console.log('=== Environment Debug ===');
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('Has AIRTABLE_API_KEY:', !!process.env.AIRTABLE_API_KEY);
-console.log('API Key length:', process.env.AIRTABLE_API_KEY ? process.env.AIRTABLE_API_KEY.length : 0);
-console.log('API Key first 10 chars:', process.env.AIRTABLE_API_KEY ? process.env.AIRTABLE_API_KEY.substring(0, 10) : 'none');
-console.log('========================');
-
-const BASE_ID = 'appm9iGdIBKGBzzeF';
-const TABLE_NAME = 'Table 1';
+// ⚠️ For Bolt.new preview only — hard-coded token.
+// Remove this and switch to process.env.AIRTABLE_API_KEY before any real deploy!
+const AIRTABLE_API_KEY = 'patytJhnMGmt8Qv9z.1422fd014db0cc195f5e67178a453465174fd47e792faf703f34653eed60acc7';
+const BASE_ID          = 'appm9iGdIBKGBzzeF';
+const TABLE_NAME       = 'WordCatalogues'; // adjust if your table is literally named "Table 1", use that name
 
 export default async function handler(req, res) {
-  const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
-  
-  console.log('Environment check:', {
-    hasApiKey: !!AIRTABLE_API_KEY,
-    keyLength: AIRTABLE_API_KEY ? AIRTABLE_API_KEY.length : 0
-  });
-  
-  // Set CORS headers
+  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
   if (req.method === 'OPTIONS') {
     res.writeHead(200);
-    res.end();
-    return;
+    return res.end();
   }
 
   if (req.method !== 'GET') {
-    res.writeHead(405, {'Content-Type': 'application/json'});
+    res.writeHead(405, { 'Content-Type': 'application/json' });
     return res.end(JSON.stringify({ error: 'Method not allowed' }));
   }
 
-  if (!AIRTABLE_API_KEY) {
-    res.writeHead(500, {'Content-Type': 'application/json'});
-    return res.end(JSON.stringify({ error: 'Airtable API key not configured' }));
+  const { uid } = req.query;
+  if (!uid) {
+    res.writeHead(400, { 'Content-Type':'application/json' });
+    return res.end(JSON.stringify({ error:'Missing uid parameter' }));
   }
 
+  // Build filter formula: note curly braces around field name
+  const formula     = encodeURIComponent(`{uid}="${uid}"`);
+  const url         = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}?filterByFormula=${formula}`;
+  console.log('🔎 Airtable URL:', url);
+
   try {
-    const { uid } = req.query;
-
-    if (!uid) {
-      res.writeHead(400, {'Content-Type': 'application/json'});
-      return res.end(JSON.stringify({ error: 'Missing uid parameter' }));
-    }
-
-    // Search for the user's record
-    const searchUrl = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}?filterByFormula={uid}="${uid}"`;
-    
-    const response = await fetch(searchUrl, {
-      headers: {
-        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
-        'Content-Type': 'application/json'
-      }
+    const airtableRes = await fetch(url, {
+      headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}` }
     });
+    const text = await airtableRes.text();
+    console.log('📊 Airtable status:', airtableRes.status);
+    console.log('📝 Airtable body:', text);
 
-    if (!response.ok) {
-      throw new Error(`Airtable request failed: ${response.status}`);
+    if (!airtableRes.ok) {
+      res.writeHead(500, { 'Content-Type':'application/json' });
+      return res.end(JSON.stringify({
+        error: `Airtable request failed (${airtableRes.status})`,
+        body: text
+      }));
     }
 
-    const data = await response.json();
-    
-    if (!data.records || data.records.length === 0) {
-      res.writeHead(404, {'Content-Type': 'application/json'});
-      return res.end(JSON.stringify({ error: 'No catalogue found for this user' }));
-    }
+    const data = JSON.parse(text);
+    // field storing JSON string must match your column name; adjust if yours is "WordCatalogues"
+    const recordJson = data.records[0]?.fields?.wordCatalogue;
+    const wordCatalogue = recordJson ? JSON.parse(recordJson) : [];
 
-    const record = data.records[0];
-    const wordCatalogueString = record.fields.wordCatalogue;
-    
-    let wordCatalogue = [];
-    if (wordCatalogueString) {
-      try {
-        wordCatalogue = JSON.parse(wordCatalogueString);
-      } catch (parseError) {
-        console.error('Error parsing word catalogue:', parseError);
-        wordCatalogue = [];
-      }
-    }
-
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify({ 
-      success: true,
-      wordCatalogue: wordCatalogue,
-      lastUpdated: record.fields.lastUpdated
-    }));
-
-  } catch (error) {
-    console.error('Error loading from Airtable:', error);
-    res.writeHead(500, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify({ 
-      error: 'Failed to load catalogue',
-      details: error.message 
-    }));
+    res.writeHead(200, { 'Content-Type':'application/json' });
+    return res.end(JSON.stringify({ wordCatalogue }));
+  } catch (err) {
+    console.error('🔥 loadCatalogue exception:', err);
+    res.writeHead(500, { 'Content-Type':'application/json' });
+    return res.end(JSON.stringify({ error: err.message }));
   }
 }
