@@ -113,7 +113,25 @@ async function handleApiRequest(req, res) {
 }
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-  console.log('Make sure to set your AIRTABLE_API_KEY environment variable');
+
+// Function to find available port
+function findAvailablePort(startPort) {
+  return new Promise((resolve) => {
+    const testServer = createServer();
+    testServer.listen(startPort, () => {
+      const port = testServer.address().port;
+      testServer.close(() => resolve(port));
+    });
+    testServer.on('error', () => {
+      resolve(findAvailablePort(startPort + 1));
+    });
+  });
+}
+
+// Start server on available port
+findAvailablePort(PORT).then(availablePort => {
+  server.listen(availablePort, () => {
+    console.log(`Server running at http://localhost:${availablePort}`);
+    console.log('Make sure to set your AIRTABLE_API_KEY environment variable');
+  });
 });
