@@ -2,6 +2,7 @@
 import { auth } from './firebase-config.js';
 import { signUp, signIn, logOut, onAuthStateChange } from './auth.js';
 import { saveToSupabase, loadFromSupabase } from './supabase-api.js';
+import { supabase } from './supabase-config.js';
 
 // Global variables
 let currentUser = null;
@@ -13,6 +14,17 @@ onAuthStateChange(async (user) => {
     currentUser = user;
     console.log('User signed in:', user.email);
     
+    // Set Supabase session with Firebase ID token
+    try {
+      const idToken = await user.getIdToken();
+      await supabase.auth.setSession({
+        access_token: idToken,
+        refresh_token: idToken
+      });
+    } catch (error) {
+      console.error('Error setting Supabase session:', error);
+    }
+    
     // Load user's catalogue from Airtable
     await loadUserCatalogueFromSupabase();
     
@@ -21,6 +33,10 @@ onAuthStateChange(async (user) => {
   } else {
     currentUser = null;
     console.log('User signed out');
+    
+    // Clear Supabase session
+    await supabase.auth.signOut();
+    
     wordCatalogue = [];
     showScreen('auth-screen');
   }

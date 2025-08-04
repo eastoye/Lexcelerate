@@ -41,18 +41,19 @@ export const loadFromSupabase = async () => {
     const { data, error } = await supabase
       .from('word_catalogues')
       .select('word_catalogue, updated_at')
-      .eq('uid', auth.currentUser.uid);
+      .eq('uid', auth.currentUser.uid)
+      .maybeSingle();
 
     if (error) {
       throw error;
     }
 
     // If no data found, return empty array
-    if (!data || data.length === 0) {
+    if (!data) {
       return { success: true, data: [] };
     }
 
-    return { success: true, data: data[0].word_catalogue || [] };
+    return { success: true, data: data.word_catalogue || [] };
   } catch (error) {
     console.error('Error loading from Supabase:', error);
     return { success: false, error: error.message };
