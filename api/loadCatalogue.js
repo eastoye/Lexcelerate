@@ -9,7 +9,7 @@ console.log('API Key length:', process.env.AIRTABLE_API_KEY ? process.env.AIRTAB
 console.log('API Key first 10 chars:', process.env.AIRTABLE_API_KEY ? process.env.AIRTABLE_API_KEY.substring(0, 10) : 'none');
 console.log('========================');
 
-const BASE_ID = 'appr8D2hvSbwcNU8N';
+const BASE_ID = 'YOUR_NEW_BASE_ID_HERE'; // Replace with your actual Base ID
 const TABLE_NAME = 'Table 1';
 
 export default async function handler(req, res) {
