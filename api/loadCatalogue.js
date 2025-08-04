@@ -1,6 +1,13 @@
 // Backend API endpoint to load catalogue from Airtable
-import dotenv from 'dotenv';
-dotenv.config();
+import 'dotenv/config';
+
+// Debug environment loading
+console.log('=== Environment Debug ===');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('Has AIRTABLE_API_KEY:', !!process.env.AIRTABLE_API_KEY);
+console.log('API Key length:', process.env.AIRTABLE_API_KEY ? process.env.AIRTABLE_API_KEY.length : 0);
+console.log('API Key first 10 chars:', process.env.AIRTABLE_API_KEY ? process.env.AIRTABLE_API_KEY.substring(0, 10) : 'none');
+console.log('========================');
 
 const BASE_ID = 'appm9iGdIBKGBzzeF';
 const TABLE_NAME = 'Table 1';
@@ -8,10 +15,9 @@ const TABLE_NAME = 'Table 1';
 export default async function handler(req, res) {
   const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
   
-  console.log('Load API Key check:', {
+  console.log('Environment check:', {
     hasApiKey: !!AIRTABLE_API_KEY,
-    keyLength: AIRTABLE_API_KEY ? AIRTABLE_API_KEY.length : 0,
-    keyStart: AIRTABLE_API_KEY ? AIRTABLE_API_KEY.substring(0, 10) : 'none'
+    keyLength: AIRTABLE_API_KEY ? AIRTABLE_API_KEY.length : 0
   });
   
   // Set CORS headers
