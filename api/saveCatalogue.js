@@ -1,13 +1,4 @@
 // Backend API endpoint to save catalogue to Airtable
-import 'dotenv/config';
-
-// Debug environment loading
-console.log('=== Save Environment Debug ===');
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('Has AIRTABLE_API_KEY:', !!process.env.AIRTABLE_API_KEY);
-console.log('API Key length:', process.env.AIRTABLE_API_KEY ? process.env.AIRTABLE_API_KEY.length : 0);
-console.log('API Key first 10 chars:', process.env.AIRTABLE_API_KEY ? process.env.AIRTABLE_API_KEY.substring(0, 10) : 'none');
-console.log('===============================');
 
 const BASE_ID = 'appm9iGdIBKGBzzeF';
 const TABLE_NAME = 'Table 1';
@@ -15,10 +6,14 @@ const TABLE_NAME = 'Table 1';
 export default async function handler(req, res) {
   const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
   
+  console.log('=== Save Catalogue API Call ===');
   console.log('Environment check:', {
     hasApiKey: !!AIRTABLE_API_KEY,
-    keyLength: AIRTABLE_API_KEY ? AIRTABLE_API_KEY.length : 0
+    keyLength: AIRTABLE_API_KEY ? AIRTABLE_API_KEY.length : 0,
+    keyPreview: AIRTABLE_API_KEY ? AIRTABLE_API_KEY.substring(0, 15) + '...' : 'none'
   });
+  console.log('Request body keys:', req.body ? Object.keys(req.body) : 'no body');
+  console.log('================================');
   
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
