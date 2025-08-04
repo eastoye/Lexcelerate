@@ -1,14 +1,4 @@
 import 'dotenv/config';
-
-// Debug environment loading at server startup
-console.log('=== Server Startup Environment Debug ===');
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('Has AIRTABLE_API_KEY:', !!process.env.AIRTABLE_API_KEY);
-console.log('API Key length:', process.env.AIRTABLE_API_KEY ? process.env.AIRTABLE_API_KEY.length : 0);
-console.log('API Key first 10 chars:', process.env.AIRTABLE_API_KEY ? process.env.AIRTABLE_API_KEY.substring(0, 10) : 'none');
-console.log('Current working directory:', process.cwd());
-console.log('==========================================');
-
 // Simple development server
 import { createServer } from 'http';
 import { readFileSync, existsSync } from 'fs';
