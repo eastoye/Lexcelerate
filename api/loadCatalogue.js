@@ -4,7 +4,7 @@
 // Remove this and switch to process.env.AIRTABLE_API_KEY before any real deploy!
 const AIRTABLE_API_KEY = 'patytJhnMGmt8Qv9z.1422fd014db0cc195f5e67178a453465174fd47e792faf703f34653eed60acc7';
 const BASE_ID          = 'appm9iGdIBKGBzzeF';
-const TABLE_NAME       = 'WordCatalogues'; // adjust if your table is literally named "Table 1", use that name
+const TABLE_NAME       = 'Table%201'; // URL encoded "Table 1"
 
 export default async function handler(req, res) {
   // CORS
