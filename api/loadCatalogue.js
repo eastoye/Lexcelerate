@@ -1,9 +1,16 @@
 // Backend API endpoint to load catalogue from Airtable
+import 'dotenv/config';
+
 const BASE_ID = 'appr8D2hvSbwcNU8N';
 const TABLE_NAME = 'Table 1';
 
 export default async function handler(req, res) {
   const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
+  
+  console.log('Environment check:', {
+    hasApiKey: !!AIRTABLE_API_KEY,
+    keyLength: AIRTABLE_API_KEY ? AIRTABLE_API_KEY.length : 0
+  });
   
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
