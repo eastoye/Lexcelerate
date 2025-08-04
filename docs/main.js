@@ -24,8 +24,7 @@ onAuthStateChange(async (user) => {
         return;
       }
       
-      // Update welcome message with username
-      document.getElementById('welcome-message').textContent = `Welcome back, ${userProfile.username}!`;
+    
     }
     
     // Load user's catalogue from Supabase
