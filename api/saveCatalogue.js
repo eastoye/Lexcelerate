@@ -1,24 +1,11 @@
 // Backend API endpoint to save catalogue to Airtable
 import 'dotenv/config';
 
-// Debug environment loading
-console.log('=== Save Environment Debug ===');
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('Has AIRTABLE_API_KEY:', !!process.env.AIRTABLE_API_KEY);
-console.log('API Key length:', process.env.AIRTABLE_API_KEY ? process.env.AIRTABLE_API_KEY.length : 0);
-console.log('API Key first 10 chars:', process.env.AIRTABLE_API_KEY ? process.env.AIRTABLE_API_KEY.substring(0, 10) : 'none');
-console.log('===============================');
-
 const BASE_ID = 'appm9iGdIBKGBzzeF';
 const TABLE_NAME = 'Table 1';
 
 export default async function handler(req, res) {
   const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
-  
-  console.log('Environment check:', {
-    hasApiKey: !!AIRTABLE_API_KEY,
-    keyLength: AIRTABLE_API_KEY ? AIRTABLE_API_KEY.length : 0
-  });
   
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -69,7 +56,7 @@ export default async function handler(req, res) {
       fields: {
         uid: uid,
         email: email || '',
-        wordCatalogue: JSON.stringify(wordCatalogue),
+        WordCatalogues: JSON.stringify(wordCatalogue),
         lastUpdated: new Date().toISOString()
       }
     };
