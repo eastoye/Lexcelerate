@@ -256,3 +256,164 @@ input[type="text"]#username-input {
   padding: 0.2rem 0.4rem;
   border-radius: 3px;
 }
+
+/* User Lists Styles */
+.list-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.list-name {
+  margin: 0;
+  color: #333;
+}
+
+.list-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.list-actions button {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+}
+
+.edit-list-btn {
+  background-color: #28a745;
+}
+
+.edit-list-btn:hover {
+  background-color: #218838;
+}
+
+.delete-list-btn {
+  background-color: #dc3545;
+}
+
+.delete-list-btn:hover {
+  background-color: #c82333;
+}
+
+.list-meta {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.view-list-btn {
+  background-color: #17a2b8;
+  width: 100%;
+}
+
+.view-list-btn:hover {
+  background-color: #138496;
+}
+
+.no-lists, .no-words {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 2rem;
+}
+
+/* List Detail Styles */
+.add-word-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.add-word-form input {
+  flex: 1;
+  margin: 0;
+}
+
+.add-word-form button {
+  margin: 0;
+  background-color: #28a745;
+}
+
+.add-word-form button:hover {
+  background-color: #218838;
+}
+
+.words-table {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.words-header {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 1rem;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+}
+
+.word-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+}
+
+.word-row:last-child {
+  border-bottom: none;
+}
+
+.word-row:hover {
+  background-color: #f8f9fa;
+}
+
+.word-text {
+  font-weight: 500;
+}
+
+.word-date {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.word-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.remove-word-btn {
+  background-color: #dc3545;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  min-width: auto;
+}
+
+.remove-word-btn:hover {
+  background-color: #c82333;
+}
+
+/* Modal Styles */
+.modal-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.modal-actions button {
+  margin: 0;
+}

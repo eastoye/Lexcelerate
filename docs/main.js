@@ -1,6 +1,7 @@
 // Main application entry point with Supabase Auth integration
 import { signUp, signIn, logOut, onAuthStateChange, createProfile, getUserProfile } from './auth.js';
 import { saveToSupabase, loadFromSupabase } from './supabase-api.js';
+import './user-lists-ui.js';
 import './app.js';
 
 // Global variables
@@ -30,6 +31,11 @@ onAuthStateChange(async (user) => {
     
     // Load user's catalogue from Supabase
     await loadUserCatalogueFromSupabase();
+    
+    // Initialize user lists functionality
+    if (window.initializeUserLists) {
+      window.initializeUserLists();
+    }
     
     window.showScreen('home-screen');
     loadWordOfTheDay();

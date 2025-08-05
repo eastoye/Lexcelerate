@@ -54,6 +54,7 @@
     <button id="add-word-btn">Add Word</button>
     <button id="practice-btn">Practice Word</button>
     <button id="stats-btn">Stats</button>
+    <button id="my-lists-btn">My Lists</button>
     <button id="logout-btn">Log Out</button>
     <div id="progress-summary"></div>
   </div>
@@ -91,6 +92,61 @@
     <button id="submit-spelling-btn">Submit</button>
     <div id="feedback"></div>
     <button class="back-btn">Back</button>
+  </div>
+
+  <!-- My Lists Screen -->
+  <div id="my-lists-screen" class="screen" style="display: none;">
+    <h2>My Lists</h2>
+    <button id="create-list-btn">Create New List</button>
+    <div id="lists-loading" style="display: none;">Loading lists...</div>
+    <div id="lists-error" class="error-message" style="display: none;"></div>
+    <div id="user-lists-container"></div>
+    <button class="back-btn">Back</button>
+  </div>
+
+  <!-- List Detail Screen -->
+  <div id="list-detail-screen" class="screen" style="display: none;">
+    <h2 id="list-detail-title">List Details</h2>
+    
+    <!-- Add Word Form -->
+    <form id="add-word-to-list-form" class="add-word-form">
+      <input type="text" id="new-word-input" placeholder="Enter word to add" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <button type="submit">➕ Add Word</button>
+    </form>
+    
+    <div id="list-words-loading" style="display: none;">Loading words...</div>
+    <div id="list-words-error" class="error-message" style="display: none;"></div>
+    <div id="list-words-container"></div>
+    <button class="back-btn">Back</button>
+  </div>
+
+  <!-- Create List Modal -->
+  <div id="create-list-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h3>Create New List</h3>
+      <form id="create-list-form">
+        <input type="text" id="new-list-name" placeholder="Enter list name" required>
+        <div class="modal-actions">
+          <button type="submit">Create</button>
+          <button type="button" id="cancel-create-list">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit List Modal -->
+  <div id="edit-list-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h3>Edit List</h3>
+      <form id="edit-list-form">
+        <input type="hidden" id="edit-list-id">
+        <input type="text" id="edit-list-name" placeholder="Enter list name" required>
+        <div class="modal-actions">
+          <button type="submit">Update</button>
+          <button type="button" id="cancel-edit-list">Cancel</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- Statistics Screen -->
