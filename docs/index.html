@@ -123,14 +123,51 @@
   <!-- Create List Modal -->
   <div id="create-list-modal" class="modal" style="display: none;">
     <div class="modal-content">
+      <span class="close create-list-close">&times;</span>
       <h3>Create New List</h3>
-      <form id="create-list-form">
+      
+      <!-- List Details Section -->
+      <div class="list-details-section">
         <input type="text" id="new-list-name" placeholder="Enter list name" required>
-        <div class="modal-actions">
-          <button type="submit">Create</button>
-          <button type="button" id="cancel-create-list">Cancel</button>
+        <input type="text" id="new-list-description" placeholder="Enter description (optional)">
+      </div>
+      
+      <!-- Word Addition Section -->
+      <div class="word-addition-section">
+        <h4>Add Words</h4>
+        
+        <!-- Manual Word Entry -->
+        <div class="manual-word-entry">
+          <input type="text" id="manual-word-input" placeholder="Type a word and press Add">
+          <button type="button" id="add-manual-word-btn">Add</button>
         </div>
-      </form>
+        
+        <!-- Catalog Selection Toggle -->
+        <div class="catalog-toggle">
+          <button type="button" id="toggle-catalog-btn">Select from Catalog</button>
+        </div>
+        
+        <!-- Catalog Selection (Hidden by default) -->
+        <div id="catalog-selection" class="catalog-selection" style="display: none;">
+          <div class="catalog-words-grid" id="catalog-words-grid">
+            <!-- Catalog words will be populated here -->
+          </div>
+        </div>
+        
+        <!-- Selected Words Display -->
+        <div class="selected-words-section">
+          <h5>Selected Words (<span id="selected-word-count">0</span>)</h5>
+          <div id="selected-words-list" class="selected-words-list">
+            <!-- Selected words will appear here -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Modal Actions -->
+      <div class="modal-actions">
+        <button type="button" id="create-list-submit-btn">Create List</button>
+        <button type="button" id="cancel-create-list">Cancel</button>
+      </div>
     </div>
   </div>
 

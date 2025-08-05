@@ -13,6 +13,7 @@ import {
 let currentLists = [];
 let currentListId = null;
 let currentListWords = [];
+let selectedWordsForNewList = [];
 
 // Initialize user lists functionality
 export function initializeUserLists() {
@@ -37,16 +38,45 @@ function setupListManagementListeners() {
     createListBtn.addEventListener('click', showCreateListModal);
   }
 
-  // Create list form submission
-  const createListForm = document.getElementById('create-list-form');
-  if (createListForm) {
-    createListForm.addEventListener('submit', handleCreateList);
+  // Create list submission
+  const createListSubmitBtn = document.getElementById('create-list-submit-btn');
+  if (createListSubmitBtn) {
+    createListSubmitBtn.addEventListener('click', handleCreateList);
   }
 
   // Cancel create list
   const cancelCreateBtn = document.getElementById('cancel-create-list');
   if (cancelCreateBtn) {
     cancelCreateBtn.addEventListener('click', hideCreateListModal);
+  }
+
+  // Close modal with X button
+  const createListClose = document.querySelector('.create-list-close');
+  if (createListClose) {
+    createListClose.addEventListener('click', hideCreateListModal);
+  }
+
+  // Manual word addition
+  const addManualWordBtn = document.getElementById('add-manual-word-btn');
+  if (addManualWordBtn) {
+    addManualWordBtn.addEventListener('click', handleAddManualWord);
+  }
+
+  // Enter key for manual word input
+  const manualWordInput = document.getElementById('manual-word-input');
+  if (manualWordInput) {
+    manualWordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleAddManualWord();
+      }
+    });
+  }
+
+  // Toggle catalog selection
+  const toggleCatalogBtn = document.getElementById('toggle-catalog-btn');
+  if (toggleCatalogBtn) {
+    toggleCatalogBtn.addEventListener('click', toggleCatalogSelection);
   }
 
   // Edit list form submission
@@ -240,6 +270,7 @@ function showCreateListModal() {
   const modal = document.getElementById('create-list-modal');
   if (modal) {
     modal.style.display = 'block';
+    resetCreateListForm();
     document.getElementById('new-list-name').focus();
   }
 }
@@ -248,7 +279,7 @@ function hideCreateListModal() {
   const modal = document.getElementById('create-list-modal');
   if (modal) {
     modal.style.display = 'none';
-    document.getElementById('new-list-name').value = '';
+    resetCreateListForm();
   }
 }
 
@@ -271,23 +302,174 @@ function hideEditListModal() {
   }
 }
 
-// Event handlers
-async function handleCreateList(e) {
-  e.preventDefault();
+// Reset create list form
+function resetCreateListForm() {
+  document.getElementById('new-list-name').value = '';
+  document.getElementById('new-list-description').value = '';
+  document.getElementById('manual-word-input').value = '';
+  document.getElementById('catalog-selection').style.display = 'none';
+  document.getElementById('toggle-catalog-btn').textContent = 'Select from Catalog';
+  selectedWordsForNewList = [];
+  updateSelectedWordsDisplay();
+}
+
+// Handle manual word addition
+function handleAddManualWord() {
+  const input = document.getElementById('manual-word-input');
+  const word = input.value.trim().toLowerCase();
   
+  if (!word) {
+    alert('Please enter a word.');
+    return;
+  }
+  
+  if (selectedWordsForNewList.includes(word)) {
+    alert('Word already added to the list.');
+    input.value = '';
+    return;
+  }
+  
+  selectedWordsForNewList.push(word);
+  input.value = '';
+  updateSelectedWordsDisplay();
+  updateCatalogSelection();
+}
+
+// Toggle catalog selection visibility
+function toggleCatalogSelection() {
+  const catalogSection = document.getElementById('catalog-selection');
+  const toggleBtn = document.getElementById('toggle-catalog-btn');
+  
+  if (catalogSection.style.display === 'none') {
+    catalogSection.style.display = 'block';
+    toggleBtn.textContent = 'Hide Catalog';
+    populateCatalogWords();
+  } else {
+    catalogSection.style.display = 'none';
+    toggleBtn.textContent = 'Select from Catalog';
+  }
+}
+
+// Populate catalog words for selection
+function populateCatalogWords() {
+  const catalogGrid = document.getElementById('catalog-words-grid');
+  
+  if (!window.wordCatalogue || window.wordCatalogue.length === 0) {
+    catalogGrid.innerHTML = '<p class="no-words">No words in your catalog yet.</p>';
+    return;
+  }
+  
+  catalogGrid.innerHTML = '';
+  
+  window.wordCatalogue.forEach(wordObj => {
+    const wordItem = document.createElement('div');
+    wordItem.className = 'catalog-word-item';
+    wordItem.textContent = wordObj.word;
+    wordItem.dataset.word = wordObj.word.toLowerCase();
+    
+    // Mark as selected if already in list
+    if (selectedWordsForNewList.includes(wordObj.word.toLowerCase())) {
+      wordItem.classList.add('selected');
+    }
+    
+    wordItem.addEventListener('click', () => toggleWordSelection(wordItem));
+    catalogGrid.appendChild(wordItem);
+  });
+}
+
+// Toggle word selection from catalog
+function toggleWordSelection(wordItem) {
+  const word = wordItem.dataset.word;
+  
+  if (selectedWordsForNewList.includes(word)) {
+    // Remove word
+    selectedWordsForNewList = selectedWordsForNewList.filter(w => w !== word);
+    wordItem.classList.remove('selected');
+  } else {
+    // Add word
+    selectedWordsForNewList.push(word);
+    wordItem.classList.add('selected');
+  }
+  
+  updateSelectedWordsDisplay();
+}
+
+// Update catalog selection display
+function updateCatalogSelection() {
+  const catalogItems = document.querySelectorAll('.catalog-word-item');
+  catalogItems.forEach(item => {
+    const word = item.dataset.word;
+    if (selectedWordsForNewList.includes(word)) {
+      item.classList.add('selected');
+    } else {
+      item.classList.remove('selected');
+    }
+  });
+}
+
+// Update selected words display
+function updateSelectedWordsDisplay() {
+  const selectedWordsList = document.getElementById('selected-words-list');
+  const selectedWordCount = document.getElementById('selected-word-count');
+  
+  selectedWordCount.textContent = selectedWordsForNewList.length;
+  
+  if (selectedWordsForNewList.length === 0) {
+    selectedWordsList.innerHTML = '<div class="empty-selection">No words selected yet</div>';
+    return;
+  }
+  
+  selectedWordsList.innerHTML = selectedWordsForNewList.map(word => `
+    <div class="selected-word-tag">
+      <span>${word}</span>
+      <button class="remove-word" data-word="${word}">×</button>
+    </div>
+  `).join('');
+  
+  // Add event listeners to remove buttons
+  selectedWordsList.querySelectorAll('.remove-word').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const word = e.target.dataset.word;
+      selectedWordsForNewList = selectedWordsForNewList.filter(w => w !== word);
+      updateSelectedWordsDisplay();
+      updateCatalogSelection();
+    });
+  });
+}
+
+// Event handlers
+async function handleCreateList() {
   const nameInput = document.getElementById('new-list-name');
+  const descriptionInput = document.getElementById('new-list-description');
   const name = nameInput.value.trim();
+  const description = descriptionInput.value.trim();
   
   if (!name) {
     alert('Please enter a list name.');
     return;
   }
 
+  if (selectedWordsForNewList.length === 0) {
+    if (!confirm('You haven\'t added any words to this list. Create an empty list?')) {
+      return;
+    }
+  }
+
   const result = await createUserList(name);
   
   if (result.success) {
+    const listId = result.data.id;
+    
+    // Add all selected words to the new list
+    for (const word of selectedWordsForNewList) {
+      const wordResult = await addWordToList(listId, word);
+      if (!wordResult.success && !wordResult.error.includes('already exists')) {
+        console.warn(`Failed to add word "${word}":`, wordResult.error);
+      }
+    }
+    
     hideCreateListModal();
-    showNotification('List created successfully!');
+    showNotification(`List "${name}" created with ${selectedWordsForNewList.length} words!`);
     loadUserLists(); // Refresh the lists
   } else {
     alert(`Error creating list: ${result.error}`);
