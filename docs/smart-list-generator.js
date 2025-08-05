@@ -1,44 +1,11 @@
 // Smart List Generator Module
 import { createUserList, addWordToList } from './user-lists-api.js';
 
-// Pre-made list categories with their word sets
-const PREMADE_LISTS = {
-  'common-misspellings': {
-    name: 'Common Misspellings',
-    description: 'Frequently misspelled words in English',
-    words: ['accommodate', 'definitely', 'separate', 'occurrence', 'embarrass', 'privilege', 'necessary', 'receive', 'beginning', 'calendar']
-  },
-  'academic-vocabulary': {
-    name: 'Academic Vocabulary',
-    description: 'Essential words for academic writing',
-    words: ['analyze', 'synthesize', 'hypothesis', 'methodology', 'bibliography', 'phenomenon', 'criterion', 'paradigm', 'empirical', 'theoretical']
-  },
-  'business-terms': {
-    name: 'Business Terms',
-    description: 'Professional vocabulary for workplace communication',
-    words: ['entrepreneur', 'acquisition', 'negotiation', 'strategy', 'implementation', 'collaboration', 'efficiency', 'innovation', 'competitive', 'sustainable']
-  },
-  'science-vocabulary': {
-    name: 'Science Vocabulary',
-    description: 'Scientific terms and concepts',
-    words: ['photosynthesis', 'chromosome', 'ecosystem', 'molecule', 'hypothesis', 'experiment', 'variable', 'observation', 'conclusion', 'analysis']
-  },
-  'advanced-spelling': {
-    name: 'Advanced Spelling',
-    description: 'Challenging words for advanced learners',
-    words: ['onomatopoeia', 'pneumonia', 'rhythm', 'psychology', 'bureaucracy', 'pharmaceutical', 'conscientious', 'maintenance', 'pronunciation', 'questionnaire']
-  }
-};
-
 // Smart List Generator Class
 class SmartListGenerator {
   constructor() {
-    this.currentStep = 1;
-    this.selectedType = null;
-    this.selectedCategory = null;
     this.wordCount = 10;
     this.listName = '';
-    this.generatedWords = [];
   }
 
   // Initialize the generator UI
@@ -50,122 +17,36 @@ class SmartListGenerator {
   // Create the modal structure
   createGeneratorModal() {
     const modalHTML = `
-      <div id="smart-list-generator-modal" class="modal smart-generator-modal" style="display: none;">
-        <div class="modal-content smart-generator-content">
-          <div class="generator-header">
-            <h2>Smart List Generator</h2>
-            <span class="close smart-generator-close">&times;</span>
-          </div>
+      <div id="smart-list-generator-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <h3>Smart List Generator</h3>
+          <span class="close smart-generator-close">&times;</span>
+          <p>Create a list of your lowest scoring words for focused practice.</p>
           
-          <!-- Progress Indicator -->
-          <div class="progress-indicator">
-            <div class="step active" data-step="1">
-              <div class="step-number">1</div>
-              <div class="step-label">Choose Type</div>
-            </div>
-            <div class="step" data-step="2">
-              <div class="step-number">2</div>
-              <div class="step-label">Configure</div>
-            </div>
-            <div class="step" data-step="3">
-              <div class="step-number">3</div>
-              <div class="step-label">Review</div>
-            </div>
-          </div>
-
-          <!-- Step 1: Choose List Type -->
-          <div id="generator-step-1" class="generator-step active">
-            <h3>Choose Your List Type</h3>
-            <div class="list-type-options">
-              <div class="list-type-card" data-type="premade">
-                <div class="type-icon">📚</div>
-                <h4>Pre-made Lists</h4>
-                <p>Curated word collections for specific topics</p>
-              </div>
-              <div class="list-type-card" data-type="low-scores">
-                <div class="type-icon">📉</div>
-                <h4>Lowest Scores</h4>
-                <p>Words you need the most practice with</p>
-              </div>
-              <div class="list-type-card" data-type="frequent-mistakes">
-                <div class="type-icon">❌</div>
-                <h4>Frequent Mistakes</h4>
-                <p>Words you misspell most often</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 2: Configure List -->
-          <div id="generator-step-2" class="generator-step">
-            <h3 id="step2-title">Configure Your List</h3>
+          <form id="smart-list-form">
+            <label for="smart-list-name">List Name:</label>
+            <input type="text" id="smart-list-name" placeholder="Enter list name" required>
             
-            <!-- Pre-made Categories -->
-            <div id="premade-categories" class="config-section" style="display: none;">
-              <label>Select Category:</label>
-              <div class="category-grid">
-                <!-- Categories will be populated dynamically -->
-              </div>
+            <label for="smart-list-description">Description (optional):</label>
+            <input type="text" id="smart-list-description" placeholder="Enter description">
+            
+            <label for="smart-word-count">Number of Words: <span id="smart-word-count-display">10</span></label>
+            <input type="range" id="smart-word-count" min="5" max="50" value="10">
+            <div class="slider-labels">
+              <span>5</span>
+              <span>50</span>
             </div>
-
-            <!-- Word Count Selection -->
-            <div class="config-section">
-              <label for="word-count-slider">Number of Words: <span id="word-count-display">10</span></label>
-              <input type="range" id="word-count-slider" min="5" max="50" value="10" class="word-count-slider">
-              <div class="slider-labels">
-                <span>5</span>
-                <span>50</span>
-              </div>
+            
+            <div class="modal-actions">
+              <button type="submit">Create Smart List</button>
+              <button type="button" id="cancel-smart-list">Cancel</button>
             </div>
-
-            <!-- List Name -->
-            <div class="config-section">
-              <label for="generated-list-name">List Name:</label>
-              <input type="text" id="generated-list-name" placeholder="Enter list name" class="list-name-input">
-            </div>
-          </div>
-
-          <!-- Step 3: Review and Create -->
-          <div id="generator-step-3" class="generator-step">
-            <h3>Review Your List</h3>
-            <div class="list-preview">
-              <div class="preview-header">
-                <h4 id="preview-list-name">My Custom List</h4>
-                <span id="preview-word-count">10 words</span>
-              </div>
-              <div id="preview-words" class="preview-words">
-                <!-- Words will be populated here -->
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation Buttons -->
-          <div class="generator-navigation">
-            <button id="generator-back" class="btn-secondary" style="display: none;">Back</button>
-            <button id="generator-next" class="btn-primary">Next</button>
-            <button id="generator-create" class="btn-success" style="display: none;">Create List</button>
-          </div>
+          </form>
         </div>
       </div>
     `;
 
     document.body.insertAdjacentHTML('beforeend', modalHTML);
-    this.populatePremadeCategories();
-  }
-
-  // Populate pre-made categories
-  populatePremadeCategories() {
-    const categoryGrid = document.querySelector('.category-grid');
-    Object.entries(PREMADE_LISTS).forEach(([key, category]) => {
-      const categoryCard = document.createElement('div');
-      categoryCard.className = 'category-card';
-      categoryCard.dataset.category = key;
-      categoryCard.innerHTML = `
-        <h5>${category.name}</h5>
-        <p>${category.description}</p>
-        <span class="word-count">${category.words.length} words</span>
-      `;
-      categoryGrid.appendChild(categoryCard);
-    });
   }
 
   // Attach event listeners
@@ -173,33 +54,20 @@ class SmartListGenerator {
     // Modal controls
     document.querySelector('.smart-generator-close').addEventListener('click', () => this.closeModal());
     
-    // List type selection
-    document.querySelectorAll('.list-type-card').forEach(card => {
-      card.addEventListener('click', (e) => this.selectListType(e.target.closest('.list-type-card').dataset.type));
-    });
-
-    // Category selection
-    document.addEventListener('click', (e) => {
-      if (e.target.closest('.category-card')) {
-        this.selectCategory(e.target.closest('.category-card').dataset.category);
-      }
-    });
+    // Cancel button
+    document.getElementById('cancel-smart-list').addEventListener('click', () => this.closeModal());
 
     // Word count slider
-    document.getElementById('word-count-slider').addEventListener('input', (e) => {
+    document.getElementById('smart-word-count').addEventListener('input', (e) => {
       this.wordCount = parseInt(e.target.value);
-      document.getElementById('word-count-display').textContent = this.wordCount;
+      document.getElementById('smart-word-count-display').textContent = this.wordCount;
     });
 
-    // List name input
-    document.getElementById('generated-list-name').addEventListener('input', (e) => {
-      this.listName = e.target.value;
+    // Form submission
+    document.getElementById('smart-list-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.createSmartList();
     });
-
-    // Navigation
-    document.getElementById('generator-next').addEventListener('click', () => this.nextStep());
-    document.getElementById('generator-back').addEventListener('click', () => this.previousStep());
-    document.getElementById('generator-create').addEventListener('click', () => this.createList());
   }
 
   // Show the generator modal
@@ -216,144 +84,43 @@ class SmartListGenerator {
 
   // Reset generator state
   reset() {
-    this.currentStep = 1;
-    this.selectedType = null;
-    this.selectedCategory = null;
     this.wordCount = 10;
     this.listName = '';
-    this.generatedWords = [];
-    this.updateUI();
+    document.getElementById('smart-list-name').value = '';
+    document.getElementById('smart-list-description').value = '';
+    document.getElementById('smart-word-count').value = 10;
+    document.getElementById('smart-word-count-display').textContent = '10';
   }
 
-  // Select list type
-  selectListType(type) {
-    this.selectedType = type;
-    document.querySelectorAll('.list-type-card').forEach(card => card.classList.remove('selected'));
-    document.querySelector(`[data-type="${type}"]`).classList.add('selected');
-    document.getElementById('generator-next').disabled = false;
-  }
-
-  // Select category (for pre-made lists)
-  selectCategory(category) {
-    this.selectedCategory = category;
-    document.querySelectorAll('.category-card').forEach(card => card.classList.remove('selected'));
-    document.querySelector(`[data-category="${category}"]`).classList.add('selected');
+  // Create smart list with lowest scoring words
+  async createSmartList() {
+    const listName = document.getElementById('smart-list-name').value.trim();
+    const description = document.getElementById('smart-list-description').value.trim();
+    const wordCount = parseInt(document.getElementById('smart-word-count').value);
     
-    // Auto-populate list name
-    if (!this.listName) {
-      document.getElementById('generated-list-name').value = PREMADE_LISTS[category].name;
-      this.listName = PREMADE_LISTS[category].name;
-    }
-  }
-
-  // Navigate to next step
-  nextStep() {
-    if (this.currentStep < 3) {
-      this.currentStep++;
-      if (this.currentStep === 3) {
-        this.generatePreview();
-      }
-      this.updateUI();
-    }
-  }
-
-  // Navigate to previous step
-  previousStep() {
-    if (this.currentStep > 1) {
-      this.currentStep--;
-      this.updateUI();
-    }
-  }
-
-  // Update UI based on current step
-  updateUI() {
-    // Update progress indicator
-    document.querySelectorAll('.step').forEach((step, index) => {
-      step.classList.toggle('active', index + 1 <= this.currentStep);
-      step.classList.toggle('completed', index + 1 < this.currentStep);
-    });
-
-    // Show/hide steps
-    document.querySelectorAll('.generator-step').forEach((step, index) => {
-      step.classList.toggle('active', index + 1 === this.currentStep);
-    });
-
-    // Update step 2 content based on selected type
-    if (this.currentStep === 2) {
-      document.getElementById('premade-categories').style.display = 
-        this.selectedType === 'premade' ? 'block' : 'none';
-      
-      const titles = {
-        'premade': 'Choose a Category',
-        'low-scores': 'Configure Low Score List',
-        'frequent-mistakes': 'Configure Mistake List'
-      };
-      document.getElementById('step2-title').textContent = titles[this.selectedType] || 'Configure Your List';
-    }
-
-    // Update navigation buttons
-    document.getElementById('generator-back').style.display = this.currentStep > 1 ? 'inline-block' : 'none';
-    document.getElementById('generator-next').style.display = this.currentStep < 3 ? 'inline-block' : 'none';
-    document.getElementById('generator-create').style.display = this.currentStep === 3 ? 'inline-block' : 'none';
-  }
-
-  // Generate words based on selected type
-  generateWords() {
-    switch (this.selectedType) {
-      case 'premade':
-        return PREMADE_LISTS[this.selectedCategory].words.slice(0, this.wordCount);
-      
-      case 'low-scores':
-        return window.getSmartList(this.wordCount, 'low_score').map(w => w.word);
-      
-      case 'frequent-mistakes':
-        return window.getSmartList(this.wordCount, 'error_history').map(w => w.word);
-      
-      default:
-        return [];
-    }
-  }
-
-  // Generate preview for step 3
-  generatePreview() {
-    this.generatedWords = this.generateWords();
-    
-    // Update preview header
-    document.getElementById('preview-list-name').textContent = this.listName || 'Untitled List';
-    document.getElementById('preview-word-count').textContent = `${this.generatedWords.length} words`;
-    
-    // Update preview words
-    const previewContainer = document.getElementById('preview-words');
-    previewContainer.innerHTML = this.generatedWords.map((word, index) => 
-      `<div class="preview-word">
-        <span class="word-number">${index + 1}.</span>
-        <span class="word-text">${word}</span>
-      </div>`
-    ).join('');
-  }
-
-  // Create the list
-  async createList() {
-    if (!this.listName.trim()) {
+    if (!listName) {
       alert('Please enter a list name.');
       return;
     }
 
-    if (this.generatedWords.length === 0) {
+    // Get lowest scoring words
+    const lowestScoreWords = window.getSmartList(wordCount, 'low_score').map(w => w.word);
+    
+    if (lowestScoreWords.length === 0) {
       alert('No words to add to the list.');
       return;
     }
 
     try {
       // Create the list
-      const listResult = await createUserList(this.listName);
+      const listResult = await createUserList(listName);
       if (!listResult.success) {
         throw new Error(listResult.error);
       }
 
       // Add words to the list
       const listId = listResult.data.id;
-      for (const word of this.generatedWords) {
+      for (const word of lowestScoreWords) {
         const wordResult = await addWordToList(listId, word);
         if (!wordResult.success && !wordResult.error.includes('already exists')) {
           console.warn(`Failed to add word "${word}":`, wordResult.error);
@@ -361,7 +128,7 @@ class SmartListGenerator {
       }
 
       // Show success and close modal
-      showNotification(`List "${this.listName}" created with ${this.generatedWords.length} words!`);
+      showNotification(`Smart list "${listName}" created with ${lowestScoreWords.length} words!`);
       this.closeModal();
       
       // Refresh lists if on lists screen
