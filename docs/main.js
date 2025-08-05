@@ -2,6 +2,7 @@
 import { signUp, signIn, logOut, onAuthStateChange, createProfile, getUserProfile } from './auth.js';
 import { saveToSupabase, loadFromSupabase } from './supabase-api.js';
 import './user-lists-ui.js';
+import { initializeSmartListGenerator } from './smart-list-generator.js';
 import './app.js';
 
 // Global variables
@@ -36,6 +37,9 @@ onAuthStateChange(async (user) => {
     if (window.initializeUserLists) {
       window.initializeUserLists();
     }
+    
+    // Initialize smart list generator
+    initializeSmartListGenerator();
     
     window.showScreen('home-screen');
     loadWordOfTheDay();
