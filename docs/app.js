@@ -256,6 +256,9 @@ window.showScreen = showScreen;
 // Make loadWordOfTheDay globally accessible
 window.loadWordOfTheDay = loadWordOfTheDay;
 
+// Make showNotification globally accessible
+window.showNotification = showNotification;
+
 // ---------------------------
 // Smart List Helper Function
 // ---------------------------
