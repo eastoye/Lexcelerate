@@ -318,7 +318,7 @@ function renderListWords() {
         <span class="word-text">${escapeHtml(wordItem.word)}</span>
         <span class="word-date">${new Date(wordItem.added_at).toLocaleDateString()}</span>
         <span class="word-actions">
-          <button class="remove-word-btn" data-word-id="${wordItem.id}" data-word="${escapeHtml(wordItem.word)}">➖</button>
+          <button class="remove-word-btn" data-word-id="${wordItem.id}" data-word="${wordItem.word}">➖</button>
         </span>
       </div>
     `;
@@ -614,7 +614,7 @@ async function handleAddWordToList(e) {
 }
 
 async function handleRemoveWordFromList(wordId, word) {
-  if (!confirm(`Remove "${word}" from this list?`)) {
+  if (!confirm(`Remove "${decodeURIComponent(word)}" from this list?`)) {
     return;
   }
 
