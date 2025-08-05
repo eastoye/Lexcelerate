@@ -541,6 +541,36 @@ async function handleRemoveWordFromList(wordId, word) {
   }
 }
 
+// Handle saving list changes (title and description)
+async function handleSaveListChanges() {
+  const titleInput = document.getElementById('list-title-input');
+  const descriptionInput = document.getElementById('list-description-input');
+  const title = titleInput.value.trim();
+  
+  if (!title) {
+    alert('Please enter a list name.');
+    return;
+  }
+
+  if (!currentListId) {
+    alert('No list selected.');
+    return;
+  }
+
+  const result = await updateUserList(currentListId, title);
+  
+  if (result.success) {
+    showNotification('List updated successfully!');
+    // Update the current lists array
+    const listIndex = currentLists.findIndex(list => list.id === currentListId);
+    if (listIndex !== -1) {
+      currentLists[listIndex].name = title;
+    }
+  } else {
+    alert(`Error updating list: ${result.error}`);
+  }
+}
+
 // Utility function to escape HTML
 function escapeHtml(text) {
   const div = document.createElement('div');

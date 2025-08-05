@@ -99,6 +99,85 @@ footer {
   border: none;
   cursor: pointer;
   color: #007BFF;
+}
+
+/* Lists Table Styles */
+.lists-table {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.list-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+}
+
+.list-row:last-child {
+  border-bottom: none;
+}
+
+.list-row:hover {
+  background-color: #f8f9fa;
+}
+
+.list-name-link {
+  font-weight: 500;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.list-name-link:hover {
+  color: #0056b3;
+}
+
+.list-date {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* List Detail Header Styles */
+.list-detail-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.list-title-edit {
+  width: 100%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.list-description-edit {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-style: italic;
+}
+
+#save-list-changes-btn {
+  background-color: #28a745;
+}
+
+#save-list-changes-btn:hover {
+  background-color: #218838;
+}
+
+/* Old list card styles - remove these */
+.list-card {
 .list-header {
   display: flex;
   justify-content: space-between;
