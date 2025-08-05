@@ -254,6 +254,93 @@ window.showScreen = showScreen;
 window.loadWordOfTheDay = loadWordOfTheDay;
 
 // ---------------------------
+// Smart List Helper Function
+// ---------------------------
+function getSmartList(n, source = 'all') {
+  if (!window.wordCatalogue || window.wordCatalogue.length === 0) {
+    return [];
+  }
+  
+  let filteredWords = [...window.wordCatalogue];
+  
+  // Apply source filtering
+  switch (source) {
+    case 'error_history':
+      filteredWords = filteredWords.filter(word => 
+        Object.keys(word.mistakes || {}).length > 0
+      );
+      break;
+    case 'low_score':
+      filteredWords = filteredWords.filter(word => word.score < 50);
+      break;
+    case 'high_score':
+      filteredWords = filteredWords.filter(word => word.score >= 80);
+      break;
+    case 'all':
+    default:
+      // No filtering needed
+      break;
+  }
+  
+  // Sort by score ascending (lowest scores first)
+  filteredWords.sort((a, b) => a.score - b.score);
+  
+  // Return top N words
+  return filteredWords.slice(0, n);
+}
+
+// Make getSmartList globally accessible
+window.getSmartList = getSmartList;
+
+// ---------------------------
+// Smart List UI Functions
+// ---------------------------
+function updateSmartList() {
+  const nInput = document.getElementById('smart-list-n');
+  const sourceSelect = document.getElementById('smart-list-source');
+  const smartListDiv = document.getElementById('smart-list-display');
+  
+  if (!nInput || !sourceSelect || !smartListDiv) return;
+  
+  const n = parseInt(nInput.value) || 10;
+  const source = sourceSelect.value;
+  
+  const smartWords = getSmartList(n, source);
+  
+  let html = `<h4>Smart List (Top ${n} - ${source})</h4>`;
+  
+  if (smartWords.length === 0) {
+    html += '<p>No words match the selected criteria.</p>';
+  } else {
+    html += '<div class="smart-list-words">';
+    smartWords.forEach((wordObj, index) => {
+      const errorCount = Object.keys(wordObj.mistakes || {}).length;
+      html += `
+        <div class="smart-word-item">
+          <span class="word-rank">#${index + 1}</span>
+          <strong>${wordObj.word}</strong>
+          <span class="word-score">Score: ${wordObj.score}</span>
+          ${errorCount > 0 ? `<span class="error-indicator">${errorCount} errors</span>` : ''}
+        </div>
+      `;
+    });
+    html += '</div>';
+  }
+  
+  smartListDiv.innerHTML = html;
+}
+
+// Auto-refresh mechanism - call after score updates
+function refreshSmartList() {
+  if (document.getElementById('smart-list-display')) {
+    updateSmartList();
+  }
+}
+
+// Make refresh function globally accessible
+window.refreshSmartList = refreshSmartList;
+
+// ---------------------------
 // Navigation Button Listeners
 // ---------------------------
 document.getElementById('add-word-btn').addEventListener('click', () => { showScreen('add-word-screen'); });
@@ -448,6 +535,7 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
       if (attemptCount === 0) currentWordObj.correctFirstTryCount++;
       saveCatalogue();
       updateProgressSummary();
+      refreshSmartList(); // Auto-refresh smart list after score update
     } else {
       let trial = randomTrials.find(t => t.word.toLowerCase() === actualWord.toLowerCase());
       if (trial) trial.correct = true;
@@ -467,6 +555,7 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
       else currentWordObj.score -= 1;
       if (currentWordObj.score < 0) currentWordObj.score = 0;
       saveCatalogue();
+      refreshSmartList(); // Auto-refresh smart list after score update
     } else {
       let trial = randomTrials.find(t => t.word.toLowerCase() === actualWord.toLowerCase());
       if (trial) trial.attempts++;
