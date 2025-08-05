@@ -149,11 +149,56 @@ footer {
   border-bottom: 1px solid #ddd;
 }
 
+.list-title-section {
+  margin-bottom: 0.5rem;
+}
+
+.list-description-section {
+  margin-bottom: 1rem;
+}
+
+.editable-title {
+  margin: 0;
+  cursor: pointer;
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.5rem;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.editable-title:hover {
+  background-color: #f8f9fa;
+  border-color: #ddd;
+}
+
+.editable-description {
+  margin: 0;
+  cursor: pointer;
+  color: #666;
+  font-style: italic;
+  padding: 0.5rem;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  min-height: 1.5rem;
+}
+
+.editable-description:hover {
+  background-color: #f8f9fa;
+  border-color: #ddd;
+}
+
+.editable-description.empty {
+  color: #999;
+}
+
 .list-title-edit {
   width: 100%;
   font-size: 1.2rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -161,7 +206,6 @@ footer {
 
 .list-description-edit {
   width: 100%;
-  margin-bottom: 0.5rem;
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;

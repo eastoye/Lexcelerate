@@ -96,6 +96,78 @@ function setupListManagementListeners() {
   if (addWordForm) {
     addWordForm.addEventListener('submit', handleAddWordToList);
   }
+
+  // Editable title and description
+  setupEditableFields();
+}
+
+// Setup editable title and description fields
+function setupEditableFields() {
+  const titleDisplay = document.getElementById('list-title-display');
+  const titleInput = document.getElementById('list-title-input');
+  const descriptionDisplay = document.getElementById('list-description-display');
+  const descriptionInput = document.getElementById('list-description-input');
+  const saveButton = document.getElementById('save-list-changes-btn');
+
+  // Title editing
+  if (titleDisplay && titleInput) {
+    titleDisplay.addEventListener('click', () => {
+      titleDisplay.style.display = 'none';
+      titleInput.style.display = 'block';
+      titleInput.value = titleDisplay.textContent;
+      titleInput.focus();
+      saveButton.style.display = 'inline-block';
+    });
+
+    titleInput.addEventListener('blur', () => {
+      if (titleInput.value.trim()) {
+        titleDisplay.textContent = titleInput.value.trim();
+      }
+      titleDisplay.style.display = 'block';
+      titleInput.style.display = 'none';
+    });
+
+    titleInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        titleInput.blur();
+      }
+    });
+  }
+
+  // Description editing
+  if (descriptionDisplay && descriptionInput) {
+    descriptionDisplay.addEventListener('click', () => {
+      descriptionDisplay.style.display = 'none';
+      descriptionInput.style.display = 'block';
+      descriptionInput.value = descriptionDisplay.classList.contains('empty') ? '' : descriptionDisplay.textContent;
+      descriptionInput.focus();
+      saveButton.style.display = 'inline-block';
+    });
+
+    descriptionInput.addEventListener('blur', () => {
+      const value = descriptionInput.value.trim();
+      if (value) {
+        descriptionDisplay.textContent = value;
+        descriptionDisplay.classList.remove('empty');
+      } else {
+        descriptionDisplay.textContent = 'Click to add description';
+        descriptionDisplay.classList.add('empty');
+      }
+      descriptionDisplay.style.display = 'block';
+      descriptionInput.style.display = 'none';
+    });
+
+    descriptionInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        descriptionInput.blur();
+      }
+    });
+  }
+
+  // Save changes button
+  if (saveButton) {
+    saveButton.addEventListener('click', handleSaveListChanges);
+  }
 }
 
 // Load and display user lists
@@ -170,10 +242,25 @@ function renderUserLists() {
 async function showListDetail(listId, listName) {
   currentListId = listId;
   
-  // Update list detail header
-  const listDetailTitle = document.getElementById('list-detail-title');
-  if (listDetailTitle) {
-    listDetailTitle.textContent = listName;
+  // Find the current list to get description
+  const currentList = currentLists.find(list => list.id === listId);
+  
+  // Update list detail header with title and description
+  const titleDisplay = document.getElementById('list-title-display');
+  const descriptionDisplay = document.getElementById('list-description-display');
+  
+  if (titleDisplay) {
+    titleDisplay.textContent = listName;
+  }
+  
+  if (descriptionDisplay && currentList) {
+    if (currentList.description && currentList.description.trim()) {
+      descriptionDisplay.textContent = currentList.description;
+      descriptionDisplay.classList.remove('empty');
+    } else {
+      descriptionDisplay.textContent = 'Click to add description';
+      descriptionDisplay.classList.add('empty');
+    }
   }
 
   window.showScreen('list-detail-screen');
@@ -543,9 +630,12 @@ async function handleRemoveWordFromList(wordId, word) {
 
 // Handle saving list changes (title and description)
 async function handleSaveListChanges() {
-  const titleInput = document.getElementById('list-title-input');
-  const descriptionInput = document.getElementById('list-description-input');
-  const title = titleInput.value.trim();
+  const titleDisplay = document.getElementById('list-title-display');
+  const descriptionDisplay = document.getElementById('list-description-display');
+  const saveButton = document.getElementById('save-list-changes-btn');
+  
+  const title = titleDisplay.textContent.trim();
+  const description = descriptionDisplay.classList.contains('empty') ? '' : descriptionDisplay.textContent.trim();
   
   if (!title) {
     alert('Please enter a list name.');
@@ -560,11 +650,13 @@ async function handleSaveListChanges() {
   const result = await updateUserList(currentListId, title);
   
   if (result.success) {
+    saveButton.style.display = 'none';
     showNotification('List updated successfully!');
     // Update the current lists array
     const listIndex = currentLists.findIndex(list => list.id === currentListId);
     if (listIndex !== -1) {
       currentLists[listIndex].name = title;
+      currentLists[listIndex].description = description;
     }
   } else {
     alert(`Error updating list: ${result.error}`);

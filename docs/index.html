@@ -106,9 +106,15 @@
   <!-- List Detail Screen -->
   <div id="list-detail-screen" class="screen" style="display: none;">
     <div class="list-detail-header">
-      <input type="text" id="list-title-input" class="list-title-edit" placeholder="List name">
-      <input type="text" id="list-description-input" class="list-description-edit" placeholder="Description (optional)">
-      <button id="save-list-changes-btn">Save Changes</button>
+      <div class="list-title-section">
+        <h3 id="list-title-display" class="editable-title">List Name</h3>
+        <input type="text" id="list-title-input" class="list-title-edit" placeholder="List name" style="display: none;">
+      </div>
+      <div class="list-description-section">
+        <p id="list-description-display" class="editable-description">Click to add description</p>
+        <input type="text" id="list-description-input" class="list-description-edit" placeholder="Description (optional)" style="display: none;">
+      </div>
+      <button id="save-list-changes-btn" style="display: none;">Save Changes</button>
     </div>
     
     <!-- Add Word Form -->
