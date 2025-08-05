@@ -105,7 +105,11 @@
 
   <!-- List Detail Screen -->
   <div id="list-detail-screen" class="screen" style="display: none;">
-    <h2 id="list-detail-title">List Details</h2>
+    <div class="list-detail-header">
+      <input type="text" id="list-title-input" class="list-title-edit" placeholder="List name">
+      <input type="text" id="list-description-input" class="list-description-edit" placeholder="Description (optional)">
+      <button id="save-list-changes-btn">Save Changes</button>
+    </div>
     
     <!-- Add Word Form -->
     <form id="add-word-to-list-form" class="add-word-form">

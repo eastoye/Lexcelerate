@@ -137,38 +137,23 @@ function renderUserLists() {
   let html = '';
   currentLists.forEach(list => {
     html += `
-      <div class="list-card" data-list-id="${list.id}">
-        <div class="list-header">
-          <h3 class="list-name">${escapeHtml(list.name)}</h3>
-          <div class="list-actions">
-            <button class="edit-list-btn" data-list-id="${list.id}" data-list-name="${escapeHtml(list.name)}">Edit</button>
-            <button class="delete-list-btn" data-list-id="${list.id}" data-list-name="${escapeHtml(list.name)}">Delete</button>
-          </div>
-        </div>
-        <div class="list-meta">
-          <span class="list-date">Created: ${new Date(list.created_at).toLocaleDateString()}</span>
-        </div>
-        <button class="view-list-btn" data-list-id="${list.id}" data-list-name="${escapeHtml(list.name)}">View Words</button>
+      <div class="list-row">
+        <span class="list-name-link" data-list-id="${list.id}" data-list-name="${escapeHtml(list.name)}">${escapeHtml(list.name)}</span>
+        <span class="list-date">${new Date(list.created_at).toLocaleDateString()}</span>
+        <button class="delete-list-btn" data-list-id="${list.id}" data-list-name="${escapeHtml(list.name)}">Delete</button>
       </div>
     `;
   });
+  html += '</div>';
 
   listsContainer.innerHTML = html;
 
-  // Add event listeners to list cards
-  document.querySelectorAll('.view-list-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+  // Add event listeners to list names
+  document.querySelectorAll('.list-name-link').forEach(link => {
+    link.addEventListener('click', (e) => {
       const listId = e.target.getAttribute('data-list-id');
       const listName = e.target.getAttribute('data-list-name');
       showListDetail(listId, listName);
-    });
-  });
-
-  document.querySelectorAll('.edit-list-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const listId = e.target.getAttribute('data-list-id');
-      const listName = e.target.getAttribute('data-list-name');
-      showEditListModal(listId, listName);
     });
   });
 
