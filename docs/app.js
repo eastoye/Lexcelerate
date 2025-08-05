@@ -244,7 +244,10 @@ function showScreen(screenId) {
   if (screenId === 'login-screen') screenId = 'auth-screen';
   document.getElementById(screenId).style.display = 'block';
   if (screenId === 'home-screen') updateProgressSummary();
-  if (screenId === 'stats-screen') updateStatsList();
+  if (screenId === 'stats-screen') {
+    updateStatsList();
+    updateSmartList(); // Initialize smart list when stats screen is shown
+  }
 }
 
 // Make showScreen globally accessible
