@@ -162,6 +162,12 @@ class PracticeListSelector {
     const practiceScreen = document.getElementById('practice-screen');
     const modeToggleBtn = document.getElementById('mode-toggle-btn');
     
+    // Safety check - if element doesn't exist, skip initialization
+    if (!modeToggleBtn) {
+      console.warn('mode-toggle-btn element not found, skipping list selector initialization');
+      return;
+    }
+    
     // Replace mode toggle with list selector
     const listSelectorHTML = `
       <div class="practice-list-selector">
