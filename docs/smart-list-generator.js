@@ -327,16 +327,20 @@ export function initializeSmartListGenerator() {
   const createListModal = document.getElementById('create-list-modal');
   if (createListModal) {
     const modalContent = createListModal.querySelector('.modal-content');
-    const smartGenButton = document.createElement('button');
-    smartGenButton.type = 'button';
-    smartGenButton.className = 'btn-secondary smart-gen-trigger';
-    smartGenButton.textContent = '✨ Smart Generator';
-    smartGenButton.addEventListener('click', () => {
-      createListModal.style.display = 'none';
-      smartListGenerator.show();
-    });
     
-    modalContent.insertBefore(smartGenButton, modalContent.querySelector('form'));
+    // Check if Smart Generator button already exists to avoid duplicates
+    if (!modalContent.querySelector('.smart-gen-trigger')) {
+      const smartGenButton = document.createElement('button');
+      smartGenButton.type = 'button';
+      smartGenButton.className = 'btn-secondary smart-gen-trigger';
+      smartGenButton.textContent = '✨ Smart Generator';
+      smartGenButton.addEventListener('click', () => {
+        createListModal.style.display = 'none';
+        smartListGenerator.show();
+      });
+      
+      modalContent.insertBefore(smartGenButton, modalContent.querySelector('form'));
+    }
   }
 }
 
