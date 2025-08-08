@@ -19,7 +19,7 @@ let successAudio = null;
 // Initialize audio
 function initializeAudio() {
   try {
-    successAudio = new Audio('../correctbell.wav');
+    successAudio = new Audio('./correctbell.wav');
     successAudio.volume = 0.3; // Set moderate volume
     successAudio.preload = 'auto';
   } catch (error) {
