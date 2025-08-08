@@ -259,27 +259,6 @@ class PracticeListSelector {
     }
   }
 
-  // Force refresh lists when dropdown opens
-  toggleDropdown() {
-    const dropdown = document.getElementById('list-dropdown');
-    const isVisible = dropdown.style.display === 'block';
-    dropdown.style.display = isVisible ? 'none' : 'block';
-    
-    if (!isVisible) {
-      // Always reload lists when opening dropdown
-      this.loadAvailableLists();
-    }
-  }
-        if (result.success) {
-          this.availableLists = result.data;
-          this.updateDropdownLists();
-        }
-      }
-    } catch (error) {
-      console.error('Error loading user lists:', error);
-    }
-  }
-
   // Update dropdown with user lists
   updateDropdownLists() {
     const container = document.getElementById('user-lists-dropdown');
