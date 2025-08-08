@@ -13,6 +13,34 @@ let practiceMode = 'catalogue';
 // Global reveal counter for current word
 let currentRevealCount = 0;
 
+// Audio feedback
+let successAudio = null;
+
+// Initialize audio
+function initializeAudio() {
+  try {
+    successAudio = new Audio('../correctbell.wav');
+    successAudio.volume = 0.3; // Set moderate volume
+    successAudio.preload = 'auto';
+  } catch (error) {
+    console.warn('Could not load success audio:', error);
+  }
+}
+
+// Play success sound
+function playSuccessSound() {
+  if (successAudio && soundEnabled) {
+    try {
+      successAudio.currentTime = 0; // Reset to beginning
+      successAudio.play().catch(error => {
+        console.warn('Could not play success audio:', error);
+      });
+    } catch (error) {
+      console.warn('Error playing success audio:', error);
+    }
+  }
+}
+
 // ---------------------------
 // Save catalogue for current user (now uses Supabase via main.js)
 function saveCatalogue() {
@@ -528,6 +556,7 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
   
   if (userSpelling.toLowerCase() === actualWord.toLowerCase()) {
     feedbackEl.textContent = "Correct!";
+    playSuccessSound(); // Play success audio
     if (practiceMode === 'catalogue') {
       currentWordObj.totalAttempts++;
       currentWordObj.streak++;
@@ -678,3 +707,8 @@ window.addEventListener('click', (event) => {
 // ---------------------------
 // On Initial Load - Auth is now handled by main.js
 // ---------------------------
+
+// Initialize audio when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  initializeAudio();
+});
