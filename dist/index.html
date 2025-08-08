@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Lexcelerate</title>
   <link rel="manifest" href="/assets/manifest-Bez2WkQ5.json" />
-  <script type="module" crossorigin src="/assets/main-DJMm8zrP.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/main-Zsc3IQjO.css">
+  <script type="module" crossorigin src="/assets/main-DnlakZ4q.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/main-cI0xYtrn.css">
 </head>
 <body>
   <!-- Help Modal -->
@@ -92,9 +92,112 @@
     <button class="back-btn">Back</button>
   </div>
 
+  <!-- My Lists Screen -->
+  <div id="my-lists-screen" class="screen" style="display: none;">
+    <h2>custom lists</h2>
+    <button id="create-list-btn">Create New List</button>
+    <div id="lists-loading" style="display: none;">Loading lists...</div>
+    <div id="lists-error" class="error-message" style="display: none;"></div>
+    <div id="user-lists-container"></div>
+    <button class="back-btn">Back</button>
+  </div>
+
+  <!-- List Detail Screen -->
+  <div id="list-detail-screen" class="screen" style="display: none;">
+    <div class="list-detail-header">
+      <div class="list-title-section">
+        <h3 id="list-title-display" class="editable-title">List Name</h3>
+        <input type="text" id="list-title-input" class="list-title-edit" placeholder="List name" style="display: none;">
+      </div>
+      <div class="list-description-section">
+        <p id="list-description-display" class="editable-description">Click to add description</p>
+        <input type="text" id="list-description-input" class="list-description-edit" placeholder="Description (optional)" style="display: none;">
+      </div>
+      <button id="save-list-changes-btn" style="display: none;">Save Changes</button>
+    </div>
+    
+    <!-- Add Word Form -->
+    <form id="add-word-to-list-form" class="add-word-form">
+      <input type="text" id="new-word-input" placeholder="Enter word to add" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <button type="submit">➕ Add Word</button>
+    </form>
+    
+    <div id="list-words-loading" style="display: none;">Loading words...</div>
+    <div id="list-words-error" class="error-message" style="display: none;"></div>
+    <div id="list-words-container"></div>
+    <button class="back-btn">Back</button>
+  </div>
+
+  <!-- Create List Modal -->
+  <div id="create-list-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close create-list-close">&times;</span>
+      <h3>Create New List</h3>
+      
+      <!-- List Details Section -->
+      <div class="list-details-section">
+        <input type="text" id="new-list-name" placeholder="Enter list name" required>
+        <input type="text" id="new-list-description" placeholder="Enter description (optional)">
+      </div>
+      
+      <!-- Word Addition Section -->
+      <div class="word-addition-section">
+        <h4>Add Words</h4>
+        
+        <!-- Manual Word Entry -->
+        <div class="manual-word-entry">
+          <input type="text" id="manual-word-input" placeholder="Type a word and press Add">
+          <button type="button" id="add-manual-word-btn">Add</button>
+        </div>
+        
+        <!-- Catalog Selection Toggle -->
+        <div class="catalog-toggle">
+          <button type="button" id="toggle-catalog-btn">Select from Catalog</button>
+        </div>
+        
+        <!-- Catalog Selection (Hidden by default) -->
+        <div id="catalog-selection" class="catalog-selection" style="display: none;">
+          <div class="catalog-words-grid" id="catalog-words-grid">
+            <!-- Catalog words will be populated here -->
+          </div>
+        </div>
+        
+        <!-- Selected Words Display -->
+        <div class="selected-words-section">
+          <h5>Selected Words (<span id="selected-word-count">0</span>)</h5>
+          <div id="selected-words-list" class="selected-words-list">
+            <!-- Selected words will appear here -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Modal Actions -->
+      <div class="modal-actions">
+        <button type="button" id="create-list-submit-btn">Create List</button>
+        <button type="button" id="cancel-create-list">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit List Modal -->
+  <div id="edit-list-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h3>Edit List</h3>
+      <form id="edit-list-form">
+        <input type="hidden" id="edit-list-id">
+        <input type="text" id="edit-list-name" placeholder="Enter list name" required>
+        <div class="modal-actions">
+          <button type="submit">Update</button>
+          <button type="button" id="cancel-edit-list">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Statistics Screen -->
   <div id="stats-screen" class="screen" style="display: none;">
     <h2>Stats</h2>
+    <button id="my-lists-btn">My Lists</button>
     <button id="export-btn">Export Catalogue</button>
     <button id="import-btn">Import Catalogue</button>
     <button id="toggle-random-stats-btn">Show Random Trials</button>
