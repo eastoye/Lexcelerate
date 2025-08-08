@@ -153,8 +153,11 @@ class PracticeListSelector {
   // Initialize the practice list selector
   init() {
     this.createListSelector();
-    this.attachEventListeners();
-    this.loadAvailableLists();
+    // Use setTimeout to ensure DOM is ready
+    setTimeout(() => {
+      this.attachEventListeners();
+      this.loadAvailableLists();
+    }, 100);
   }
 
   // Create the list selector UI
@@ -204,9 +207,14 @@ class PracticeListSelector {
   // Attach event listeners
   attachEventListeners() {
     // Toggle dropdown
-    document.getElementById('current-list-btn').addEventListener('click', () => {
-      this.toggleDropdown();
-    });
+    const currentListBtn = document.getElementById('current-list-btn');
+    if (currentListBtn) {
+      currentListBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleDropdown();
+      });
+    }
 
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
@@ -227,6 +235,8 @@ class PracticeListSelector {
     // Handle My Lists header click to expand/collapse
     document.addEventListener('click', (e) => {
       if (e.target.closest('#my-lists-header')) {
+        e.preventDefault();
+        e.stopPropagation();
         this.toggleMyListsSection();
       }
     });
@@ -251,17 +261,22 @@ class PracticeListSelector {
   // Toggle dropdown visibility
   toggleDropdown() {
     const dropdown = document.getElementById('list-dropdown');
-    const isVisible = dropdown.style.display === 'block';
-    dropdown.style.display = isVisible ? 'none' : 'block';
-    
-    if (!isVisible) {
-      this.loadAvailableLists();
+    if (dropdown) {
+      const isVisible = dropdown.style.display === 'block';
+      dropdown.style.display = isVisible ? 'none' : 'block';
+      
+      if (!isVisible) {
+        this.loadAvailableLists();
+      }
     }
   }
 
   // Close dropdown
   closeDropdown() {
-    document.getElementById('list-dropdown').style.display = 'none';
+    const dropdown = document.getElementById('list-dropdown');
+    if (dropdown) {
+      dropdown.style.display = 'none';
+    }
   }
 
   // Load available user lists
