@@ -187,8 +187,11 @@ class PracticeListSelector {
             <span>Random Words</span>
           </div>
           <div class="dropdown-divider"></div>
-          <div class="dropdown-section-header">My Lists</div>
-          <div id="user-lists-dropdown">
+          <div class="dropdown-section-header clickable-header" id="my-lists-header">
+            <span>My Lists</span>
+            <span class="expand-arrow">▶</span>
+          </div>
+          <div id="user-lists-dropdown" class="collapsible-section" style="display: none;">
             <!-- User lists will be populated here -->
           </div>
         </div>
@@ -220,6 +223,29 @@ class PracticeListSelector {
         this.selectList(listId, listName);
       }
     });
+
+    // Handle My Lists header click to expand/collapse
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('#my-lists-header')) {
+        this.toggleMyListsSection();
+      }
+    });
+  }
+
+  // Toggle My Lists section visibility
+  toggleMyListsSection() {
+    const dropdown = document.getElementById('user-lists-dropdown');
+    const arrow = document.querySelector('#my-lists-header .expand-arrow');
+    
+    if (dropdown.style.display === 'none') {
+      dropdown.style.display = 'block';
+      arrow.textContent = '▼';
+      // Load lists when expanding
+      this.loadAvailableLists();
+    } else {
+      dropdown.style.display = 'none';
+      arrow.textContent = '▶';
+    }
   }
 
   // Toggle dropdown visibility
