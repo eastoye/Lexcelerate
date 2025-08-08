@@ -241,8 +241,35 @@ class PracticeListSelector {
   // Load available user lists
   async loadAvailableLists() {
     try {
-      if (window.getUserLists) {
-        const result = await window.getUserLists();
+      // Import the getUserLists function
+      const { getUserLists } = await import('./user-lists-api.js');
+      const result = await getUserLists();
+      if (result.success) {
+        this.availableLists = result.data;
+        this.updateDropdownLists();
+      } else {
+        console.error('Error loading user lists:', result.error);
+        this.availableLists = [];
+        this.updateDropdownLists();
+      }
+    } catch (error) {
+      console.error('Error loading user lists:', error);
+      this.availableLists = [];
+      this.updateDropdownLists();
+    }
+  }
+
+  // Force refresh lists when dropdown opens
+  toggleDropdown() {
+    const dropdown = document.getElementById('list-dropdown');
+    const isVisible = dropdown.style.display === 'block';
+    dropdown.style.display = isVisible ? 'none' : 'block';
+    
+    if (!isVisible) {
+      // Always reload lists when opening dropdown
+      this.loadAvailableLists();
+    }
+  }
         if (result.success) {
           this.availableLists = result.data;
           this.updateDropdownLists();
@@ -257,6 +284,11 @@ class PracticeListSelector {
   updateDropdownLists() {
     const container = document.getElementById('user-lists-dropdown');
     
+    if (!container) {
+      console.warn('user-lists-dropdown container not found');
+      return;
+    }
+    
     if (this.availableLists.length === 0) {
       container.innerHTML = '<div class="dropdown-empty">No custom lists yet</div>';
       return;
@@ -265,9 +297,16 @@ class PracticeListSelector {
     container.innerHTML = this.availableLists.map(list => `
       <div class="dropdown-item" data-list-id="${list.id}">
         <span class="list-icon">📋</span>
-        <span>${list.name}</span>
+        <span>${this.escapeHtml(list.name)}</span>
       </div>
     `).join('');
+  }
+
+  // Utility function to escape HTML
+  escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   }
 
   // Select a list for practice
