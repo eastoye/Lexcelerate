@@ -33,35 +33,6 @@ onAuthStateChange(async (user) => {
     // Load user's catalogue from Supabase
     await loadUserCatalogueFromSupabase();
     
-    // Add event listeners for user lists navigation
-    const myListsBtn = document.getElementById('my-lists-btn');
-    if (myListsBtn) {
-      myListsBtn.addEventListener('click', () => {
-        window.showScreen('my-lists-screen');
-        loadUserLists();
-      });
-    }
-    
-    // Add event listener for home screen my-lists button
-    const myListsBtnHome = document.getElementById('my-lists-btn-home');
-    if (myListsBtnHome) {
-      myListsBtnHome.addEventListener('click', () => {
-        window.showScreen('my-lists-screen');
-        if (window.loadUserLists) {
-          window.loadUserLists();
-        }
-      });
-    }
-    
-    // Add event listener for hero practice button
-    const heroPracticeBtn = document.getElementById('hero-practice-btn');
-    if (heroPracticeBtn) {
-      heroPracticeBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.getElementById('practice-btn').click();
-      });
-    }
-    
     // Initialize user lists functionality
     if (window.initializeUserLists) {
       window.initializeUserLists();
