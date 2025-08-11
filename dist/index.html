@@ -5,11 +5,15 @@
   <!-- Disable predictive text on inputs via HTML attributes -->
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Lexcelerate</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="manifest" href="/assets/manifest-Bez2WkQ5.json" />
-  <script type="module" crossorigin src="/assets/main-DnlakZ4q.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/main-cI0xYtrn.css">
+  <script type="module" crossorigin src="/assets/main-dWWdPvMn.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/main-_y5aVcVB.css">
 </head>
-<body>
+<body class="app-container">
   <!-- Help Modal -->
   <div id="help-modal" class="modal" style="display:none;">
     <div class="modal-content">
@@ -24,9 +28,19 @@
   <!-- Notification -->
   <div id="notification" class="notification" style="display:none;"></div>
 
-  <!-- Header with Help Button -->
-  <header>
-    <button id="help-btn" class="help-btn">?</button>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo-icon">L</div>
+        <div class="logo-text">Lexcelerate</div>
+      </div>
+      <div class="header-actions">
+        <button id="help-btn" class="icon-button" aria-label="Help">
+          <span>?</span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <!-- Login Screen -->
@@ -43,18 +57,103 @@
   </div>
 
   <!-- Home Screen -->
-  <div id="home-screen" class="screen" style="display: none;">
-    <h1>Lexcelerate</h1>
-    <p id="welcome-message"></p>
-    <!-- Word of the Day Section -->
-    <div id="word-of-day" class="word-of-day">
-      <strong>Word of the Day:</strong> <span id="wotd" style="cursor:pointer;"></span>
+  <div id="home-screen" style="display: none;">
+    <main class="main-content">
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <h1 class="hero-title text-hero">Sharpen Your Words. Master Your Language.</h1>
+        <p class="hero-subtitle">Transform your vocabulary with intelligent practice, personalized learning, and comprehensive tracking.</p>
+        <button id="practice-btn" class="cta-button">Start Practice</button>
+      </section>
+
+      <!-- Word of the Day Section -->
+      <section class="wotd-section">
+        <div class="wotd-label">Word of the Day</div>
+        <div id="wotd" class="wotd-word" tabindex="0" role="button" aria-label="Click to see definition"></div>
+        <div class="wotd-hint">Click the word to see its definition!</div>
+      </section>
+
+      <!-- Features Grid -->
+      <section class="features-grid">
+        <!-- Practice Word List Feature -->
+        <div class="feature-card" id="add-word-card" tabindex="0" role="button" aria-label="Add words to your practice list">
+          <div class="feature-icon">📝</div>
+          <h3 class="feature-title">Practice Word List</h3>
+          <p class="feature-description">Build your personal vocabulary collection with words you want to master.</p>
+          <div class="feature-stats">
+            <div class="stat-item">
+              <div class="stat-value" id="word-count">0</div>
+              <div class="stat-label">Words</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="mastery-rate">0%</div>
+              <div class="stat-label">Mastery</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Smart Lists Feature -->
+        <div class="feature-card" id="smart-lists-card" tabindex="0" role="button" aria-label="Access your smart lists">
+          <div class="feature-icon">🎯</div>
+          <h3 class="feature-title">Smart Lists</h3>
+          <p class="feature-description">AI-powered lists that adapt to your learning progress and focus on challenging words.</p>
+          <div class="feature-stats">
+            <div class="stat-item">
+              <div class="stat-value" id="lists-count">0</div>
+              <div class="stat-label">Lists</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="focus-words">0</div>
+              <div class="stat-label">Focus</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Overview Feature -->
+        <div class="feature-card" id="stats-card" tabindex="0" role="button" aria-label="View your learning statistics">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Stats Overview</h3>
+          <p class="feature-description">Track your progress with detailed analytics and performance insights.</p>
+          <div class="feature-stats">
+            <div class="stat-item">
+              <div class="stat-value" id="streak-count">0</div>
+              <div class="stat-label">Streak</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="accuracy-rate">0%</div>
+              <div class="stat-label">Accuracy</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Progress Summary -->
+      <section class="progress-summary">
+        <h3 class="progress-title">Your Learning Progress</h3>
+        <div class="progress-value" id="overall-progress">0%</div>
+        <div class="progress-label" id="progress-summary">Overall First-Attempt Accuracy</div>
+      </section>
+
+      <!-- Quick Actions -->
+      <section class="quick-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+        <button id="add-word-btn" class="action-button">
+          <span>➕</span>
+          Add Word
+        </button>
+        <button id="logout-btn" class="action-button">
+          <span>🚪</span>
+          Log Out
+        </button>
+      </section>
+    </main>
+
+    <!-- Welcome Message (Hidden, for compatibility) -->
+    <p id="welcome-message" style="display: none;"></p>
+    
+    <!-- Legacy Elements (Hidden, for compatibility) -->
+    <div style="display: none;">
+      <div id="progress-summary"></div>
     </div>
-    <button id="add-word-btn">Add Word</button>
-    <button id="practice-btn">Practice Word</button>
-    <button id="stats-btn">Stats</button>
-    <button id="logout-btn">Log Out</button>
-    <div id="progress-summary"></div>
   </div>
 
   <!-- Username Setup Screen -->
