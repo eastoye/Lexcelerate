@@ -464,7 +464,6 @@ document.getElementById('stats-card').addEventListener('keydown', (e) => {
 });
 
 // Legacy stats button
-document.getElementById('stats-btn').addEventListener('click', () => { showScreen('stats-screen'); });
 document.querySelectorAll('.back-btn').forEach(button => {
   button.addEventListener('click', () => { showScreen('home-screen'); });
 });
