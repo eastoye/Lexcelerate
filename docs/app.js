@@ -451,6 +451,18 @@ function handlePracticeClick() {
 
 document.getElementById('practice-btn').addEventListener('click', handlePracticeClick);
 
+// Add event listener for home screen help button
+document.addEventListener('DOMContentLoaded', () => {
+  const helpBtnHome = document.getElementById('help-btn-home');
+  if (helpBtnHome) {
+    helpBtnHome.addEventListener('click', () => {
+      let helpText = "Home: Use buttons to add words, practice word (toggle between Catalogue and Random modes), view stats, and see the Word of the Day. Click the Word of the Day for options.";
+      document.getElementById('help-text').innerHTML = `<p>${helpText}</p>`;
+      document.getElementById('help-modal').style.display = 'block';
+    });
+  }
+});
+
 // Add event listeners for feature cards
 // Add event listener for minimal stats button
 const statsBtn = document.getElementById('stats-btn-minimal');

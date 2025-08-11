@@ -47,6 +47,13 @@
   box-sizing: border-box;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
 body {
   font-family: var(--font-sans);
   background: var(--color-background);
@@ -55,7 +62,6 @@ body {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
 /* Typography Scale */
@@ -493,40 +499,83 @@ body {
   display: block;
 }
 
-/* Minimal Home Screen Styles */
-.minimal-home {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-md);
+/* Home Screen Styles */
+#home-screen {
+  min-height: 100dvh;
   background: var(--color-background);
+  color: var(--color-primary-text);
+  display: flex;
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   overflow: hidden;
 }
 
-.minimal-home.active {
+#home-screen.active {
   display: flex;
 }
 
-.minimal-container {
-  background: var(--color-panel);
-  border: 2px solid var(--color-accent);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-xl);
+.home-wrapper {
+  max-width: 420px;
   width: 100%;
-  max-width: 400px;
-  min-height: 600px;
-  height: auto;
+  margin: 0 auto;
+  padding: var(--spacing-lg) var(--spacing-md);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100%;
+}
+
+@media (min-width: 768px) {
+  .home-wrapper {
+    justify-content: center;
+  }
+}
+
+.minimal-container {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(191, 167, 116, 0.35);
+  background: var(--color-panel);
+  padding: var(--spacing-lg);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
   text-align: center;
-  box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 0 auto;
+  position: relative;
+}
+
+/* Header Icons inside container */
+.header-icons {
+  position: absolute;
+  right: var(--spacing-md);
+  top: var(--spacing-md);
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.header-icons .icon-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(191, 167, 116, 0.2);
+  background: transparent;
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 0.9rem;
+}
+
+.header-icons .icon-button:hover {
+  background: rgba(191, 167, 116, 0.1);
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
 }
 
 /* App Title */
