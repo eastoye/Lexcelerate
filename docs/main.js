@@ -177,13 +177,17 @@ function showAuthError(message) {
 }
 
 // Update logout button to use Supabase auth
-document.getElementById('logout-btn').addEventListener('click', async () => {
-  const result = await logOut();
-  if (!result.success) {
-    console.error('Logout error:', result.error);
-    showNotification('Error signing out');
-  }
-});
+// Find logout button (it's now hidden in legacy elements)
+const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', async () => {
+    const result = await logOut();
+    if (!result.success) {
+      console.error('Logout error:', result.error);
+      showNotification('Error signing out');
+    }
+  });
+}
 
 // Enter key handling for auth form
 document.getElementById('auth-email').addEventListener('keydown', (e) => {

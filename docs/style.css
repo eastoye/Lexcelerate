@@ -487,6 +487,158 @@ body {
   min-height: 100vh;
 }
 
+/* Minimal Home Screen Styles */
+.minimal-home {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  background: var(--color-background);
+}
+
+.minimal-home.active {
+  display: flex;
+}
+
+.minimal-container {
+  background: var(--color-panel);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2xl);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+/* App Title */
+.app-title {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.app-title h1 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-primary-text);
+  letter-spacing: 0.2em;
+  margin-bottom: var(--spacing-sm);
+}
+
+.title-underline {
+  width: 60px;
+  height: 2px;
+  background: var(--color-accent);
+  margin: 0 auto;
+}
+
+/* Word of the Day - Minimal */
+.wotd-section-minimal {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.wotd-label-minimal {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary-text);
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-md);
+}
+
+.wotd-word-minimal {
+  background: var(--color-mint);
+  color: var(--color-background);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-radius: var(--radius-md);
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  margin-bottom: var(--spacing-sm);
+  display: inline-block;
+  min-width: 200px;
+}
+
+.wotd-word-minimal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(120, 194, 164, 0.3);
+}
+
+.wotd-hint-minimal {
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  font-style: italic;
+}
+
+/* Action Buttons - Minimal */
+.action-buttons-minimal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.minimal-button {
+  background: transparent;
+  border: 1px solid var(--color-accent);
+  color: var(--color-primary-text);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: 48px;
+}
+
+.minimal-button:hover {
+  background: rgba(191, 167, 116, 0.1);
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.minimal-button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.word-count-display {
+  background: transparent;
+  border: 1px solid rgba(191, 167, 116, 0.3);
+  color: var(--color-secondary-text);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  margin-top: var(--spacing-sm);
+}
+
+.word-count-display span:last-child {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* Responsive adjustments for minimal design */
+@media (max-width: 480px) {
+  .minimal-container {
+    padding: var(--spacing-lg);
+    margin: var(--spacing-md);
+  }
+  
+  .app-title h1 {
+    font-size: 2rem;
+  }
+  
+  .wotd-word-minimal {
+    font-size: 1.5rem;
+    padding: var(--spacing-md) var(--spacing-lg);
+    min-width: 180px;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 767px) {
   .main-content {

@@ -437,31 +437,11 @@ function handlePracticeClick() {
 document.getElementById('practice-btn').addEventListener('click', handlePracticeClick);
 
 // Add event listeners for feature cards
-document.getElementById('add-word-card').addEventListener('click', () => { showScreen('add-word-screen'); });
-document.getElementById('smart-lists-card').addEventListener('click', () => { showScreen('stats-screen'); });
-document.getElementById('stats-card').addEventListener('click', () => { showScreen('stats-screen'); });
-
-// Add keyboard support for feature cards
-document.getElementById('add-word-card').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    showScreen('add-word-screen');
-  }
-});
-
-document.getElementById('smart-lists-card').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    showScreen('stats-screen');
-  }
-});
-
-document.getElementById('stats-card').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    showScreen('stats-screen');
-  }
-});
+// Add event listener for minimal stats button
+const statsBtn = document.getElementById('stats-btn-minimal');
+if (statsBtn) {
+  statsBtn.addEventListener('click', () => { showScreen('stats-screen'); });
+}
 
 // Legacy stats button
 document.querySelectorAll('.back-btn').forEach(button => {
