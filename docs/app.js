@@ -271,6 +271,10 @@ function showScreen(screenId) {
   // Handle the renamed auth screen
   if (screenId === 'login-screen') screenId = 'auth-screen';
   document.getElementById(screenId).style.display = 'block';
+  
+  // Add body class for screen-specific styling
+  document.body.className = `screen-${screenId}`;
+  
   if (screenId === 'home-screen') updateProgressSummary();
   if (screenId === 'stats-screen') {
     updateStatsList();
