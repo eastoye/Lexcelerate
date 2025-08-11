@@ -436,8 +436,12 @@ function handlePracticeClick() {
 
 document.getElementById('practice-btn').addEventListener('click', handlePracticeClick);
 
+// Add event listeners for feature cards
 // Add event listener for minimal stats button
-document.getElementById('stats-btn-minimal').addEventListener('click', () => { showScreen('stats-screen'); });
+const statsBtn = document.getElementById('stats-btn-minimal');
+if (statsBtn) {
+  statsBtn.addEventListener('click', () => { showScreen('stats-screen'); });
+}
 
 // Legacy stats button
 document.querySelectorAll('.back-btn').forEach(button => {
