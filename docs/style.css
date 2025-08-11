@@ -509,21 +509,31 @@ body {
   top: 0;
   right: 0;
   top: 0;
+  left: 0;
   right: 0;
   bottom: 0;
-  overflow-x: hidden;
-  padding: clamp(8px, 3vh, 20px) 12px;
+  overflow: hidden;
   padding: clamp(8px, 3vh, 20px) 8px;
 }
 
+#home-screen.active {
+  display: block;
+}
+
+.home-wrapper {
+  margin: 0 auto;
+  width: 100%;
+  max-width: min(calc(100vw - 16px), 480px);
+  height: 100%;
+}
+
 .minimal-container {
-  min-height: calc(100dvh - clamp(16px, 6vh, 40px));
   width: 100%;
   min-height: calc(100dvh - clamp(16px, 6vh, 40px));
   border-radius: 12px;
   border: 1px solid rgba(191, 167, 116, 0.35);
+  background: var(--color-panel);
   padding: clamp(16px, 4vw, 20px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
