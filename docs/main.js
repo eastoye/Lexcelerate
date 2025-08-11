@@ -85,9 +85,17 @@ async function loadUserCatalogueFromSupabase() {
       if (!wordObj.interval) wordObj.interval = 1;
     });
     console.log('Catalogue loaded from Supabase:', window.wordCatalogue.length, 'words');
+    // Update word count display after loading
+    if (window.updateProgressSummary) {
+      window.updateProgressSummary();
+    }
   } else {
     console.error('Failed to load catalogue from Supabase:', result.error);
     window.wordCatalogue = [];
+    // Update word count display even if empty
+    if (window.updateProgressSummary) {
+      window.updateProgressSummary();
+    }
   }
 }
 
