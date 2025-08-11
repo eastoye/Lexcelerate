@@ -516,22 +516,21 @@ body {
   background: var(--color-panel);
   border: 2px solid var(--color-accent);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
+  padding: var(--spacing-xl);
   width: calc(100vw - 32px);
   max-width: 400px;
   height: auto;
-  max-height: calc(100vh - 64px);
+  max-height: calc(100vh - 32px);
   text-align: center;
   box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
+  justify-content: center;
 }
 
 /* App Title */
 .app-title {
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
 }
 
 .app-title h1 {
@@ -540,7 +539,7 @@ body {
   font-weight: 700;
   color: var(--color-primary-text);
   letter-spacing: 0.2em;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .title-underline {
@@ -552,7 +551,7 @@ body {
 
 /* Word of the Day - Minimal */
 .wotd-section-minimal {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
 }
 
 .wotd-label-minimal {
@@ -561,7 +560,7 @@ body {
   font-weight: 600;
   color: var(--color-primary-text);
   letter-spacing: 0.1em;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .wotd-word-minimal {
@@ -574,7 +573,7 @@ body {
   font-weight: 700;
   cursor: pointer;
   transition: all var(--transition-smooth);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
   display: inline-block;
   width: 100%;
   max-width: 280px;
@@ -595,8 +594,7 @@ body {
 .action-buttons-minimal {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
-  width: 100%;
+  gap: var(--spacing-sm);
 }
 
 .minimal-button {
@@ -612,7 +610,6 @@ body {
   cursor: pointer;
   transition: all var(--transition-fast);
   min-height: 44px;
-  width: 100%;
 }
 
 .minimal-button:hover {
@@ -633,8 +630,7 @@ body {
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--radius-sm);
   font-size: clamp(0.75rem, 2.5vw, 0.875rem);
-  margin-top: var(--spacing-sm);
-  width: 100%;
+  margin-top: var(--spacing-xs);
 }
 
 .word-count-display span:last-child {
@@ -645,7 +641,7 @@ body {
 /* Responsive adjustments for minimal design */
 @media (max-width: 480px) {
   .minimal-container {
-    padding: var(--spacing-sm);
+    padding: var(--spacing-md);
     width: calc(100vw - 24px);
     margin: 0;
   }
@@ -660,7 +656,7 @@ body {
   }
   
   .action-buttons-minimal {
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
   }
   
   .minimal-button {
