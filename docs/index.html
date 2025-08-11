@@ -15,35 +15,6 @@
   <script type="module" src="supabase-api.js"></script>
 </head>
 <body class="app-container">
-  <!-- Help Modal -->
-  <div id="help-modal" class="modal" style="display:none;">
-    <div class="modal-content">
-      <span id="help-close" class="close">&times;</span>
-      <h2>Help</h2>
-      <div id="help-text">
-        <!-- Help text will load based on current screen -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Notification -->
-  <div id="notification" class="notification" style="display:none;"></div>
-
-  <!-- Header -->
-  <header class="app-header">
-    <div class="header-content">
-      <div class="logo-section">
-        <div class="logo-icon">L</div>
-        <div class="logo-text">Lexcelerate</div>
-      </div>
-      <div class="header-actions">
-        <button id="help-btn" class="icon-button" aria-label="Help">
-          <span>?</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
   <!-- Login Screen -->
   <div id="auth-screen" class="screen" style="display: none;">
     <h2 id="auth-title">Sign In to Lexcelerate</h2>
@@ -247,10 +218,5 @@
   </div>
 
   <!-- Footer with Version Number -->
-  <footer>
-    <span id="version">v1.3 α</span>
-  </footer>
-
-  <script type="module" src="main.js"></script>
 </body>
 </html>
