@@ -501,7 +501,6 @@ body {
 
 /* Home Screen Styles */
 #home-screen {
-  min-height: 100vh;
   min-height: 100dvh;
   background: var(--color-background);
   position: fixed;
@@ -510,7 +509,7 @@ body {
   right: 0;
   bottom: 0;
   overflow: hidden;
-  padding: clamp(8px, 2vh, 20px) clamp(8px, 2vw, 12px);
+  padding: clamp(8px, 2dvh, 16px) clamp(8px, 2vw, 12px) max(calc(env(safe-area-inset-bottom) + 20px), 24px);
 }
 
 #home-screen.active {
@@ -533,8 +532,7 @@ body {
 
 .minimal-container {
   width: 100%;
-  height: calc(100vh - clamp(16px, 4vh, 40px));
-  height: calc(100dvh - clamp(16px, 4vh, 40px));
+  min-height: calc(100dvh - clamp(8px, 2dvh, 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px) - 16px);
   border-radius: var(--radius-lg);
   border: 1px solid rgba(191, 167, 116, 0.35);
   background: var(--color-panel);
@@ -685,6 +683,7 @@ body {
   border-radius: var(--radius-sm);
   font-size: clamp(0.75rem, 2.5vw, 0.875rem);
   margin-top: var(--spacing-xs);
+  margin-bottom: clamp(8px, 2dvh, 12px);
   width: 100%;
   text-align: center;
   min-height: 40px;
@@ -702,6 +701,7 @@ body {
 @media (max-width: 480px) {
   .minimal-container {
     padding: clamp(12px, 3vw, 20px);
+    min-height: calc(100dvh - clamp(8px, 2dvh, 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px) - 20px);
   }
   
   .app-title h1 {
@@ -726,7 +726,11 @@ body {
 /* Safe area support for iOS */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   #home-screen {
-    padding-bottom: max(clamp(8px, 2vh, 20px), env(safe-area-inset-bottom));
+    padding-bottom: max(calc(env(safe-area-inset-bottom) + 20px), 24px);
+  }
+  
+  .minimal-container {
+    min-height: calc(100dvh - clamp(8px, 2dvh, 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px) - 16px);
   }
 }
 
