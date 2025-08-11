@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="manifest" href="/assets/manifest-Bez2WkQ5.json" />
-  <script type="module" crossorigin src="/assets/main-dWWdPvMn.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/main-_y5aVcVB.css">
+  <script type="module" crossorigin src="/assets/main-CVbNgzLr.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/main-DmZlhc1C.css">
 </head>
 <body class="app-container">
   <!-- Help Modal -->
@@ -29,7 +29,7 @@
   <div id="notification" class="notification" style="display:none;"></div>
 
   <!-- Header -->
-  <header class="app-header">
+  <header class="app-header" id="main-header">
     <div class="header-content">
       <div class="logo-section">
         <div class="logo-icon">L</div>
@@ -58,101 +58,64 @@
 
   <!-- Home Screen -->
   <div id="home-screen" style="display: none;">
-    <main class="main-content">
-      <!-- Hero Section -->
-      <section class="hero-section">
-        <h1 class="hero-title text-hero">Sharpen Your Words. Master Your Language.</h1>
-        <p class="hero-subtitle">Transform your vocabulary with intelligent practice, personalized learning, and comprehensive tracking.</p>
-        <button id="practice-btn" class="cta-button">Start Practice</button>
-      </section>
-
-      <!-- Word of the Day Section -->
-      <section class="wotd-section">
-        <div class="wotd-label">Word of the Day</div>
-        <div id="wotd" class="wotd-word" tabindex="0" role="button" aria-label="Click to see definition"></div>
-        <div class="wotd-hint">Click the word to see its definition!</div>
-      </section>
-
-      <!-- Features Grid -->
-      <section class="features-grid">
-        <!-- Practice Word List Feature -->
-        <div class="feature-card" id="add-word-card" tabindex="0" role="button" aria-label="Add words to your practice list">
-          <div class="feature-icon">📝</div>
-          <h3 class="feature-title">Practice Word List</h3>
-          <p class="feature-description">Build your personal vocabulary collection with words you want to master.</p>
-          <div class="feature-stats">
-            <div class="stat-item">
-              <div class="stat-value" id="word-count">0</div>
-              <div class="stat-label">Words</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value" id="mastery-rate">0%</div>
-              <div class="stat-label">Mastery</div>
-            </div>
-          </div>
+    <div class="home-wrapper">
+      <div class="minimal-container">
+        <!-- Header Icons (positioned inside container) -->
+        <div class="header-icons">
+          <button id="help-btn-home" class="icon-button" aria-label="Help">
+            <span>?</span>
+          </button>
+        </div>
+        
+        <!-- App Title -->
+        <div class="app-title">
+          <h1>LEXCEED</h1>
+          <div class="title-underline"></div>
         </div>
 
-        <!-- Smart Lists Feature -->
-        <div class="feature-card" id="smart-lists-card" tabindex="0" role="button" aria-label="Access your smart lists">
-          <div class="feature-icon">🎯</div>
-          <h3 class="feature-title">Smart Lists</h3>
-          <p class="feature-description">AI-powered lists that adapt to your learning progress and focus on challenging words.</p>
-          <div class="feature-stats">
-            <div class="stat-item">
-              <div class="stat-value" id="lists-count">0</div>
-              <div class="stat-label">Lists</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value" id="focus-words">0</div>
-              <div class="stat-label">Focus</div>
-            </div>
-          </div>
+        <!-- Word of the Day Section -->
+        <div class="wotd-section-minimal">
+          <div class="wotd-label-minimal">WORD OF THE DAY</div>
+          <div id="wotd" class="wotd-word-minimal" tabindex="0" role="button" aria-label="Click to see definition">serendipity</div>
+          <div class="wotd-hint-minimal">Click the word to see its definition!</div>
         </div>
 
-        <!-- Stats Overview Feature -->
-        <div class="feature-card" id="stats-card" tabindex="0" role="button" aria-label="View your learning statistics">
-          <div class="feature-icon">📊</div>
-          <h3 class="feature-title">Stats Overview</h3>
-          <p class="feature-description">Track your progress with detailed analytics and performance insights.</p>
-          <div class="feature-stats">
-            <div class="stat-item">
-              <div class="stat-value" id="streak-count">0</div>
-              <div class="stat-label">Streak</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value" id="accuracy-rate">0%</div>
-              <div class="stat-label">Accuracy</div>
-            </div>
+        <!-- Action Buttons -->
+        <div class="action-buttons-minimal">
+          <button id="add-word-btn" class="minimal-button">ADD WORD</button>
+          <button id="practice-btn" class="minimal-button">PRACTICE WORD</button>
+          <button id="stats-btn-minimal" class="minimal-button">STATS</button>
+          <div class="word-count-display">
+            <span>Words in catalogue: </span><span id="word-count-minimal">3</span>
           </div>
         </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- Progress Summary -->
-      <section class="progress-summary">
-        <h3 class="progress-title">Your Learning Progress</h3>
-        <div class="progress-value" id="overall-progress">0%</div>
-        <div class="progress-label" id="progress-summary">Overall First-Attempt Accuracy</div>
-      </section>
-
-      <!-- Quick Actions -->
-      <section class="quick-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
-        <button id="add-word-btn" class="action-button">
-          <span>➕</span>
-          Add Word
-        </button>
-        <button id="logout-btn" class="action-button">
-          <span>🚪</span>
-          Log Out
-        </button>
-      </section>
-    </main>
-
-    <!-- Welcome Message (Hidden, for compatibility) -->
-    <p id="welcome-message" style="display: none;"></p>
-    
     <!-- Legacy Elements (Hidden, for compatibility) -->
     <div style="display: none;">
-      <div id="progress-summary"></div>
+      <!-- App Title -->
+      <div class="app-title">
+        <h1>LEXCEED</h1>
+        <div class="title-underline"></div>
+      </div>
+
+      <!-- Word of the Day Section -->
+      <div class="wotd-section-minimal">
+        <div class="wotd-label-minimal">WORD OF THE DAY</div>
+        <div id="wotd" class="wotd-word-minimal" tabindex="0" role="button" aria-label="Click to see definition">ubiquitous</div>
+        <div class="wotd-hint-minimal">Click the word to see its definition!</div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons-minimal">
+        <button id="add-word-btn" class="minimal-button">ADD WORD</button>
+        <button id="practice-btn" class="minimal-button">PRACTICE WORD</button>
+        <button id="stats-btn-minimal" class="minimal-button">STATS</button>
+        <div class="word-count-display">
+          <span>Words in catalogue: </span><span id="word-count-minimal">3</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -306,7 +269,7 @@
   </div>
 
   <!-- Footer with Version Number -->
-  <footer>
+  <footer id="main-footer">
     <span id="version">v1.3 α</span>
   </footer>
 
