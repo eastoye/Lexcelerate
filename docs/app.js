@@ -319,6 +319,21 @@ function showScreen(screenId) {
     targetScreen.style.display = 'block';
     targetScreen.classList.add('active');
   }
+  
+  // Hide/show header and footer based on screen
+  const header = document.getElementById('main-header');
+  const footer = document.getElementById('main-footer');
+  
+  if (screenId === 'home-screen') {
+    if (header) header.style.display = 'none';
+    if (footer) footer.style.display = 'none';
+    document.body.style.overflow = 'hidden';
+  } else {
+    if (header) header.style.display = 'block';
+    if (footer) footer.style.display = 'block';
+    document.body.style.overflow = 'auto';
+  }
+  
   if (screenId === 'home-screen') updateProgressSummary();
   if (screenId === 'stats-screen') {
     updateStatsList();

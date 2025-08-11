@@ -479,22 +479,33 @@ body {
 /* Home Screen Specific */
 #home-screen {
   padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 #home-screen.active {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  display: block;
 }
 
 /* Minimal Home Screen Styles */
 .minimal-home {
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   background: var(--color-background);
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
 }
 
 .minimal-home.active {
@@ -505,25 +516,30 @@ body {
   background: var(--color-panel);
   border: 2px solid var(--color-accent);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-2xl);
+  padding: var(--spacing-xl);
+  width: calc(100vw - 32px);
   max-width: 400px;
-  width: 100%;
+  height: auto;
+  max-height: calc(100vh - 32px);
   text-align: center;
   box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* App Title */
 .app-title {
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-xl);
 }
 
 .app-title h1 {
   font-family: var(--font-serif);
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 8vw, 2.5rem);
   font-weight: 700;
   color: var(--color-primary-text);
   letter-spacing: 0.2em;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .title-underline {
@@ -535,31 +551,32 @@ body {
 
 /* Word of the Day - Minimal */
 .wotd-section-minimal {
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-xl);
 }
 
 .wotd-label-minimal {
   font-family: var(--font-sans);
-  font-size: 0.875rem;
+  font-size: clamp(0.75rem, 3vw, 0.875rem);
   font-weight: 600;
   color: var(--color-primary-text);
   letter-spacing: 0.1em;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .wotd-word-minimal {
   background: var(--color-mint);
   color: var(--color-background);
-  padding: var(--spacing-lg) var(--spacing-xl);
+  padding: var(--spacing-md) var(--spacing-lg);
   border-radius: var(--radius-md);
   font-family: var(--font-serif);
-  font-size: 1.75rem;
+  font-size: clamp(1.5rem, 6vw, 1.75rem);
   font-weight: 700;
   cursor: pointer;
   transition: all var(--transition-smooth);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
   display: inline-block;
-  min-width: 200px;
+  width: 100%;
+  max-width: 280px;
 }
 
 .wotd-word-minimal:hover {
@@ -568,7 +585,7 @@ body {
 }
 
 .wotd-hint-minimal {
-  font-size: 0.75rem;
+  font-size: clamp(0.7rem, 2.5vw, 0.75rem);
   color: var(--color-accent);
   font-style: italic;
 }
@@ -577,22 +594,22 @@ body {
 .action-buttons-minimal {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
 }
 
 .minimal-button {
   background: transparent;
   border: 1px solid var(--color-accent);
   color: var(--color-primary-text);
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
-  font-size: 0.875rem;
+  font-size: clamp(0.8rem, 3vw, 0.875rem);
   font-weight: 600;
   letter-spacing: 0.05em;
   cursor: pointer;
   transition: all var(--transition-fast);
-  min-height: 48px;
+  min-height: 44px;
 }
 
 .minimal-button:hover {
@@ -610,10 +627,10 @@ body {
   background: transparent;
   border: 1px solid rgba(191, 167, 116, 0.3);
   color: var(--color-secondary-text);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--radius-sm);
-  font-size: 0.875rem;
-  margin-top: var(--spacing-sm);
+  font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+  margin-top: var(--spacing-xs);
 }
 
 .word-count-display span:last-child {
@@ -624,18 +641,27 @@ body {
 /* Responsive adjustments for minimal design */
 @media (max-width: 480px) {
   .minimal-container {
-    padding: var(--spacing-lg);
-    margin: var(--spacing-md);
+    padding: var(--spacing-md);
+    width: calc(100vw - 24px);
+    margin: 0;
   }
   
   .app-title h1 {
-    font-size: 2rem;
+    font-size: clamp(1.8rem, 8vw, 2rem);
   }
   
   .wotd-word-minimal {
-    font-size: 1.5rem;
-    padding: var(--spacing-md) var(--spacing-lg);
-    min-width: 180px;
+    font-size: clamp(1.3rem, 6vw, 1.5rem);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  .action-buttons-minimal {
+    gap: var(--spacing-xs);
+  }
+  
+  .minimal-button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    min-height: 40px;
   }
 }
 

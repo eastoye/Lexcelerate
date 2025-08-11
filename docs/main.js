@@ -46,12 +46,20 @@ onAuthStateChange(async (user) => {
     // Initialize smart list generator
     initializeSmartListGenerator();
     
+    // Hide header and footer for mobile app experience
+    document.getElementById('main-header').style.display = 'none';
+    document.getElementById('main-footer').style.display = 'none';
+    
     window.showScreen('home-screen');
     loadWordOfTheDay();
   } else {
     currentUser = null;
     userProfile = null;
     console.log('User signed out');
+    
+    // Show header and footer for auth screen
+    document.getElementById('main-header').style.display = 'block';
+    document.getElementById('main-footer').style.display = 'block';
     
     window.wordCatalogue = [];
     window.showScreen('auth-screen');
