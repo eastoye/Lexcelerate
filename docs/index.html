@@ -59,8 +59,8 @@
 
   <!-- Home Screen -->
   <div id="home-screen" style="display: none;">
-    <div class="home-wrapper">
-      <div class="minimal-container">
+    <div class="home-container">
+      <section class="home-panel">
         <!-- Header Icons (positioned inside container) -->
         <div class="header-icons">
           <button id="help-btn-home" class="icon-button" aria-label="Help">
@@ -77,7 +77,7 @@
         <!-- Word of the Day Section -->
         <div class="wotd-section-minimal">
           <div class="wotd-label-minimal">WORD OF THE DAY</div>
-          <div id="wotd" class="wotd-word-minimal" tabindex="0" role="button" aria-label="Click to see definition">serendipity</div>
+          <button id="wotd" class="wotd-word-minimal" tabindex="0" aria-label="Click to see definition">serendipity</button>
           <div class="wotd-hint-minimal">Click the word to see its definition!</div>
         </div>
 
@@ -86,11 +86,13 @@
           <button id="add-word-btn" class="minimal-button">ADD WORD</button>
           <button id="practice-btn" class="minimal-button">PRACTICE WORD</button>
           <button id="stats-btn-minimal" class="minimal-button">STATS</button>
-          <div class="word-count-display">
-            <span>Words in catalogue: </span><span id="word-count-minimal">3</span>
-          </div>
         </div>
-      </div>
+        
+        <!-- Footer Chip -->
+        <div class="word-count-display">
+          <span>Words in catalogue: </span><span id="word-count-minimal">3</span>
+        </div>
+      </section>
     </div>
 
     <!-- Legacy Elements (Hidden, for compatibility) -->
