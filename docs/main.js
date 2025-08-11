@@ -27,6 +27,11 @@ onAuthStateChange(async (user) => {
         return;
       }
       
+      // Update welcome message
+      const welcomeMsg = document.getElementById('welcome-message');
+      if (welcomeMsg) {
+        welcomeMsg.textContent = `Welcome back, ${userProfile.username}!`;
+      }
     
     }
     
@@ -235,7 +240,10 @@ document.getElementById('username-submit-btn').addEventListener('click', async (
       const profileResult = await getUserProfile();
       if (profileResult.success) {
         userProfile = profileResult.data;
-        document.getElementById('welcome-message').textContent = `Welcome, ${userProfile.username}!`;
+        const welcomeMsg = document.getElementById('welcome-message');
+        if (welcomeMsg) {
+          welcomeMsg.textContent = `Welcome, ${userProfile.username}!`;
+        }
       }
       
       await loadUserCatalogueFromSupabase();
