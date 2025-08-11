@@ -521,7 +521,7 @@ body {
   max-width: 420px;
   width: 100%;
   margin: 0 auto;
-  padding: 0;
+  padding: var(--spacing-lg) var(--spacing-md);
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -535,19 +535,17 @@ body {
 }
 
 .minimal-container {
-  width: 100vw;
-  height: 100vh;
-  border-radius: 0;
-  border: none;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(191, 167, 116, 0.35);
   background: var(--color-panel);
-  padding: var(--spacing-xl) var(--spacing-lg);
-  box-shadow: none;
+  padding: var(--spacing-lg);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
-  max-width: none;
 }
 
 /* Header Icons inside container */
