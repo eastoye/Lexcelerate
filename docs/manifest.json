@@ -3,8 +3,8 @@
   "short_name": "Lexcelerate",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#0a0e17",
-  "theme_color": "#C5B358",
+  "background_color": "#f5f5f5",
+  "theme_color": "#007BFF",
   "icons": [
     {
       "src": "icon-192.png",
