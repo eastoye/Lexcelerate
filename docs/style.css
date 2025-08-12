@@ -1002,3 +1002,72 @@ button:not(.icon-button):not(.cta-button):not(.action-button):hover {
 
 /* Optional: ensure any accidental 100vw elements don't cause nudging */
 [style*="100vw"], .w-screen { max-width: 100% !important; }
+/* === Target shape/size/colour match — drop at END of file === */
+
+/* 1) Colours from target */
+:root{
+  --color-background: #0a0e17;   /* deep navy */
+  --color-panel: #1a1e27;        /* navy light */
+  --color-accent: #C5B358;       /* gold-muted */
+  --color-mint: #6bbba1;         /* mint */
+  --color-primary-text: #fdf6e3; /* cream */
+  --color-secondary-text: #f5ede0;
+  --maxw: 520px;                 /* match target card width */
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+}
+
+/* 2) Keep layout centered and full-height without sideways nudge */
+body{ min-height: 100dvh; overflow-x: hidden; }
+.home-container{ max-width: var(--maxw); }
+
+/* 3) Home card = same shape/size as target */
+.minimal-container{
+  /* size/shape */
+  min-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-3xl) var(--spacing-2xl); /* roomier like target */
+  /* look */
+  background: var(--color-panel);
+  border: 1px solid rgba(197,179,88,0.5); /* gold-subtle */
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* Ensure #home-screen doesn't force old vh/vw sizing from earlier rules */
+#home-screen{
+  width: 100%;
+  min-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
+  background: var(--color-background);
+  overflow: hidden;
+}
+
+/* 4) Title spacing/lettering (law-firm vibe, matches target) */
+.app-title h1{ letter-spacing: 0.1em; }
+
+/* 5) WOTD pill = same weight as target */
+.wotd-word-minimal{
+  background: var(--color-mint);
+  color: #0a0e17; /* readable on mint */
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  width: 100%;
+}
+
+/* 6) Buttons = same mass and tap size as target */
+.action-buttons-minimal{ gap: var(--spacing-lg); margin-bottom: var(--spacing-2xl); }
+
+.minimal-button{
+  border-color: rgba(197,179,88,0.5);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  min-height: 56px;       /* comfy thumb target */
+  font-size: 1.1rem;
+}
+
+/* 7) Word-count chip spacing to match card bottom rhythm */
+.word-count-display{
+  border-color: rgba(197,179,88,0.3);
+  margin-top: 0;
+  min-height: 44px;
+}
