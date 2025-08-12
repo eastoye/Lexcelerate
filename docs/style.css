@@ -529,11 +529,11 @@ body {
 
 .minimal-container {
   width: 100%;
-  min-height: calc(100dvh - clamp(16px, 6vh, 40px));
+  min-height: calc(100dvh - clamp(20px, 4vh, 32px));
   border-radius: 12px;
   border: 1px solid rgba(191, 167, 116, 0.35);
   background: var(--color-panel);
-  padding: clamp(16px, 4vw, 20px);
+  padding: clamp(20px, 5vw, 28px) clamp(16px, 4vw, 20px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
@@ -573,7 +573,7 @@ body {
 
 /* App Title */
 .app-title {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
 }
 
 .app-title h1 {
@@ -582,7 +582,7 @@ body {
   font-weight: 700;
   color: var(--color-primary-text);
   letter-spacing: 0.2em;
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
 }
 
 .title-underline {
@@ -594,7 +594,7 @@ body {
 
 /* Word of the Day - Minimal */
 .wotd-section-minimal {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
 }
 
 .wotd-label-minimal {
@@ -603,7 +603,7 @@ body {
   font-weight: 600;
   color: var(--color-primary-text);
   letter-spacing: 0.1em;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .wotd-word-minimal {
@@ -616,7 +616,7 @@ body {
   font-weight: 700;
   cursor: pointer;
   transition: all var(--transition-smooth);
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
   display: inline-block;
   width: 100%;
   max-width: 280px;
@@ -699,14 +699,15 @@ body {
 .action-buttons-minimal {
   gap: var(--spacing-lg);
 }
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
 }
 
 .minimal-button {
   background: transparent;
   border: 1px solid var(--color-accent);
   color: var(--color-primary-text);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-size: clamp(0.8rem, 3vw, 0.875rem);
@@ -714,7 +715,7 @@ body {
   letter-spacing: 0.05em;
   cursor: pointer;
   transition: all var(--transition-fast);
-  min-height: 44px;
+  min-height: 48px;
 }
 
 .minimal-button:hover {
@@ -735,7 +736,8 @@ body {
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--radius-sm);
   font-size: clamp(0.75rem, 2.5vw, 0.875rem);
-  margin-top: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+  margin-bottom: 0;
 }
 
 .word-count-display span:last-child {
@@ -746,7 +748,7 @@ body {
 /* Responsive adjustments for minimal design */
 @media (max-width: 480px) {
   .minimal-container {
-    padding: var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-md);
     width: calc(100vw - 24px);
     margin: 0;
   }
@@ -757,16 +759,16 @@ body {
   
   .wotd-word-minimal {
     font-size: clamp(1.3rem, 6vw, 1.5rem);
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
   }
   
   .action-buttons-minimal {
-    gap: var(--spacing-xs);
+    gap: var(--spacing-sm);
   }
   
   .minimal-button {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    min-height: 40px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    min-height: 44px;
   }
 }
 
