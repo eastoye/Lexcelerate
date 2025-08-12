@@ -637,6 +637,68 @@ body {
 .action-buttons-minimal {
   display: flex;
   flex-direction: column;
+
+/* === Button size/shape unifier — paste at END of file === */
+:root{
+  /* tweak these to taste if you want */
+  --btn-height: 56px;                     /* consistent tap height */
+  --btn-radius: 12px;                     /* rounded corners */
+  --btn-pad-y: 14px;                      /* vertical padding */
+  --btn-pad-x: clamp(16px, 5vw, 24px);    /* horizontal padding */
+  --btn-font: 1.1rem;                     /* readable label size */
+  --btn-border: 1px solid rgba(197,179,88,0.5); /* gold outline */
+}
+
+/* Primary full-width buttons (home + main actions) */
+#home-screen .minimal-button,
+#home-screen .nav-btn,
+#home-screen .action-btn,
+#home-screen .add-btn,
+#home-screen .submit-btn,
+.nav-buttons .nav-btn,
+.action-buttons-minimal .minimal-button {
+  width: 100%;
+  min-height: var(--btn-height);
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border-radius: var(--btn-radius);
+  font-size: var(--btn-font);
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  border: var(--btn-border);          /* keeps your palette */
+  box-shadow: var(--shadow-sm);       /* uses your existing shadow token */
+}
+
+/* Secondary full-width buttons (keep same look, slightly shorter) */
+#home-screen .control-btn,
+#home-screen .mode-toggle-btn,
+.action-buttons .action-btn {
+  width: 100%;
+  min-height: calc(var(--btn-height) - 6px);
+  padding: 12px var(--btn-pad-x);
+  border-radius: var(--btn-radius);
+  font-size: 1rem;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  border: var(--btn-border);
+}
+
+/* Small utility buttons (keep consistent shape, not full width) */
+.add-random-btn,
+.import-confirm-btn,
+.import-cancel-btn {
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: calc(var(--btn-radius) - 4px);
+  letter-spacing: 0.05em;
+  border: var(--btn-border);
+}
+
+/* Ensure even spacing in stacks */
+.nav-buttons,
+.action-buttons,
+.action-buttons-minimal {
+  gap: var(--spacing-lg);
+}
   gap: var(--spacing-sm);
 }
 

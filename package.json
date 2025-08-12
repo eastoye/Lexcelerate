@@ -1,7 +1,7 @@
 {
-  "name": "lexcelerate",
+  "name": "Lexcelerate",
   "version": "1.0.0",
-  "description": "Spelling practice app with Firebase Auth and Airtable storage",
+  "description": "Spelling practice app with Supabase Auth and database storage",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
