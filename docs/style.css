@@ -521,9 +521,13 @@ body {
 }
 
 .home-wrapper {
+  max-width: var(--maxw); 
   margin: 0 auto;
+  padding: 0 8px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
-  max-width: min(calc(100vw - 16px), 480px);
   height: 100%;
 }
 
@@ -539,6 +543,9 @@ body {
   flex-direction: column;
   text-align: center;
   position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: var(--maxw);
 }
 
 /* Header Icons inside container */
