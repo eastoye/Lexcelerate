@@ -176,7 +176,6 @@ function updateProgressSummary() {
   const wordCountEl = document.getElementById('word-count');
   const masteryRateEl = document.getElementById('mastery-rate');
   const accuracyRateEl = document.getElementById('accuracy-rate');
-  const wordCountMinimalEl = document.getElementById('word-count-minimal');
   
   let totalAttempts = 0, totalCorrectFirstTry = 0;
   wordCatalogue.forEach(wordObj => {
@@ -197,11 +196,6 @@ function updateProgressSummary() {
   
   if (wordCountEl) {
     wordCountEl.textContent = wordCatalogue.length.toString();
-  }
-  
-  // Update minimal word count display on home screen
-  if (wordCountMinimalEl) {
-    wordCountMinimalEl.textContent = wordCatalogue.length.toString();
   }
   
   if (masteryRateEl) {
@@ -356,8 +350,6 @@ window.loadWordOfTheDay = loadWordOfTheDay;
 // Make showNotification globally accessible
 window.showNotification = showNotification;
 
-// Make updateProgressSummary globally accessible
-window.updateProgressSummary = updateProgressSummary;
 // ---------------------------
 // Smart List Helper Function
 // ---------------------------

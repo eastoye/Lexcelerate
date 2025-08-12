@@ -1,24 +1,5 @@
 /* Lexcelerate - Modern Mobile-First Design System */
 
-/* ---------- Global reset + safe-area vars ---------- */
-*, *::before, *::after { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; min-height: 100dvh; overflow-x: hidden; }
-
-:root{
-  --maxw: 480px;              /* card/container max width on phones */
-  --gutter-x: 8px;            /* small side gutters */
-  --pad-top: clamp(12px, 1.8vh, 20px);
-  --pad-bottom: clamp(20px, 2.5vh, 28px);
-}
-
-/* Add iOS safe-area insets */
-@supports (padding: max(0px)){
-  :root{
-    --pad-top: max(var(--pad-top), calc(env(safe-area-inset-top) + 12px));
-    --pad-bottom: max(var(--pad-bottom), calc(env(safe-area-inset-bottom) + 20px));
-  }
-}
-
 /* CSS Custom Properties for Design System */
 :root {
   /* Colors */
@@ -57,6 +38,20 @@ html, body { margin: 0; padding: 0; min-height: 100dvh; overflow-x: hidden; }
   /* Transitions */
   --transition-fast: 0.2s ease;
   --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -504,33 +499,21 @@ body {
   display: block;
 }
 
-/* ---------- Outer wrapper (centered, no vw) ---------- */
-.home-container {
-  width: 100%;
-  max-width: var(--maxw);
-  margin-inline: auto;
-  padding-inline: var(--gutter-x);
-  padding-top: var(--pad-top);
-  padding-bottom: var(--pad-bottom);
-}
-
-/* ---------- Main card/panel ---------- */
 /* Home Screen Styles */
 #home-screen {
-  width: 100%;
-  min-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
+  min-height: 100dvh;
   background: var(--color-background);
+  color: var(--color-primary-text);
+  display: flex;
   position: fixed;
+  top: 0;
+  right: 0;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  padding: clamp(8px, 3vh, 20px) 8px;
 }
 
 #home-screen.active {
@@ -538,26 +521,24 @@ body {
 }
 
 .home-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100%;
+  margin: 0 auto;
   width: 100%;
+  max-width: min(calc(100vw - 16px), 480px);
+  height: 100%;
 }
 
 .minimal-container {
   width: 100%;
-  min-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
-  border-radius: var(--radius-lg);
+  min-height: calc(100dvh - clamp(16px, 6vh, 40px));
+  border-radius: 12px;
   border: 1px solid rgba(191, 167, 116, 0.35);
   background: var(--color-panel);
-  padding: clamp(16px, 4vw, 24px);
+  padding: clamp(16px, 4vw, 20px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  position: relative;
   text-align: center;
+  position: relative;
 }
 
 /* Header Icons inside container */
@@ -567,7 +548,6 @@ body {
   top: var(--spacing-md);
   display: flex;
   gap: var(--spacing-xs);
-  z-index: 10;
 }
 
 .header-icons .icon-button {
@@ -664,7 +644,7 @@ body {
   background: transparent;
   border: 1px solid var(--color-accent);
   color: var(--color-primary-text);
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-size: clamp(0.8rem, 3vw, 0.875rem);
@@ -672,11 +652,7 @@ body {
   letter-spacing: 0.05em;
   cursor: pointer;
   transition: all var(--transition-fast);
-  min-height: 48px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height: 44px;
 }
 
 .minimal-button:hover {
@@ -698,13 +674,6 @@ body {
   border-radius: var(--radius-sm);
   font-size: clamp(0.75rem, 2.5vw, 0.875rem);
   margin-top: var(--spacing-xs);
-  margin-bottom: 6px;
-  width: 100%;
-  text-align: center;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .word-count-display span:last-child {
@@ -715,7 +684,9 @@ body {
 /* Responsive adjustments for minimal design */
 @media (max-width: 480px) {
   .minimal-container {
-    padding: clamp(12px, 3vw, 20px);
+    padding: var(--spacing-md);
+    width: calc(100vw - 24px);
+    margin: 0;
   }
   
   .app-title h1 {
@@ -724,7 +695,7 @@ body {
   
   .wotd-word-minimal {
     font-size: clamp(1.3rem, 6vw, 1.5rem);
-    padding: var(--spacing-md) var(--spacing-lg);
+    padding: var(--spacing-sm) var(--spacing-md);
   }
   
   .action-buttons-minimal {
@@ -732,17 +703,9 @@ body {
   }
   
   .minimal-button {
-    padding: var(--spacing-sm) var(--spacing-md);
-    min-height: 48px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    min-height: 40px;
   }
-}
-
-/* ---------- Top-right controls (help/sound) ---------- */
-.header-icons {
-  position: absolute;
-  top: calc(8px + env(safe-area-inset-top));
-  right: 8px;
-  z-index: 10;
 }
 
 /* Responsive Design */
@@ -998,76 +961,4 @@ button:not(.icon-button):not(.cta-button):not(.action-button) {
 button:not(.icon-button):not(.cta-button):not(.action-button):hover {
   background: rgba(191, 167, 116, 0.1);
   border-color: var(--color-accent);
-}
-
-/* Optional: ensure any accidental 100vw elements don't cause nudging */
-[style*="100vw"], .w-screen { max-width: 100% !important; }
-/* === Target shape/size/colour match — drop at END of file === */
-
-/* 1) Colours from target */
-:root{
-  --color-background: #0a0e17;   /* deep navy */
-  --color-panel: #1a1e27;        /* navy light */
-  --color-accent: #C5B358;       /* gold-muted */
-  --color-mint: #6bbba1;         /* mint */
-  --color-primary-text: #fdf6e3; /* cream */
-  --color-secondary-text: #f5ede0;
-  --maxw: 520px;                 /* match target card width */
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-}
-
-/* 2) Keep layout centered and full-height without sideways nudge */
-body{ min-height: 100dvh; overflow-x: hidden; }
-.home-container{ max-width: var(--maxw); }
-
-/* 3) Home card = same shape/size as target */
-.minimal-container{
-  /* size/shape */
-  min-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-3xl) var(--spacing-2xl); /* roomier like target */
-  /* look */
-  background: var(--color-panel);
-  border: 1px solid rgba(197,179,88,0.5); /* gold-subtle */
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-}
-
-/* Ensure #home-screen doesn't force old vh/vw sizing from earlier rules */
-#home-screen{
-  width: 100%;
-  min-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
-  background: var(--color-background);
-  overflow: hidden;
-}
-
-/* 4) Title spacing/lettering (law-firm vibe, matches target) */
-.app-title h1{ letter-spacing: 0.1em; }
-
-/* 5) WOTD pill = same weight as target */
-.wotd-word-minimal{
-  background: var(--color-mint);
-  color: #0a0e17; /* readable on mint */
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-xl);
-  font-size: clamp(1.6rem, 6vw, 2.2rem);
-  width: 100%;
-}
-
-/* 6) Buttons = same mass and tap size as target */
-.action-buttons-minimal{ gap: var(--spacing-lg); margin-bottom: var(--spacing-2xl); }
-
-.minimal-button{
-  border-color: rgba(197,179,88,0.5);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-lg) var(--spacing-xl);
-  min-height: 56px;       /* comfy thumb target */
-  font-size: 1.1rem;
-}
-
-/* 7) Word-count chip spacing to match card bottom rhythm */
-.word-count-display{
-  border-color: rgba(197,179,88,0.3);
-  margin-top: 0;
-  min-height: 44px;
 }
