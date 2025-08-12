@@ -1,5 +1,24 @@
 /* Lexcelerate - Modern Mobile-First Design System */
 
+/* ---------- Global reset + safe-area vars ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; min-height: 100dvh; overflow-x: hidden; }
+
+:root{
+  --maxw: 480px;              /* card/container max width on phones */
+  --gutter-x: 8px;            /* small side gutters */
+  --pad-top: clamp(12px, 1.8vh, 20px);
+  --pad-bottom: clamp(20px, 2.5vh, 28px);
+}
+
+/* Add iOS safe-area insets */
+@supports (padding: max(0px)){
+  :root{
+    --pad-top: max(var(--pad-top), calc(env(safe-area-inset-top) + 12px));
+    --pad-bottom: max(var(--pad-bottom), calc(env(safe-area-inset-bottom) + 20px));
+  }
+}
+
 /* CSS Custom Properties for Design System */
 :root {
   /* Colors */
@@ -38,20 +57,6 @@
   /* Transitions */
   --transition-fast: 0.2s ease;
   --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Reset and Base Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow-x: hidden;
 }
 
 body {
@@ -499,17 +504,33 @@ body {
   display: block;
 }
 
+/* ---------- Outer wrapper (centered, no vw) ---------- */
+.home-container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter-x);
+  padding-top: var(--pad-top);
+  padding-bottom: var(--pad-bottom);
+}
+
+/* ---------- Main card/panel ---------- */
 /* Home Screen Styles */
 #home-screen {
-  min-height: 100dvh;
+  width: 100%;
+  min-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
   background: var(--color-background);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   overflow: hidden;
-  padding: clamp(8px, 2dvh, 16px) clamp(8px, 2vw, 12px) max(calc(env(safe-area-inset-bottom) + 20px), 24px);
+  display: flex;
+  flex-direction: column;
 }
 
 #home-screen.active {
@@ -524,15 +545,9 @@ body {
   width: 100%;
 }
 
-.home-container {
-  margin: 0 auto;
-  width: 100%;
-  max-width: 480px;
-}
-
 .minimal-container {
   width: 100%;
-  min-height: calc(100dvh - clamp(8px, 2dvh, 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px) - 16px);
+  min-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
   border-radius: var(--radius-lg);
   border: 1px solid rgba(191, 167, 116, 0.35);
   background: var(--color-panel);
@@ -683,7 +698,7 @@ body {
   border-radius: var(--radius-sm);
   font-size: clamp(0.75rem, 2.5vw, 0.875rem);
   margin-top: var(--spacing-xs);
-  margin-bottom: clamp(8px, 2dvh, 12px);
+  margin-bottom: 6px;
   width: 100%;
   text-align: center;
   min-height: 40px;
@@ -701,7 +716,6 @@ body {
 @media (max-width: 480px) {
   .minimal-container {
     padding: clamp(12px, 3vw, 20px);
-    min-height: calc(100dvh - clamp(8px, 2dvh, 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px) - 20px);
   }
   
   .app-title h1 {
@@ -723,15 +737,12 @@ body {
   }
 }
 
-/* Safe area support for iOS */
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
-  #home-screen {
-    padding-bottom: max(calc(env(safe-area-inset-bottom) + 20px), 24px);
-  }
-  
-  .minimal-container {
-    min-height: calc(100dvh - clamp(8px, 2dvh, 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px) - 16px);
-  }
+/* ---------- Top-right controls (help/sound) ---------- */
+.header-icons {
+  position: absolute;
+  top: calc(8px + env(safe-area-inset-top));
+  right: 8px;
+  z-index: 10;
 }
 
 /* Responsive Design */
@@ -988,3 +999,6 @@ button:not(.icon-button):not(.cta-button):not(.action-button):hover {
   background: rgba(191, 167, 116, 0.1);
   border-color: var(--color-accent);
 }
+
+/* Optional: ensure any accidental 100vw elements don't cause nudging */
+[style*="100vw"], .w-screen { max-width: 100% !important; }
