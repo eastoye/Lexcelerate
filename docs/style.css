@@ -52,6 +52,7 @@ html, body {
   padding: 0;
   height: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body {
@@ -62,6 +63,7 @@ body {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 /* Typography Scale */
@@ -509,7 +511,7 @@ body {
   right: 0;
   bottom: 0;
   overflow: hidden;
-  padding: clamp(8px, 2dvh, 16px) clamp(8px, 2vw, 12px) max(calc(env(safe-area-inset-bottom) + 20px), 24px);
+  padding: max(calc(env(safe-area-inset-top) + 12px), 16px) clamp(8px, 2vw, 12px) max(calc(env(safe-area-inset-bottom) + 20px), 24px);
 }
 
 #home-screen.active {
@@ -520,7 +522,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100%;
+  min-height: 100dvh;
   width: 100%;
 }
 
@@ -532,7 +534,7 @@ body {
 
 .minimal-container {
   width: 100%;
-  min-height: calc(100dvh - clamp(8px, 2dvh, 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px) - 16px);
+  min-height: calc(100dvh - max(calc(env(safe-area-inset-top) + 12px), 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px));
   border-radius: var(--radius-lg);
   border: 1px solid rgba(191, 167, 116, 0.35);
   background: var(--color-panel);
@@ -549,7 +551,7 @@ body {
 .header-icons {
   position: absolute;
   right: var(--spacing-md);
-  top: var(--spacing-md);
+  top: max(calc(env(safe-area-inset-top) + 8px), var(--spacing-md));
   display: flex;
   gap: var(--spacing-xs);
   z-index: 10;
@@ -701,7 +703,7 @@ body {
 @media (max-width: 480px) {
   .minimal-container {
     padding: clamp(12px, 3vw, 20px);
-    min-height: calc(100dvh - clamp(8px, 2dvh, 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px) - 20px);
+    min-height: calc(100dvh - max(calc(env(safe-area-inset-top) + 12px), 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px) - 4px);
   }
   
   .app-title h1 {
@@ -726,11 +728,22 @@ body {
 /* Safe area support for iOS */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   #home-screen {
+    padding-top: max(calc(env(safe-area-inset-top) + 12px), 16px);
     padding-bottom: max(calc(env(safe-area-inset-bottom) + 20px), 24px);
   }
   
   .minimal-container {
-    min-height: calc(100dvh - clamp(8px, 2dvh, 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px) - 16px);
+    min-height: calc(100dvh - max(calc(env(safe-area-inset-top) + 12px), 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px));
+  }
+  
+  .header-icons {
+    top: max(calc(env(safe-area-inset-top) + 8px), var(--spacing-md));
+  }
+  
+  @media (max-width: 480px) {
+    .minimal-container {
+      min-height: calc(100dvh - max(calc(env(safe-area-inset-top) + 12px), 16px) - max(calc(env(safe-area-inset-bottom) + 20px), 24px) - 4px);
+    }
   }
 }
 
