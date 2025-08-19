@@ -796,18 +796,19 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* App Title */
-.app-title {
+/* Force a smaller home title */
+.app-title h1 {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(0.1rem, 0.3vw, 0.2rem);
   font-weight: 700;
-  color: var(--color-primary-text);
-  margin-bottom: var(--spacing-2xl);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  position: relative;
-  text-align: center;
+  margin: 0;
+  line-height: 1.1;
+
+  /* pick your size */
+  font-size: clamp(1.2rem, 4.5vw, 1.8rem);
 }
+
 
 .app-title::after {
   content: '';
