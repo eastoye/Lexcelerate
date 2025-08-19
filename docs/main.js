@@ -27,11 +27,6 @@ onAuthStateChange(async (user) => {
         return;
       }
       
-      // Update welcome message
-      const welcomeMsg = document.getElementById('welcome-message');
-      if (welcomeMsg) {
-        welcomeMsg.textContent = `Welcome back, ${userProfile.username}!`;
-      }
     
     }
     
@@ -46,20 +41,12 @@ onAuthStateChange(async (user) => {
     // Initialize smart list generator
     initializeSmartListGenerator();
     
-    // Hide header and footer for mobile app experience
-    document.getElementById('main-header').style.display = 'none';
-    document.getElementById('main-footer').style.display = 'none';
-    
     window.showScreen('home-screen');
     loadWordOfTheDay();
   } else {
     currentUser = null;
     userProfile = null;
     console.log('User signed out');
-    
-    // Show header and footer for auth screen
-    document.getElementById('main-header').style.display = 'block';
-    document.getElementById('main-footer').style.display = 'block';
     
     window.wordCatalogue = [];
     window.showScreen('auth-screen');
@@ -185,17 +172,13 @@ function showAuthError(message) {
 }
 
 // Update logout button to use Supabase auth
-// Find logout button (it's now hidden in legacy elements)
-const logoutBtn = document.getElementById('logout-btn');
-if (logoutBtn) {
-  logoutBtn.addEventListener('click', async () => {
-    const result = await logOut();
-    if (!result.success) {
-      console.error('Logout error:', result.error);
-      showNotification('Error signing out');
-    }
-  });
-}
+document.getElementById('logout-btn').addEventListener('click', async () => {
+  const result = await logOut();
+  if (!result.success) {
+    console.error('Logout error:', result.error);
+    showNotification('Error signing out');
+  }
+});
 
 // Enter key handling for auth form
 document.getElementById('auth-email').addEventListener('keydown', (e) => {
@@ -252,10 +235,7 @@ document.getElementById('username-submit-btn').addEventListener('click', async (
       const profileResult = await getUserProfile();
       if (profileResult.success) {
         userProfile = profileResult.data;
-        const welcomeMsg = document.getElementById('welcome-message');
-        if (welcomeMsg) {
-          welcomeMsg.textContent = `Welcome, ${userProfile.username}!`;
-        }
+        document.getElementById('welcome-message').textContent = `Welcome, ${userProfile.username}!`;
       }
       
       await loadUserCatalogueFromSupabase();

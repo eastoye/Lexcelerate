@@ -54,7 +54,7 @@ function saveCatalogue() {
 function showNotification(message) {
   const notif = document.getElementById('notification');
   notif.textContent = message;
-  notif.classList.add('show');
+  notif.style.display = 'block';
   setTimeout(() => { notif.style.display = 'none'; }, 2000);
 }
 
@@ -171,56 +171,13 @@ function getRandomDictionaryWord() {
 // ---------------------------
 function updateProgressSummary() {
   const summaryDiv = document.getElementById('progress-summary');
-  const overallProgressEl = document.getElementById('overall-progress');
-  const progressSummaryEl = document.getElementById('progress-summary');
-  const wordCountEl = document.getElementById('word-count');
-  const masteryRateEl = document.getElementById('mastery-rate');
-  const accuracyRateEl = document.getElementById('accuracy-rate');
-  
   let totalAttempts = 0, totalCorrectFirstTry = 0;
   wordCatalogue.forEach(wordObj => {
     totalAttempts += wordObj.totalAttempts;
     totalCorrectFirstTry += wordObj.correctFirstTryCount;
   });
   let progress = totalAttempts > 0 ? ((totalCorrectFirstTry / totalAttempts) * 100).toFixed(1) : 0;
-  
-  // Update legacy element
-  if (summaryDiv) {
-    summaryDiv.textContent = `Overall First-Attempt Accuracy: ${progress}%`;
-  }
-  
-  // Update new homepage elements
-  if (overallProgressEl) {
-    overallProgressEl.textContent = `${progress}%`;
-  }
-  
-  if (wordCountEl) {
-    wordCountEl.textContent = wordCatalogue.length.toString();
-  }
-  
-  if (masteryRateEl) {
-    const masteredWords = wordCatalogue.filter(word => word.score >= 80).length;
-    const masteryRate = wordCatalogue.length > 0 ? ((masteredWords / wordCatalogue.length) * 100).toFixed(0) : 0;
-    masteryRateEl.textContent = `${masteryRate}%`;
-  }
-  
-  if (accuracyRateEl) {
-    accuracyRateEl.textContent = `${progress}%`;
-  }
-  
-  // Update streak counter
-  const streakCountEl = document.getElementById('streak-count');
-  if (streakCountEl) {
-    const maxStreak = wordCatalogue.reduce((max, word) => Math.max(max, word.streak || 0), 0);
-    streakCountEl.textContent = maxStreak.toString();
-  }
-  
-  // Update focus words count (words with low scores)
-  const focusWordsEl = document.getElementById('focus-words');
-  if (focusWordsEl) {
-    const focusWords = wordCatalogue.filter(word => word.score < 50).length;
-    focusWordsEl.textContent = focusWords.toString();
-  }
+  summaryDiv.textContent = `Overall First-Attempt Accuracy: ${progress}%`;
 }
 
 function updateStatsList() {
@@ -310,30 +267,10 @@ document.getElementById('toggle-random-stats-btn').addEventListener('click', () 
 function showScreen(screenId) {
   document.querySelectorAll('.screen, #home-screen, #login-screen').forEach(screen => {
     screen.style.display = 'none';
-    screen.classList.remove('active');
   });
   // Handle the renamed auth screen
   if (screenId === 'login-screen') screenId = 'auth-screen';
-  const targetScreen = document.getElementById(screenId);
-  if (targetScreen) {
-    targetScreen.style.display = 'block';
-    targetScreen.classList.add('active');
-  }
-  
-  // Hide/show header and footer based on screen
-  const header = document.getElementById('main-header');
-  const footer = document.getElementById('main-footer');
-  
-  if (screenId === 'home-screen') {
-    if (header) header.style.display = 'none';
-    if (footer) footer.style.display = 'none';
-    document.body.style.overflow = 'hidden';
-  } else {
-    if (header) header.style.display = 'block';
-    if (footer) footer.style.display = 'block';
-    document.body.style.overflow = 'auto';
-  }
-  
+  document.getElementById(screenId).style.display = 'block';
   if (screenId === 'home-screen') updateProgressSummary();
   if (screenId === 'stats-screen') {
     updateStatsList();
@@ -441,36 +378,12 @@ window.refreshSmartList = refreshSmartList;
 // Navigation Button Listeners
 // ---------------------------
 document.getElementById('add-word-btn').addEventListener('click', () => { showScreen('add-word-screen'); });
-
-// Add event listener for the new CTA button and legacy practice button
-function handlePracticeClick() {
+document.getElementById('practice-btn').addEventListener('click', () => {
   if (practiceMode === 'catalogue' && wordCatalogue.length === 0) { alert('Please add at least one word first!'); return; }
   showScreen('practice-screen');
   loadPracticeWord();
-}
-
-document.getElementById('practice-btn').addEventListener('click', handlePracticeClick);
-
-// Add event listener for home screen help button
-document.addEventListener('DOMContentLoaded', () => {
-  const helpBtnHome = document.getElementById('help-btn-home');
-  if (helpBtnHome) {
-    helpBtnHome.addEventListener('click', () => {
-      let helpText = "Home: Use buttons to add words, practice word (toggle between Catalogue and Random modes), view stats, and see the Word of the Day. Click the Word of the Day for options.";
-      document.getElementById('help-text').innerHTML = `<p>${helpText}</p>`;
-      document.getElementById('help-modal').style.display = 'block';
-    });
-  }
 });
-
-// Add event listeners for feature cards
-// Add event listener for minimal stats button
-const statsBtn = document.getElementById('stats-btn-minimal');
-if (statsBtn) {
-  statsBtn.addEventListener('click', () => { showScreen('stats-screen'); });
-}
-
-// Legacy stats button
+document.getElementById('stats-btn').addEventListener('click', () => { showScreen('stats-screen'); });
 document.querySelectorAll('.back-btn').forEach(button => {
   button.addEventListener('click', () => { showScreen('home-screen'); });
 });

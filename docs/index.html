@@ -4,17 +4,13 @@
   <meta charset="UTF-8" />
   <!-- Disable predictive text on inputs via HTML attributes -->
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <title>LEXCELERATE</title>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <title>Lexcelerate</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
   <script type="module" src="supabase-config.js"></script>
   <script type="module" src="supabase-api.js"></script>
 </head>
-<body class="app-container">
+<body>
   <!-- Help Modal -->
   <div id="help-modal" class="modal" style="display:none;">
     <div class="modal-content">
@@ -29,19 +25,9 @@
   <!-- Notification -->
   <div id="notification" class="notification" style="display:none;"></div>
 
-  <!-- Header -->
-  <header class="app-header" id="main-header">
-    <div class="header-content">
-      <div class="logo-section">
-        <div class="logo-icon">L</div>
-        <div class="logo-text">Lexcelerate</div>
-      </div>
-      <div class="header-actions">
-        <button id="help-btn" class="icon-button" aria-label="Help">
-          <span>?</span>
-        </button>
-      </div>
-    </div>
+  <!-- Header with Help Button -->
+  <header>
+    <button id="help-btn" class="help-btn">?</button>
   </header>
 
   <!-- Login Screen -->
@@ -58,66 +44,18 @@
   </div>
 
   <!-- Home Screen -->
-  <div id="home-screen" style="display: none;">
-    <div class="home-wrapper">
-      <div class="minimal-container">
-        <!-- Header Icons (positioned inside container) -->
-        <div class="header-icons">
-          <button id="help-btn-home" class="icon-button" aria-label="Help">
-            <span>?</span>
-          </button>
-        </div>
-        
-        <!-- App Title -->
-        <div class="app-title">
-          <h1>LEXCELERATE</h1>
-          <div class="title-underline"></div>
-        </div>
-
-        <!-- Word of the Day Section -->
-        <div class="wotd-section-minimal">
-          <div class="wotd-label-minimal">WORD OF THE DAY</div>
-          <div id="wotd" class="wotd-word-minimal" tabindex="0" role="button" aria-label="Click to see definition">serendipity</div>
-          <div class="wotd-hint-minimal">Click the word to see its definition!</div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="action-buttons-minimal">
-          <button id="add-word-btn" class="minimal-button">ADD WORD</button>
-          <button id="practice-btn" class="minimal-button">PRACTICE WORD</button>
-          <button id="stats-btn-minimal" class="minimal-button">STATS</button>
-          <div class="word-count-display">
-            <span>Words in catalogue: </span><span id="word-count-minimal">3</span>
-          </div>
-        </div>
-      </div>
+  <div id="home-screen" class="screen" style="display: none;">
+    <h1>Lexcelerate</h1>
+    <p id="welcome-message"></p>
+    <!-- Word of the Day Section -->
+    <div id="word-of-day" class="word-of-day">
+      <strong>Word of the Day:</strong> <span id="wotd" style="cursor:pointer;"></span>
     </div>
-
-    <!-- Legacy Elements (Hidden, for compatibility) -->
-    <div style="display: none;">
-      <!-- App Title -->
-      <div class="app-title">
-        <h1>LEXCELERATE</h1>
-        <div class="title-underline"></div>
-      </div>
-
-      <!-- Word of the Day Section -->
-      <div class="wotd-section-minimal">
-        <div class="wotd-label-minimal">WORD OF THE DAY</div>
-        <div id="wotd" class="wotd-word-minimal" tabindex="0" role="button" aria-label="Click to see definition">ubiquitous</div>
-        <div class="wotd-hint-minimal">Click the word to see its definition!</div>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="action-buttons-minimal">
-        <button id="add-word-btn" class="minimal-button">ADD WORD</button>
-        <button id="practice-btn" class="minimal-button">PRACTICE WORD</button>
-        <button id="stats-btn-minimal" class="minimal-button">STATS</button>
-        <div class="word-count-display">
-          <span>Words in catalogue: </span><span id="word-count-minimal">3</span>
-        </div>
-      </div>
-    </div>
+    <button id="add-word-btn">Add Word</button>
+    <button id="practice-btn">Practice Word</button>
+    <button id="stats-btn">Stats</button>
+    <button id="logout-btn">Log Out</button>
+    <div id="progress-summary"></div>
   </div>
 
   <!-- Username Setup Screen -->
@@ -270,7 +208,7 @@
   </div>
 
   <!-- Footer with Version Number -->
-  <footer id="main-footer">
+  <footer>
     <span id="version">v1.3 α</span>
   </footer>
 
