@@ -727,7 +727,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* Help Button in Card */
 .help-btn-card {
   position: absolute;
-  top: calc(var(--spacing-lg) + 24px);
+  top: calc(var(--spacing-lg) + 30px);
   right: var(--spacing-lg);
   background: transparent;
   border: 1px solid rgba(197, 179, 88, 0.5);
