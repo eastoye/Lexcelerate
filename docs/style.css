@@ -741,7 +741,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
+  z-index: 1;
 }
 
 .help-btn-card:hover {
