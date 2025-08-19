@@ -378,59 +378,6 @@ footer {
 }
 
 /* Old list card styles - remove these */
-.list-card {
-.list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.list-name {
-  margin: 0;
-  color: #333;
-}
-
-.list-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.list-actions button {
-  padding: 0.4rem 0.8rem;
-  font-size: 0.8rem;
-}
-
-.edit-list-btn {
-  background-color: #28a745;
-}
-
-.edit-list-btn:hover {
-  background-color: #218838;
-}
-
-.delete-list-btn {
-  background-color: #dc3545;
-}
-
-.delete-list-btn:hover {
-  background-color: #c82333;
-}
-
-.list-meta {
-  font-size: 0.8rem;
-  color: #666;
-  margin-bottom: 0.5rem;
-}
-
-.view-list-btn {
-  background-color: #17a2b8;
-  width: 100%;
-}
-
-.view-list-btn:hover {
-  background-color: #138496;
-}
 
 .no-lists, .no-words {
   text-align: center;
