@@ -784,7 +784,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* App Title */
 .app-title {
   font-family: 'Playfair Display', serif;
-  font-size: 2.75rem;
+  font-size: clamp(1.8rem, 8vw, 2.75rem);
   font-weight: 700;
   color: var(--color-primary-text);
   margin-bottom: var(--spacing-2xl);
@@ -1685,7 +1685,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 @media (max-width: 480px) {
   .app-title {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
   
   .page-title {
