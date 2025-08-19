@@ -798,7 +798,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* App Title */
 .app-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.2rem, 4.5vw, 2rem);
+  font-size: clamp(1rem, 3vw, 2rem);
   font-weight: 700;
   color: var(--color-primary-text);
   margin-bottom: var(--spacing-2xl);
