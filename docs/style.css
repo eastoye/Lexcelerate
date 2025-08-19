@@ -733,6 +733,8 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
+  /* Ensure proper mobile fit */
+  box-sizing: border-box;
 }
 
 /* Ensure #home-screen doesn't force old vh/vw sizing from earlier rules */
@@ -1609,13 +1611,14 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Responsive Design */
 @media (max-width: 600px) {
-  .home-wrapper {
-    padding: var(--pad-top) 4px var(--pad-bottom);
-  }
-  
   .minimal-container,
   .stats-container {
-    padding: var(--spacing-2xl) var(--spacing-lg);
+    padding: var(--spacing-xl) var(--spacing-md);
+    max-width: calc(100vw - 16px);
+  }
+  
+  .home-wrapper {
+    padding: var(--pad-top) 4px var(--pad-bottom);
   }
   
   .app-title {
