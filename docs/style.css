@@ -728,7 +728,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .help-btn-card {
   position: absolute;
   top: calc(var(--spacing-lg) + 50px);
-  right: var(--spacing-lg) + 1px;
+  left: var(--spacing-lg) + 1px;
   background: transparent;
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: 50%;
