@@ -193,6 +193,10 @@ function updateProgressSummary() {
 
 function updateStatsList() {
   const statsListDiv = document.getElementById('stats-list');
+  
+  // Update stats summary when updating stats list
+  updateStatsSummary();
+  
   let html = '';
   if (wordCatalogue.length === 0) {
     html = '<p>No words added.</p>';
@@ -247,6 +251,34 @@ function updateStatsList() {
   });
 }
 
+// Update stats summary cards
+function updateStatsSummary() {
+  const totalWordsEl = document.getElementById('total-words');
+  const averageScoreEl = document.getElementById('average-score');
+  const bestStreakEl = document.getElementById('best-streak');
+  
+  if (!totalWordsEl || !averageScoreEl || !bestStreakEl) return;
+  
+  // Calculate total words
+  const totalWords = wordCatalogue.length;
+  totalWordsEl.textContent = totalWords;
+  
+  // Calculate average score
+  let averageScore = 0;
+  if (totalWords > 0) {
+    const totalScore = wordCatalogue.reduce((sum, word) => sum + (word.score || 0), 0);
+    averageScore = Math.round(totalScore / totalWords);
+  }
+  averageScoreEl.textContent = averageScore;
+  
+  // Calculate best streak
+  const bestStreak = wordCatalogue.reduce((max, word) => {
+    const streak = word.streak || 0;
+    return streak > max ? streak : max;
+  }, 0);
+  bestStreakEl.textContent = bestStreak;
+}
+
 function updateRandomStatsList() {
   const randomStatsDiv = document.getElementById('random-stats');
   let html = '<h3>Random Word Trials</h3>';
@@ -285,6 +317,7 @@ function showScreen(screenId) {
   if (screenId === 'home-screen') updateProgressSummary();
   if (screenId === 'stats-screen') {
     updateStatsList();
+    updateStatsSummary();
     updateSmartList(); // Initialize smart list when stats screen is shown
   }
 }
