@@ -1834,3 +1834,24 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   justify-content: center;
 }
 
+/* Center the Practice input + make it same width as Submit */
+#practice-screen .input-group{
+  display: flex;
+  flex-direction: column;     /* stack input over button */
+  align-items: center;        /* center children */
+  width: 100%;
+}
+
+#practice-screen .spell-input{
+  flex: 0 0 auto;             /* stop it from stretching weirdly */
+  width: 100%;
+  max-width: 360px;           /* tweak: same width you want for the button */
+  margin: 0 auto;             /* centers when not 100% */
+  text-align: center;
+}
+
+#practice-screen .submit-btn{
+  width: 100%;
+  max-width: 360px;           /* match the input */
+  margin: var(--spacing-md) auto 0;
+}
