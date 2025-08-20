@@ -67,7 +67,18 @@ function showNotification(message) {
 // Word of the Day: Persist for 24 hours
 // ---------------------------
 function loadWordOfTheDay() {
-  const defaultWords = ["serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous"];
+  const defaultWords = [
+  "serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous",
+  "arenaceous", "soliloquy", "pahoehoe", "soporific", "skerry", "guffaw",
+  "oubliette", "fusty", "proprioception", "hermetic", "bokeh", "smarmy",
+  "pavonine", "redound", "citify", "holus-bolus", "stelliferous", "doodad",
+  "jubilate", "exculpatory", "dislimn", "favonian", "gainsay", "burnish",
+  "whitherward", "heyday", "chatoyant", "pied-à-terre", "debonair",
+  "scrimshank", "tagliatelle", "harrumph", "afterclap", "unalienable",
+  "mundify", "chartaceous", "mugwump", "gutta-percha", "laudatory",
+  "glair", "garble", "scrabbly", "pugilistic", "polemics", "solstitial"
+];
+
   const storedWOTD = localStorage.getItem('wotd');
   const wotdTimestamp = localStorage.getItem('wotdTimestamp');
   const now = Date.now();
