@@ -270,4 +270,3 @@ function showUsernameError(message) {
 window.currentUser = currentUser;
 window.userProfile = userProfile;
 window.saveUserCatalogueToSupabase = saveUserCatalogueToSupabase;
-window.loadUserCatalogueFromSupabase = loadUserCatalogueFromSupabase;

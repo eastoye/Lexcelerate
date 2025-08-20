@@ -384,18 +384,22 @@
             <span class="btn-icon">📋</span>
             <span class="btn-text">My Lists</span>
           </button>
-          <button id="export-btn" class="action-btn export-btn">
-            <span class="btn-icon">📤</span>
-            <span class="btn-text">Export</span>
+        <!-- Practice list/source selector -->
+        <div class="practice-list-selector" id="practice-list-selector">
+          <button class="current-list-button" id="current-list-button" type="button" aria-haspopup="true" aria-expanded="false">
+            <span>📚 Catalogue</span>
+            <span>▾</span>
           </button>
-          <button id="import-btn" class="action-btn import-btn">
-            <span class="btn-icon">📥</span>
-            <span class="btn-text">Import</span>
-          </button>
-          <button id="toggle-random-stats-btn" class="action-btn">
-            <span class="btn-icon">🎲</span>
-            <span class="btn-text">Show Random Trials</span>
-          </button>
+
+          <div class="list-dropdown" id="practice-source-menu" role="menu" aria-hidden="true" style="display:none;">
+            <div class="dropdown-header">Select Practice Source</div>
+
+            <div class="dropdown-item" role="menuitem" data-source="catalogue">📚 Catalogue</div>
+            <div class="dropdown-item" role="menuitem" data-source="random">🎲 Random Words</div>
+
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" role="menuitem" data-action="open-lists">📂 My Lists ▸</div>
+          </div>
         </div>
 
         <!-- Catalogue Words List -->
