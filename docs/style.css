@@ -1787,3 +1787,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
     transform: none;
   }
 }
+/* Make the title size predictable and container-based */
+.minimal-container { container-type: inline-size; }  /* enables cqw */
+
+#home-screen .app-title {
+  text-wrap: balance;
+}
