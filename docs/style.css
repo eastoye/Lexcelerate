@@ -1410,18 +1410,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 /* Stats Screen Styles */
-.stats-container {
-  background: var(--color-panel);
-  border: 1px solid rgba(197, 179, 88, 0.5);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-3xl) var(--spacing-2xl);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  width: 100%;
-  max-width: 720px;
-  margin: 0 auto;
-  text-align: left;
-}
-
 .stats-summary {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1627,8 +1615,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Responsive Design */
 @media (max-width: 600px) {
-  .minimal-container,
-  .stats-container {
+  .minimal-container {
     padding: var(--spacing-xl) var(--spacing-md);
     max-width: calc(100vw - 16px);
   }
