@@ -163,15 +163,15 @@ class PracticeListSelector {
   // Create the list selector UI
   createListSelector() {
     const practiceScreen = document.getElementById('practice-screen');
-    const modeToggleBtn = document.getElementById('mode-toggle-btn');
+    const modeSection = document.querySelector('#practice-screen .mode-section');
     
-    // Safety check - if element doesn't exist, skip initialization
-    if (!modeToggleBtn) {
-      console.warn('mode-toggle-btn element not found, skipping list selector initialization');
+    // Safety check - if mode section doesn't exist, skip initialization
+    if (!modeSection) {
+      console.warn('mode-section element not found, skipping list selector initialization');
       return;
     }
     
-    // Replace mode toggle with list selector
+    // Replace the entire mode section content with list selector
     const listSelectorHTML = `
       <div class="practice-list-selector">
         <button id="current-list-btn" class="current-list-button">
@@ -199,9 +199,15 @@ class PracticeListSelector {
           </div>
         </div>
       </div>
+      
+      <!-- Add Random Word Button (only visible in Random mode) -->
+      <button id="add-random-to-catalogue-btn" class="add-random-btn" style="display: none;">
+        <span class="btn-icon">➕</span>
+        <span class="btn-text">Add to Catalogue</span>
+      </button>
     `;
 
-    modeToggleBtn.outerHTML = listSelectorHTML;
+    modeSection.innerHTML = listSelectorHTML;
   }
 
   // Attach event listeners
