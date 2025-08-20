@@ -1329,8 +1329,10 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   color: var(--color-primary-text);
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  letter-spacing: 0.1em;
+  text-align: left;
+  letter-spacing: normal;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .spell-input:focus {
