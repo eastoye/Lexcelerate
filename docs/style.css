@@ -1810,6 +1810,3 @@ body{ min-height: 100dvh; overflow-x: hidden; }
     font-size: clamp(1.25rem, 5.2vw, 1.9rem);
   }
 }
-{
-#progress-summary { display: none !important; }
-}
