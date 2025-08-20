@@ -1809,3 +1809,4 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   #home-screen .app-title h1 {
     font-size: clamp(1.25rem, 5.2vw, 1.9rem);
   }
+}
