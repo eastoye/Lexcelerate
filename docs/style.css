@@ -1320,57 +1320,37 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .spell-input {
   flex: 1;
-  background: rgba(26, 30, 39, 0.95);
-  border: 2px solid rgba(197, 179, 88, 0.3);
+  background: #0a0e17;
+  border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-md);
-  padding: var(--spacing-lg) var(--spacing-xl);
+  padding: var(--spacing-md) var(--spacing-lg);
   font-family: 'Inter', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1.1rem;
   color: var(--color-primary-text);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(197, 179, 88, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   text-align: left;
   letter-spacing: normal;
   width: 100%;
   box-sizing: border-box;
-  backdrop-filter: blur(8px);
-  position: relative;
-  min-height: 56px;
 }
 
 .spell-input:focus {
   outline: none;
-  border-color: rgba(197, 179, 88, 0.8);
-  box-shadow: 
-    0 6px 20px rgba(0, 0, 0, 0.5),
-    0 0 0 3px rgba(197, 179, 88, 0.15),
-    inset 0 1px 0 rgba(197, 179, 88, 0.2);
-  background: rgba(26, 30, 39, 1);
-  transform: translateY(-1px);
+  border-color: #c4a000;
+  box-shadow: 0 0 15px rgba(197, 179, 88, 0.2);
+  background: rgba(26, 30, 39, 0.8);
 }
 
 .spell-input::placeholder {
-  color: rgba(245, 237, 224, 0.5);
-  font-weight: 400;
-  font-style: italic;
+  color: var(--color-secondary-text);
+  opacity: 0.7;
   letter-spacing: normal;
 }
 
 .spell-input:disabled {
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: not-allowed;
-  background: rgba(26, 30, 39, 0.5);
-  border-color: rgba(197, 179, 88, 0.1);
-}
-
-.spell-input:hover:not(:disabled) {
-  border-color: rgba(197, 179, 88, 0.5);
-  box-shadow: 
-    0 5px 16px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(197, 179, 88, 0.15);
 }
 
 .submit-btn {
@@ -1834,24 +1814,3 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   justify-content: center;
 }
 
-/* Center the Practice input + make it same width as Submit */
-#practice-screen .input-group{
-  display: flex;
-  flex-direction: column;     /* stack input over button */
-  align-items: center;        /* center children */
-  width: 100%;
-}
-
-#practice-screen .spell-input{
-  flex: 0 0 auto;             /* stop it from stretching weirdly */
-  width: 100%;
-  max-width: 360px;           /* tweak: same width you want for the button */
-  margin: 0 auto;             /* centers when not 100% */
-  text-align: center;
-}
-
-#practice-screen .submit-btn{
-  width: 100%;
-  max-width: 360px;           /* match the input */
-  margin: var(--spacing-md) auto 0;
-}
