@@ -742,7 +742,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   align-items: center;
   justify-content: center;
   z-index: 1;
+  right: calc(var(--spacing-lg) - 8px); /* nudge right ~8px; tweak this number */
 }
+
 
 .help-btn-card:hover {
   background: var(--color-accent);
