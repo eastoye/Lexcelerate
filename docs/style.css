@@ -1793,3 +1793,20 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 #home-screen .app-title {
   text-wrap: balance;
 }
+/* Home title sizing – put this at the very end */
+#home-screen .app-title h1 {
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.08;
+
+  /* scales with the card width, not the whole viewport */
+  font-size: clamp(1.25rem, 12cqw, 1.9rem);
+  letter-spacing: 0.08em;
+}
+
+/* Fallback for browsers without container queries */
+@supports not (font-size: 1cqw) {
+  #home-screen .app-title h1 {
+    font-size: clamp(1.25rem, 5.2vw, 1.9rem);
