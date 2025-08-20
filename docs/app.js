@@ -616,35 +616,6 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
 });
 
 // ---------------------------
-document.getElementById('wotd').addEventListener('click', () => {
-  if (wotdHandling) return;
-  wotdHandling = true;
-  const wotd = document.getElementById('wotd').textContent;
-  fetchDefinition(wotd, (definition) => {
-    if (confirm(`Definition: ${definition}\n\nWould you like to add this word to your catalogue?`)) {
-      if (!wordCatalogue.find(w => w.word.toLowerCase() === wotd.toLowerCase())) {
-        wordCatalogue.push({
-          word: wotd,
-          totalAttempts: 0,
-          correctFirstTryCount: 0,
-          mistakes: {},
-          nextReview: Date.now(),
-          interval: 1,
-          score: 0,
-          streak: 0
-        });
-        saveCatalogue();
-        showNotification(`"${wotd}" added to your catalogue`);
-        updateProgressSummary();
-      } else {
-        showNotification(`"${wotd}" is already in your catalogue`);
-      }
-    }
-    wotdHandling = false;
-  });
-});
-
-// ---------------------------
 // Export/Import Catalogue Functionality
 document.getElementById('export-btn').addEventListener('click', () => {
   const exportData = JSON.stringify(wordCatalogue, null, 2);
@@ -763,4 +734,33 @@ window.addEventListener('click', (event) => {
 // Initialize audio when the page loads
 document.addEventListener('DOMContentLoaded', () => {
   initializeAudio();
+  
+  // Add WOTD event listener after DOM is ready
+  document.getElementById('wotd').addEventListener('click', () => {
+    if (wotdHandling) return;
+    wotdHandling = true;
+    const wotd = document.getElementById('wotd').textContent;
+    fetchDefinition(wotd, (definition) => {
+      if (confirm(`Definition: ${definition}\n\nWould you like to add this word to your catalogue?`)) {
+        if (!wordCatalogue.find(w => w.word.toLowerCase() === wotd.toLowerCase())) {
+          wordCatalogue.push({
+            word: wotd,
+            totalAttempts: 0,
+            correctFirstTryCount: 0,
+            mistakes: {},
+            nextReview: Date.now(),
+            interval: 1,
+            score: 0,
+            streak: 0
+          });
+          saveCatalogue();
+          showNotification(`"${wotd}" added to your catalogue`);
+          updateProgressSummary();
+        } else {
+          showNotification(`"${wotd}" is already in your catalogue`);
+        }
+      }
+      wotdHandling = false;
+    });
+  });
 });
