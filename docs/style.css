@@ -1797,3 +1797,18 @@ body{ min-height: 100dvh; overflow-x: hidden; }
     font-size: clamp(1.25rem, 5.2vw, 1.9rem);
   }
 }
+/* Unify screen backgrounds to match Home */
+.screen{
+  background: var(--color-background) !important;  /* deep navy */
+  padding: 0;                   /* remove the white rim */
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
