@@ -220,6 +220,8 @@ class PracticeListSelector {
         e.stopPropagation();
         this.toggleDropdown();
       });
+    } else {
+      console.warn('current-list-button not found');
     }
 
     // Close dropdown when clicking outside
