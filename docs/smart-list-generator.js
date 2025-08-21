@@ -213,7 +213,7 @@ class PracticeListSelector {
   // Attach event listeners
   attachEventListeners() {
     // Toggle dropdown
-    const currentListBtn = document.getElementById('current-list-btn');
+    const currentListBtn = document.getElementById('current-list-button');
     if (currentListBtn) {
       currentListBtn.addEventListener('click', (e) => {
         e.preventDefault();
