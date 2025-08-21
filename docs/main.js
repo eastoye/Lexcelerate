@@ -315,3 +315,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// Optional: emit a 'sourcechange' event whenever practice source changes
+(() => {
+  const btn = document.getElementById('current-list-button');
+  const menu = document.getElementById('practice-source-menu');
+  if (!btn || !menu) return;
+
+  menu.addEventListener('click', (e) => {
+    const item = e.target.closest('[data-source]');
+    if (!item) return;
+    const source = item.dataset.source; // 'catalogue' | 'random'
+    const evt = new CustomEvent('sourcechange', { detail: { source } });
+    window.dispatchEvent(evt);
+  });
+})();

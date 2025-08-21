@@ -712,35 +712,33 @@ document.getElementById('help-btn').addEventListener('click', () => {
 
 // Add help button functionality for all screens
 document.addEventListener('click', (e) => {
-  if (e.target.classList.contains('help-btn-card')) {
+  if (e.target.classList.contains('help-btn-card') && e.target.dataset.help) {
     let helpText = "";
-    const currentScreen = document.querySelector('.screen:not([style*="display: none"]), #home-screen:not([style*="display: none"]), #auth-screen:not([style*="display: none"])');
+    const helpType = e.target.dataset.help;
     
-    if (!currentScreen) return;
-    
-    switch(currentScreen.id) {
-      case "auth-screen":
+    switch(helpType) {
+      case "auth":
         helpText = "Enter your email and password to sign in or sign up. Toggle between sign in and sign up modes using the link below the form.";
         break;
-      case "home-screen":
+      case "home":
         helpText = "Home: Use buttons to add words, practice words, view stats, and see the Word of the Day. Click the Word of the Day for its definition and to add it to your catalogue.";
         break;
-      case "username-setup-screen":
+      case "username":
         helpText = "Choose a unique username to complete your account setup. Your username must be at least 3 characters long and can only contain letters, numbers, and underscores.";
         break;
-      case "add-word-screen":
+      case "add-word":
         helpText = "Add Word: Enter a new word to add to your catalogue and press 'Add Word'. The word will be saved to your personal vocabulary list.";
         break;
-      case "practice-screen":
+      case "practice":
         helpText = "Practice: Select your practice source from the dropdown (Catalogue, Random Words, or Custom Lists). Click the covered word to reveal it, then type your spelling. Use the Talk button to hear the word spoken aloud.";
         break;
-      case "my-lists-screen":
+      case "lists":
         helpText = "Custom Lists: Create and manage your custom word lists. Click 'Create New List' to make a new list, or click on existing lists to view and edit them.";
         break;
-      case "list-detail-screen":
+      case "list-detail":
         helpText = "List Detail: View and manage words in your custom list. Click the title or description to edit them. Add new words using the input field, or remove words using the minus button.";
         break;
-      case "stats-screen":
+      case "stats":
         helpText = "Statistics: View your learning progress and word performance. Export your data, import from backup, or create custom lists. Click on words to see detailed statistics and manage them.";
         break;
       default:
@@ -751,9 +749,14 @@ document.addEventListener('click', (e) => {
     document.getElementById('help-modal').style.display = 'block';
   }
 });
-document.getElementById('help-close').addEventListener('click', () => {
-  document.getElementById('help-modal').style.display = 'none';
-});
+
+// Help modal close handlers
+const helpClose = document.getElementById('help-close');
+if (helpClose) {
+  helpClose.addEventListener('click', () => {
+    document.getElementById('help-modal').style.display = 'none';
+  });
+}
 
 window.addEventListener('click', (event) => {
   const modal = document.getElementById('help-modal');

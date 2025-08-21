@@ -1889,3 +1889,84 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   margin: var(--spacing-md) auto 0;
 }
 
+/* === Lexcelerate final overrides (append at end) === */
+
+/* 3a) Ensure any unclassed screen buttons inherit our theme safely */
+.screen button {
+  background: #0a0e17;
+  color: var(--color-primary-text);
+  border: 1px solid rgba(197, 179, 88, 0.5);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+.screen button:hover {
+  background: var(--color-accent);
+  border-color: #c4a000;
+  color: var(--color-background);
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(197,179,88,0.2);
+}
+
+/* 3b) Unify ALL text/email/password inputs with Practice input look/feel */
+.screen input[type="text"],
+.screen input[type="email"],
+.screen input[type="password"],
+.screen input[type="search"] {
+  width: 100%;
+  max-width: 360px;                 /* match Practice */
+  background: #0a0e17;
+  border: 1px solid rgba(197, 179, 88, 0.5);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  color: var(--color-primary-text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  margin-left: auto;                /* center on narrow cards */
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+.screen input[type="text"]::placeholder,
+.screen input[type="email"]::placeholder,
+.screen input[type="password"]::placeholder,
+.screen input[type="search"]::placeholder {
+  color: var(--color-secondary-text);
+  opacity: 0.7;
+}
+
+.screen input[type="text"]:focus,
+.screen input[type="email"]:focus,
+.screen input[type="password"]:focus,
+.screen input[type="search"]:focus {
+  outline: none;
+  border-color: #c4a000;
+  box-shadow: 0 0 15px rgba(197,179,88,0.2);
+  background: rgba(26,30,39,0.8);
+}
+
+/* 3c) Form inputs already using .form-input stay visually identical to Practice */
+.form-input {
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 3d) Keep Practice input + Submit centered & matched (belt & braces) */
+#practice-screen .spell-input { max-width: 360px; }
+#practice-screen .submit-btn  { max-width: 360px; }
+
+/* 3e) Ensure picker dropdown sits above cards on iOS */
+#practice-source-menu {
+  position: absolute;
+  z-index: 1000;
+}
