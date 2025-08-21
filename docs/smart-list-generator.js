@@ -213,15 +213,13 @@ class PracticeListSelector {
   // Attach event listeners
   attachEventListeners() {
     // Toggle dropdown
-    const currentListBtn = document.getElementById('current-list-button');
+    const currentListBtn = document.getElementById('current-list-btn');
     if (currentListBtn) {
       currentListBtn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         this.toggleDropdown();
       });
-    } else {
-      console.warn('current-list-button not found');
     }
 
     // Close dropdown when clicking outside
