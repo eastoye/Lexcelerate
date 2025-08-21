@@ -189,7 +189,6 @@ class PracticeListSelector {
             <span class="list-icon">🎲</span>
             <span>Random Words</span>
           </div>
-          <div class="dropdown-divider"></div>
           <div class="dropdown-section-header clickable-header" id="my-lists-header">
             <span>My Lists</span>
             <span class="expand-arrow">▶</span>
