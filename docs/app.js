@@ -642,33 +642,6 @@ document.getElementById('import-btn').addEventListener('click', () => {
   }
 });
 
-// ---------------------------
-// Help Modal Functionality
-document.getElementById('help-btn').addEventListener('click', () => {
-  let helpText = "";
-  const currentScreen = document.querySelector('.screen:not([style*="display: none"]), #home-screen:not([style*="display: none"]), #login-screen:not([style*="display: none"])');
-  switch(currentScreen.id) {
-    case "login-screen":
-      helpText = "Enter your username and password to sign in. All data is stored locally.";
-      break;
-    case "home-screen":
-      helpText = "Home: Use buttons to add words, practice word (toggle between Catalogue and Random modes), view stats, and see the Word of the Day. Click the Word of the Day for options.";
-      break;
-    case "add-word-screen":
-      helpText = "Add Word: Enter a new word to add to your catalogue and press 'Save Word'.";
-      break;
-    case "practice-screen":
-      helpText = "Practice Word: Toggle between Catalogue and Random modes using the Mode button. Click on the covered word to reveal it. If sound is ON, it will be spoken automatically; if OFF, it won't speak unless you press Talk. Note: Revealing the word reduces your score.";
-      break;
-    case "stats-screen":
-      helpText = "Stats: Review your catalogue with detailed stats. Use Export/Import to copy or paste your catalogue. Press 'Show Random Trials' to view random word attempts.";
-      break;
-    default:
-      helpText = "Welcome to Lexcelerate.";
-  }
-  document.getElementById('help-text').innerHTML = `<p>${helpText}</p>`;
-  document.getElementById('help-modal').style.display = 'block';
-});
 
 // Add help button functionality for all screens
 document.addEventListener('click', (e) => {
