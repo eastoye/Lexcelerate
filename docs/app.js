@@ -433,46 +433,6 @@ document.querySelectorAll('.back-btn').forEach(button => {
 });
 
 // ---------------------------
-// Practice Mode Toggle (Catalogue vs. Random)
-document.getElementById('mode-toggle-btn').addEventListener('click', () => {
-  if (practiceMode === 'catalogue') {
-    practiceMode = 'random';
-    document.getElementById('mode-toggle-btn').textContent = "Mode: Random";
-    document.getElementById('add-random-to-catalogue-btn').style.display = 'inline-block';
-  } else {
-    practiceMode = 'catalogue';
-    document.getElementById('mode-toggle-btn').textContent = "Mode: Catalogue";
-    document.getElementById('add-random-to-catalogue-btn').style.display = 'none';
-  }
-  loadPracticeWord();
-});
-
-// ---------------------------
-// Add Random Word to Catalogue (only in Random mode)
-document.getElementById('add-random-to-catalogue-btn').addEventListener('click', () => {
-  if (currentWordObj) {
-    let rw = currentWordObj.word;
-    if (!wordCatalogue.find(w => w.word.toLowerCase() === rw.toLowerCase())) {
-      wordCatalogue.push({
-        word: rw,
-        totalAttempts: 0,
-        correctFirstTryCount: 0,
-        mistakes: {},
-        nextReview: Date.now(),
-        interval: 1,
-        score: 0,
-        streak: 0
-      });
-      saveCatalogue();
-      showNotification(`"${rw}" added to your catalogue`);
-      updateProgressSummary();
-    } else {
-      showNotification(`"${rw}" is already in your catalogue`);
-    }
-  }
-});
-
-// ---------------------------
 // Add Word Functionality (Catalogue)
 document.getElementById('save-word-btn').addEventListener('click', () => {
   const wordInput = document.getElementById('word-input');
