@@ -483,7 +483,7 @@ function getRandomWord() {
 }
 
 // ---------------------------
-// Load Practice Word (based on mode)
+// Load Practice  (based on mode)
 function loadPracticeWord() {
   if (practiceMode === 'random') {
     currentWordObj = getRandomDictionaryWord();
@@ -654,7 +654,7 @@ document.addEventListener('click', (e) => {
         helpText = "Enter your email and password to sign in or sign up. Toggle between sign in and sign up modes using the link below the form.";
         break;
       case "home":
-        helpText = "Home: Use buttons to add words, practice words, view stats, and see the Word of the Day. Click the Word of the Day for its definition and to add it to your catalogue.";
+        helpText = "Home: Use buttons to add words, Practice s, view stats, and see the Word of the Day. Click the Word of the Day for its definition and to add it to your catalogue.";
         break;
       case "username":
         helpText = "Choose a unique username to complete your account setup. Your username must be at least 3 characters long and can only contain letters, numbers, and underscores.";
