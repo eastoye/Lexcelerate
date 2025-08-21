@@ -4,7 +4,7 @@
 let currentUser = null; // Now managed by Firebase Auth
 window.wordCatalogue = []; // Loaded per user - make globally accessible
 
-// Global variable for random trials (for random practice stats)
+// Global variable for random trials (for random Practice tats)
 let randomTrials = [];
 
 // Global practice mode variable ('catalogue' or 'random')
@@ -163,7 +163,7 @@ function generateSyllableHint(word, attemptCount) {
 }
 
 // ---------------------------
-// Global Variables for Practice Session & Sound
+// Global Variables for Practice ession & Sound
 // ---------------------------
 let attemptCount = 0;
 let currentWordObj = null;
@@ -552,7 +552,7 @@ document.getElementById('spell-input').addEventListener('keydown', function(even
 });
 
 // ---------------------------
-// Practice Submission Handler for Catalogue Practice
+// Practice ubmission Handler for Catalogue Practice
 document.getElementById('submit-spelling-btn').addEventListener('click', () => {
   let actualWord = currentWordObj.word;
   const userSpelling = document.getElementById('spell-input').value.trim();
@@ -654,7 +654,7 @@ document.addEventListener('click', (e) => {
         helpText = "Enter your email and password to sign in or sign up. Toggle between sign in and sign up modes using the link below the form.";
         break;
       case "home":
-        helpText = "Home: Use buttons to add words, Practice s, view stats, and see the Word of the Day. Click the Word of the Day for its definition and to add it to your catalogue.";
+        helpText = "Home: Use buttons to add words, Practice , view stats, and see the Word of the Day. Click the Word of the Day for its definition and to add it to your catalogue.";
         break;
       case "username":
         helpText = "Choose a unique username to complete your account setup. Your username must be at least 3 characters long and can only contain letters, numbers, and underscores.";
@@ -663,7 +663,7 @@ document.addEventListener('click', (e) => {
         helpText = "Add Word: Enter a new word to add to your catalogue and press 'Add Word'. The word will be saved to your personal vocabulary list.";
         break;
       case "practice":
-        helpText = "Practice: Select your practice source from the dropdown (Catalogue, Random Words, or Custom Lists). Click the covered word to reveal it, then type your spelling. Use the Talk button to hear the word spoken aloud.";
+        helpText = "Practice: Select your Practice ource from the dropdown (Catalogue, Random Words, or Custom Lists). Click the covered word to reveal it, then type your spelling. Use the Talk button to hear the word spoken aloud.";
         break;
       case "lists":
         helpText = "Custom Lists: Create and manage your custom word lists. Click 'Create New List' to make a new list, or click on existing lists to view and edit them.";
