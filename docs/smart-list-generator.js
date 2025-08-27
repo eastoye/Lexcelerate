@@ -341,10 +341,7 @@ class PracticeListSelector {
     this.currentListName = listName;
     
     // Update UI
-    const currentListNameEl = document.getElementById('current-list-name');
-    if (currentListNameEl) {
-      currentListNameEl.textContent = listName;
-    }
+    document.getElementById('current-list-name').textContent = listName;
     
     // Update active state
     document.querySelectorAll('.dropdown-item').forEach(item => {
