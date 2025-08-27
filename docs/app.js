@@ -4,7 +4,7 @@
 let currentUser = null; // Now managed by Firebase Auth
 window.wordCatalogue = []; // Loaded per user - make globally accessible
 
-// Global variable for random trials (for random Practice tats)
+// Global variable for random trials (for random practice stats)
 let randomTrials = [];
 
 // Global practice mode variable ('catalogue' or 'random')
@@ -163,7 +163,7 @@ function generateSyllableHint(word, attemptCount) {
 }
 
 // ---------------------------
-// Global Variables for Practice ession & Sound
+// Global Variables for Practice Session & Sound
 // ---------------------------
 let attemptCount = 0;
 let currentWordObj = null;
@@ -483,7 +483,7 @@ function getRandomWord() {
 }
 
 // ---------------------------
-// Load Practice  (based on mode)
+// Load Practice Word (based on mode)
 function loadPracticeWord() {
   if (practiceMode === 'random') {
     currentWordObj = getRandomDictionaryWord();
@@ -552,7 +552,7 @@ document.getElementById('spell-input').addEventListener('keydown', function(even
 });
 
 // ---------------------------
-// Practice ubmission Handler for Catalogue Practice
+// Practice Submission Handler for Catalogue Practice
 document.getElementById('submit-spelling-btn').addEventListener('click', () => {
   let actualWord = currentWordObj.word;
   const userSpelling = document.getElementById('spell-input').value.trim();
@@ -642,6 +642,33 @@ document.getElementById('import-btn').addEventListener('click', () => {
   }
 });
 
+// ---------------------------
+// Help Modal Functionality
+document.getElementById('help-btn').addEventListener('click', () => {
+  let helpText = "";
+  const currentScreen = document.querySelector('.screen:not([style*="display: none"]), #home-screen:not([style*="display: none"]), #login-screen:not([style*="display: none"])');
+  switch(currentScreen.id) {
+    case "login-screen":
+      helpText = "Enter your username and password to sign in. All data is stored locally.";
+      break;
+    case "home-screen":
+      helpText = "Home: Use buttons to add words, practice word (toggle between Catalogue and Random modes), view stats, and see the Word of the Day. Click the Word of the Day for options.";
+      break;
+    case "add-word-screen":
+      helpText = "Add Word: Enter a new word to add to your catalogue and press 'Save Word'.";
+      break;
+    case "practice-screen":
+      helpText = "Practice Word: Toggle between Catalogue and Random modes using the Mode button. Click on the covered word to reveal it. If sound is ON, it will be spoken automatically; if OFF, it won't speak unless you press Talk. Note: Revealing the word reduces your score.";
+      break;
+    case "stats-screen":
+      helpText = "Stats: Review your catalogue with detailed stats. Use Export/Import to copy or paste your catalogue. Press 'Show Random Trials' to view random word attempts.";
+      break;
+    default:
+      helpText = "Welcome to Lexcelerate.";
+  }
+  document.getElementById('help-text').innerHTML = `<p>${helpText}</p>`;
+  document.getElementById('help-modal').style.display = 'block';
+});
 
 // Add help button functionality for all screens
 document.addEventListener('click', (e) => {
@@ -654,7 +681,7 @@ document.addEventListener('click', (e) => {
         helpText = "Enter your email and password to sign in or sign up. Toggle between sign in and sign up modes using the link below the form.";
         break;
       case "home":
-        helpText = "Home: Use buttons to add words, Practice , view stats, and see the Word of the Day. Click the Word of the Day for its definition and to add it to your catalogue.";
+        helpText = "Home: Use buttons to add words, practice words, view stats, and see the Word of the Day. Click the Word of the Day for its definition and to add it to your catalogue.";
         break;
       case "username":
         helpText = "Choose a unique username to complete your account setup. Your username must be at least 3 characters long and can only contain letters, numbers, and underscores.";
@@ -663,7 +690,7 @@ document.addEventListener('click', (e) => {
         helpText = "Add Word: Enter a new word to add to your catalogue and press 'Add Word'. The word will be saved to your personal vocabulary list.";
         break;
       case "practice":
-        helpText = "Practice: Select your Practice ource from the dropdown (Catalogue, Random Words, or Custom Lists). Click the covered word to reveal it, then type your spelling. Use the Talk button to hear the word spoken aloud.";
+        helpText = "Practice: Select your practice source from the dropdown (Catalogue, Random Words, or Custom Lists). Click the covered word to reveal it, then type your spelling. Use the Talk button to hear the word spoken aloud.";
         break;
       case "lists":
         helpText = "Custom Lists: Create and manage your custom word lists. Click 'Create New List' to make a new list, or click on existing lists to view and edit them.";
