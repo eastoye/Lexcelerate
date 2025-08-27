@@ -271,3 +271,62 @@ window.currentUser = currentUser;
 window.userProfile = userProfile;
 window.saveUserCatalogueToSupabase = saveUserCatalogueToSupabase;
 window.loadUserCatalogueFromSupabase = loadUserCatalogueFromSupabase;
+
+// --- Practice source dropdown
+document.addEventListener('DOMContentLoaded', () => {
+  const currentBtn = document.getElementById('current-list-button');
+  const menu = document.getElementById('practice-source-menu');
+
+  if (currentBtn && menu) {
+    currentBtn.addEventListener('click', () => {
+      const open = menu.style.display === 'block';
+      menu.style.display = open ? 'none' : 'block';
+      currentBtn.setAttribute('aria-expanded', String(!open));
+      menu.setAttribute('aria-hidden', String(open));
+    });
+
+    // click options
+    menu.addEventListener('click', (e) => {
+      const item = e.target.closest('[data-source],[data-action]');
+      if (!item) return;
+
+      if (item.dataset.source === 'catalogue') {
+        // hook into your existing logic
+        setPracticeSource?.('catalogue');
+        currentBtn.firstElementChild.textContent = '📚 Catalogue';
+      } else if (item.dataset.source === 'random') {
+        setPracticeSource?.('random');
+        currentBtn.firstElementChild.textContent = '🎲 Random Words';
+      } else if (item.dataset.action === 'open-lists') {
+        openListsPicker?.(); // if you have this; otherwise wire as needed
+      }
+      menu.style.display = 'none';
+      currentBtn.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'true');
+    });
+
+    // close when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !currentBtn.contains(e.target)) {
+        menu.style.display = 'none';
+        currentBtn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+      }
+    });
+  }
+});
+
+// Optional: emit a 'sourcechange' event whenever practice source changes
+(() => {
+  const btn = document.getElementById('current-list-button');
+  const menu = document.getElementById('practice-source-menu');
+  if (!btn || !menu) return;
+
+  menu.addEventListener('click', (e) => {
+    const item = e.target.closest('[data-source]');
+    if (!item) return;
+    const source = item.dataset.source; // 'catalogue' | 'random'
+    const evt = new CustomEvent('sourcechange', { detail: { source } });
+    window.dispatchEvent(evt);
+  });
+})();
