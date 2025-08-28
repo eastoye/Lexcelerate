@@ -212,8 +212,8 @@ class PracticeListSelector {
 
   // Attach event listeners
   attachEventListeners() {
-    // Toggle dropdown - use the correct ID from HTML
-    const currentListBtn = document.getElementById('current-list-button');
+    // Toggle dropdown
+    const currentListBtn = document.getElementById('current-list-btn');
     if (currentListBtn) {
       currentListBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -266,7 +266,7 @@ class PracticeListSelector {
 
   // Toggle dropdown visibility
   toggleDropdown() {
-    const dropdown = document.getElementById('practice-source-menu');
+    const dropdown = document.getElementById('list-dropdown');
     if (dropdown) {
       const isVisible = dropdown.style.display === 'block';
       dropdown.style.display = isVisible ? 'none' : 'block';
@@ -279,7 +279,7 @@ class PracticeListSelector {
 
   // Close dropdown
   closeDropdown() {
-    const dropdown = document.getElementById('practice-source-menu');
+    const dropdown = document.getElementById('list-dropdown');
     if (dropdown) {
       dropdown.style.display = 'none';
     }
@@ -308,10 +308,10 @@ class PracticeListSelector {
 
   // Update dropdown with user lists
   updateDropdownLists() {
-    const container = document.getElementById('practice-source-menu').querySelector('[data-action="open-lists"]')?.parentElement;
+    const container = document.getElementById('user-lists-dropdown');
     
     if (!container) {
-      console.warn('dropdown container not found');
+      console.warn('user-lists-dropdown container not found');
       return;
     }
     
@@ -341,10 +341,7 @@ class PracticeListSelector {
     this.currentListName = listName;
     
     // Update UI
-    const currentListNameEl = document.getElementById('current-list-button').querySelector('span:first-child');
-    if (currentListNameEl) {
-      currentListNameEl.textContent = listName;
-    }
+    document.getElementById('current-list-name').textContent = listName;
     
     // Update active state
     document.querySelectorAll('.dropdown-item').forEach(item => {

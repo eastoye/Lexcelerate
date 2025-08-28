@@ -155,28 +155,8 @@
         <h1 class="page-title">Practice </h1>
         <p class="page-subtitle">Test your spelling skills</p>
         
-        <!-- Practice Source Picker -->
-        <div class="practice-list-selector" aria-label="Practice source">
-          <button id="current-list-button"
-                  class="current-list-button"
-                  aria-haspopup="true"
-                  aria-expanded="false">
-            <span>📚 Catalogue</span>
-            <span aria-hidden="true">▾</span>
-          </button>
-
-          <div id="practice-source-menu"
-               class="list-dropdown"
-               role="menu"
-               aria-hidden="true"
-               style="display:none;">
-            <div class="dropdown-header">Practice Source</div>
-            <div class="dropdown-item" role="menuitem" data-source="catalogue">📚 Catalogue</div>
-            <div class="dropdown-item" role="menuitem" data-source="random">🎲 Random Words</div>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-item" role="menuitem" data-action="open-lists">📋 Choose a List…</div>
-          </div>
-        </div>
+        <!-- Practice Source Picker - managed by smart-list-generator.js -->
+        <div class="mode-section"></div>
 
         <!-- Word Practice Area -->
         <div class="practice-area">
