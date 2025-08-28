@@ -398,6 +398,8 @@ class PracticeListSelector {
 
   // Update practice mode based on selected list
   updatePracticeMode(listId) {
+    console.log('Updating practice mode to:', listId); // Debug log
+    
     if (listId === 'catalogue') {
       window.practiceMode = 'catalogue';
       document.getElementById('add-random-to-catalogue-btn').style.display = 'none';
@@ -411,9 +413,14 @@ class PracticeListSelector {
       document.getElementById('add-random-to-catalogue-btn').style.display = 'none';
     }
     
+    console.log('Practice mode set to:', window.practiceMode); // Debug log
+    
     // Reload Practice 
     if (window.loadPracticeWord) {
+      console.log('Loading new practice word...'); // Debug log
       window.loadPracticeWord();
+    } else {
+      console.error('loadPracticeWord function not found'); // Debug log
     }
   }
 }

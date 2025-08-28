@@ -419,6 +419,30 @@ function refreshSmartList() {
 window.refreshSmartList = refreshSmartList;
 
 // ---------------------------
+// Custom List Word Selection
+// ---------------------------
+function getRandomWordFromCustomList(listId) {
+  // This function will need to be implemented to fetch words from a custom list
+  // For now, return a placeholder to prevent errors
+  console.log('Getting random word from custom list:', listId);
+  
+  // TODO: Implement custom list word fetching
+  // This should fetch words from the selected custom list
+  // and return a random word object in the same format as catalogue words
+  
+  return {
+    word: "placeholder",
+    totalAttempts: 0,
+    correctFirstTryCount: 0,
+    mistakes: {},
+    nextReview: Date.now(),
+    interval: 1,
+    score: 0,
+    streak: 0
+  };
+}
+
+// ---------------------------
 // Navigation Button Listeners
 // ---------------------------
 document.getElementById('add-word-btn').addEventListener('click', () => { showScreen('add-word-screen'); });
