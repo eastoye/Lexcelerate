@@ -152,12 +152,21 @@ class PracticeListSelector {
 
   // Initialize the practice list selector
   init() {
-    this.createListSelector();
-    // Use setTimeout to ensure DOM is ready
-    setTimeout(() => {
-      this.attachEventListeners();
-      this.loadAvailableLists();
-    }, 100);
+    // Ensure DOM is ready before initializing
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        this.createListSelector();
+        this.attachEventListeners();
+        this.loadAvailableLists();
+      });
+    } else {
+      this.createListSelector();
+      // Use longer timeout to ensure DOM is fully rendered
+      setTimeout(() => {
+        this.attachEventListeners();
+        this.loadAvailableLists();
+      }, 200);
+    }
   }
 
   // Create the list selector UI
@@ -212,15 +221,32 @@ class PracticeListSelector {
 
   // Attach event listeners
   attachEventListeners() {
-    // Toggle dropdown - use the correct ID from HTML
-    const currentListBtn = document.getElementById('current-list-button');
-    if (currentListBtn) {
-      currentListBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        this.toggleDropdown();
-      });
-    }
+    // Wait for DOM to be ready and attach event listeners
+    const attachListeners = () => {
+      const currentListBtn = document.getElementById('current-list-button');
+      const dropdown = document.getElementById('practice-source-menu');
+      
+      if (currentListBtn && dropdown) {
+        // Remove any existing listeners to prevent duplicates
+        currentListBtn.replaceWith(currentListBtn.cloneNode(true));
+        const newBtn = document.getElementById('current-list-button');
+        
+        newBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('Dropdown button clicked'); // Debug log
+          this.toggleDropdown();
+        });
+        
+        console.log('Event listeners attached successfully'); // Debug log
+      } else {
+        console.warn('Button or dropdown not found, retrying...'); // Debug log
+        setTimeout(attachListeners, 100); // Retry after 100ms
+      }
+    };
+    
+    // Try to attach listeners immediately, then retry if needed
+    attachListeners();
 
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
@@ -266,14 +292,22 @@ class PracticeListSelector {
 
   // Toggle dropdown visibility
   toggleDropdown() {
+    console.log('toggleDropdown called'); // Debug log
     const dropdown = document.getElementById('practice-source-menu');
-    if (dropdown) {
+    const button = document.getElementById('current-list-button');
+    
+    if (dropdown && button) {
       const isVisible = dropdown.style.display === 'block';
       dropdown.style.display = isVisible ? 'none' : 'block';
+      button.setAttribute('aria-expanded', isVisible ? 'false' : 'true');
+      
+      console.log('Dropdown toggled:', isVisible ? 'closed' : 'opened'); // Debug log
       
       if (!isVisible) {
         this.loadAvailableLists();
       }
+    } else {
+      console.error('Dropdown or button element not found'); // Debug log
     }
   }
 
@@ -308,19 +342,24 @@ class PracticeListSelector {
 
   // Update dropdown with user lists
   updateDropdownLists() {
-    const container = document.getElementById('practice-source-menu').querySelector('[data-action="open-lists"]')?.parentElement;
+    const dropdown = document.getElementById('practice-source-menu');
+    if (!dropdown) {
+      console.warn('practice-source-menu not found');
+      return;
+    }
     
-    if (!container) {
-      console.warn('dropdown container not found');
+    const userListsDropdown = document.getElementById('user-lists-dropdown');
+    if (!userListsDropdown) {
+      console.warn('user-lists-dropdown not found');
       return;
     }
     
     if (this.availableLists.length === 0) {
-      container.innerHTML = '<div class="dropdown-empty">No custom lists yet</div>';
+      userListsDropdown.innerHTML = '<div class="dropdown-empty">No custom lists yet</div>';
       return;
     }
-
-    container.innerHTML = this.availableLists.map(list => `
+    
+    userListsDropdown.innerHTML = this.availableLists.map(list => `
       <div class="dropdown-item" data-list-id="${list.id}">
         <span class="list-icon">📋</span>
         <span>${this.escapeHtml(list.name)}</span>
