@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Lexcelerate</title>
   <link rel="manifest" href="/assets/manifest-Bez2WkQ5.json" />
-  <script type="module" crossorigin src="/assets/main-BL-yxzUt.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/main-CzDnlA39.css">
+  <script type="module" crossorigin src="/assets/main-CHGKdyIn.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/main-BoEr3Unp.css">
 </head>
 <body>
   <!-- Help Modal -->
@@ -28,6 +28,9 @@
   <div id="auth-screen" class="screen" style="display: none;">
     <div class="home-wrapper">
       <div class="minimal-container">
+        <!-- Help Button in Card -->
+        <button class="help-btn-card" data-help="auth">?</button>
+        
         <h2 id="auth-title" class="app-title">Sign In to Lexcelerate</h2>
         <div id="auth-error" class="error-message" style="display: none;"></div>
         <input type="email" id="auth-email" class="form-input" placeholder="Email" autocomplete="email" autocorrect="off" autocapitalize="off" spellcheck="false">
@@ -46,7 +49,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button id="help-btn" class="help-btn-card">?</button>
+        <button class="help-btn-card" data-help="home">?</button>
         
         <div class="app-title">
           <h1>Lexcelerate</h1>
@@ -65,7 +68,7 @@
         <!-- Navigation Buttons -->
         <div class="action-buttons-minimal">
           <button id="add-word-btn" class="minimal-button">Add Word</button>
-          <button id="practice-btn" class="minimal-button">Practice Word</button>
+          <button id="practice-btn" class="minimal-button">Practice </button>
           <button id="stats-btn" class="minimal-button">Stats</button>
           <button id="logout-btn" class="minimal-button">Log Out</button>
         </div>
@@ -81,7 +84,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button id="help-btn" class="help-btn-card">?</button>
+        <button class="help-btn-card" data-help="username">?</button>
         
         <h2 class="page-title">Choose Your Username</h2>
         <p class="page-subtitle">Please choose a username to complete your account setup.</p>
@@ -98,7 +101,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button id="help-btn" class="help-btn-card">?</button>
+        <button class="help-btn-card" data-help="add-word">?</button>
         
         <!-- Back Button -->
         <button class="back-btn" title="Back to Home">
@@ -140,7 +143,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button id="help-btn" class="help-btn-card">?</button>
+        <button class="help-btn-card" data-help="practice">?</button>
         
         <!-- Back Button -->
         <button class="back-btn" title="Back to Home">
@@ -148,22 +151,11 @@
           <span class="back-text">Back to Home</span>
         </button>
 
-        <h1 class="page-title">Practice Word</h1>
+        <h1 class="page-title">Practice </h1>
         <p class="page-subtitle">Test your spelling skills</p>
         
-        <!-- Mode Toggle Section -->
-        <div class="mode-section">
-          <button id="mode-toggle-btn" class="mode-toggle-btn">
-            <span class="mode-icon">📚</span>
-            <span class="mode-text">Mode: Catalogue</span>
-          </button>
-          
-          <!-- Add Random Word Button (only visible in Random mode) -->
-          <button id="add-random-to-catalogue-btn" class="add-random-btn" style="display: none;">
-            <span class="btn-icon">➕</span>
-            <span class="btn-text">Add to Catalogue</span>
-          </button>
-        </div>
+        <!-- Practice Source Picker - managed by smart-list-generator.js -->
+        <div class="mode-section"></div>
 
         <!-- Word Practice Area -->
         <div class="practice-area">
@@ -216,7 +208,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button id="help-btn" class="help-btn-card">?</button>
+        <button class="help-btn-card" data-help="lists">?</button>
         
         <!-- Back Button -->
         <button class="back-btn" title="Back to Home">
@@ -238,7 +230,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button id="help-btn" class="help-btn-card">?</button>
+        <button class="help-btn-card" data-help="list-detail">?</button>
         
         <!-- Back Button -->
         <button class="back-btn" title="Back to Lists">
@@ -342,7 +334,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button id="help-btn" class="help-btn-card">?</button>
+        <button class="help-btn-card" data-help="stats">?</button>
         
         <!-- Back Button -->
         <button class="back-btn" title="Back to Home">
