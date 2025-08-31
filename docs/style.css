@@ -601,7 +601,7 @@ footer {
 /* Practice List Selector Styles */
 .practice-list-selector {
   position: relative;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-sm);
 }
 
 .current-list-button {
@@ -609,9 +609,9 @@ footer {
   color: var(--color-primary-text);
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-lg) var(--spacing-xl);
+  padding: var(--spacing-md) var(--spacing-lg);
   font-family: 'Inter', sans-serif;
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2.8vw, 1rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -620,7 +620,7 @@ footer {
   letter-spacing: 0.05em;
   position: relative;
   overflow: hidden;
-  min-height: 56px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -882,7 +882,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* Page Title for other screens */
 .page-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.4rem, 4.5vw, 2rem);
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
   font-weight: 700;
   color: var(--color-primary-text);
   margin-bottom: var(--spacing-sm);
@@ -894,9 +894,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .page-subtitle {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.85rem, 3vw, 1rem);
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
   color: var(--color-secondary-text);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
   font-weight: 400;
   font-style: italic;
   text-align: center;
@@ -909,7 +909,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-sm) var(--spacing-md);
   font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2.3vw, 0.85rem);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -917,7 +917,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
   align-self: flex-start;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -1215,10 +1215,10 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Practice Styles */
 .mode-section {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   align-items: center;
 }
 
@@ -1254,7 +1254,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-sm) var(--spacing-md);
   font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2.3vw, 0.85rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1264,6 +1264,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   gap: var(--spacing-xs);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  min-height: 40px;
 }
 
 .add-random-btn:hover {
@@ -1274,15 +1275,15 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 .practice-area {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
 }
 
 .word-prompt {
   background: #0a0e17;
   border: 2px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-xl) var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-lg) var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -1314,13 +1315,13 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .prompt-text {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  font-size: clamp(1.3rem, 5vw, 1.8rem);
   font-weight: 700;
   color: var(--color-primary-text);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   display: block;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
   word-break: break-word;
 }
 
@@ -1335,28 +1336,29 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .control-buttons {
   display: flex;
   justify-content: center;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
 }
 
 .control-btn {
   background: #1a1e27;
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-md);
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+  font-size: clamp(0.8rem, 2.3vw, 0.9rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   color: var(--color-primary-text);
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   flex: 1;
   justify-content: center;
+  min-height: 44px;
 }
 
 .control-btn:hover {
@@ -1377,12 +1379,12 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 .spelling-section {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
 }
 
 .input-group {
   display: flex;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   align-items: stretch;
 }
 
@@ -1391,9 +1393,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   background: #0a0e17;
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-md);
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.95rem, 3vw, 1.1rem);
+  font-size: clamp(0.9rem, 2.8vw, 1rem);
   color: var(--color-primary-text);
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -1401,6 +1403,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   letter-spacing: normal;
   width: 100%;
   box-sizing: border-box;
+  min-height: 44px;
 }
 
 .spell-input:focus {
@@ -1425,20 +1428,21 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   background: var(--color-mint);
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-md);
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.9rem, 2.8vw, 1rem);
+  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   color: var(--color-background);
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   white-space: nowrap;
   flex-shrink: 0;
+  min-height: 44px;
 }
 
 .submit-btn:hover {
@@ -1453,16 +1457,16 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 .feedback-area {
-  min-height: 60px;
+  min-height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
 }
 
 .feedback-correct {
   font-family: 'Inter', sans-serif;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 3vw, 1.1rem);
   font-weight: 700;
   color: #4ade80;
   text-transform: uppercase;
@@ -1472,7 +1476,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .feedback-incorrect {
   font-family: 'Inter', sans-serif;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 3vw, 1.1rem);
   font-weight: 700;
   color: #f87171;
   text-transform: uppercase;
@@ -1754,6 +1758,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   .minimal-container {
     padding: var(--spacing-xl) var(--spacing-md);
     max-width: calc(100vw - 16px);
+    margin: 0 4px;
   }
   
   .home-wrapper {
@@ -1761,10 +1766,11 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   }
   
   .app-title {
-    font-size: 2.2rem;
+    font-size: clamp(1.1rem, 4.5vw, 1.8rem);
+    margin-bottom: var(--spacing-md);
   }
   
-  .page-title {
+    font-size: clamp(1.1rem, 3.8vw, 1.4rem);
     font-size: 1.8rem;
   }
   
@@ -1772,29 +1778,32 @@ body{ min-height: 100dvh; overflow-x: hidden; }
     font-size: 1.8rem;
   }
   
-  .prompt-text {
-    font-size: 2rem;
+    font-size: clamp(1.2rem, 4.5vw, 1.6rem);
+    letter-spacing: 0.08em;
   }
   
   .modal-content {
     margin: 15% auto;
     padding: var(--spacing-xl);
+    max-width: calc(100vw - 16px);
   }
   
   .form-input,
   .form-textarea,
   .spell-input {
     padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
   }
   
   .add-btn,
   .submit-btn {
     padding: var(--spacing-md) var(--spacing-xl);
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   
   .input-group {
     flex-direction: column;
+    gap: var(--spacing-sm);
   }
   
   .mode-section {
@@ -1809,50 +1818,81 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   .action-buttons {
     flex-direction: column;
     align-items: center;
-  }
-  
-  .word-stat-header {
-    flex-wrap: wrap;
     gap: var(--spacing-sm);
   }
   
+  .word-stat-header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+  }
+  
   .word-actions {
-    margin-left: auto;
+    align-self: flex-end;
+  }
+  
+  .control-buttons {
+    gap: var(--spacing-sm);
+  }
+  
+  .word-of-day-section {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .action-buttons-minimal {
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
   }
 }
 
 @media (max-width: 480px) {
   .app-title {
-    font-size: 1.3rem;
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    margin-bottom: var(--spacing-sm);
   }
   
   .page-title {
-    font-size: 1.6rem;
+    font-size: clamp(1.1rem, 3.8vw, 1.4rem);
   }
   
   .wotd-word {
-    font-size: 1.6rem;
+    font-size: clamp(1.1rem, 4.2vw, 1.4rem);
   }
   
   .prompt-text {
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 4.5vw, 1.6rem);
+    letter-spacing: 0.08em;
   }
   
   .minimal-button {
     padding: var(--spacing-md) var(--spacing-lg);
-    font-size: 1rem;
+    font-size: 0.9rem;
+    min-height: 52px;
   }
   
   .word-prompt {
-    padding: var(--spacing-xl) var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-sm);
   }
   
   .word-name {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   
   .summary-value {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
+  
+  .minimal-container {
+    padding: var(--spacing-md) var(--spacing-sm);
+    border-radius: var(--radius-md);
+  }
+  
+  .help-btn-card {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
   }
 }
 
