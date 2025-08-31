@@ -1770,19 +1770,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
     margin-bottom: var(--spacing-md);
   }
   
-    font-size: clamp(1.1rem, 3.8vw, 1.4rem);
-    font-size: 1.8rem;
-  }
-  
-  .wotd-word {
-    font-size: 1.8rem;
-  }
-  
-    font-size: clamp(1.2rem, 4.5vw, 1.6rem);
-    letter-spacing: 0.08em;
-  }
-  
-  .modal-content {
     margin: 15% auto;
     padding: var(--spacing-xl);
     max-width: calc(100vw - 16px);
