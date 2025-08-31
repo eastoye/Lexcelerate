@@ -217,12 +217,10 @@ function renderStatsList(words) {
     html += `
       <div class="word-stat-item" data-word-index="${index}">
         <div class="word-stat-header">
-          <div class="word-info">
-            <button class="word-name-button" data-word-index="${index}" aria-label="View word details">
-              <span class="word-name">${escapeHtml(wordObj.word)}</span>
-              ${hasDetails ? '<span class="dropdown-arrow">▼</span>' : ''}
-            </button>
-          </div>
+          <button class="word-name-button" data-word-index="${index}" aria-label="View word details">
+            <span class="word-name">${escapeHtml(wordObj.word)}</span>
+            ${hasDetails ? '<span class="dropdown-arrow">▼</span>' : ''}
+          </button>
           <span class="word-score">Score: ${wordObj.score || 0}</span>
           <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
         </div>
