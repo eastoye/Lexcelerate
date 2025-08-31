@@ -1684,7 +1684,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   color: var(--color-background);
 }
 
-* Responsive Design */
+/* Responsive Design */
 @media (max-width: 600px) {
   .minimal-container {
     padding: var(--spacing-xl) var(--spacing-md);
