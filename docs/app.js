@@ -218,13 +218,13 @@ function renderStatsList(words) {
       <div class="word-stat-item" data-word-index="${index}">
         <div class="word-stat-header">
           <div class="word-info">
-            <span class="word-name">${escapeHtml(wordObj.word)}</span>
+            <button class="word-name-button" data-word-index="${index}" aria-label="View word details">
+              <span class="word-name">${escapeHtml(wordObj.word)}</span>
+              ${hasDetails ? '<span class="dropdown-arrow">▼</span>' : ''}
+            </button>
           </div>
           <span class="word-score">Score: ${wordObj.score || 0}</span>
-          <div class="word-actions">
-            ${hasDetails ? `<button class="toggle-details" data-word-index="${index}" aria-label="Toggle details">▼</button>` : ''}
-            <button class="delete-word" data-word-index="${index}" aria-label="Delete word">🗑</button>
-          </div>
+          <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
         </div>
         ${hasDetails ? `
           <div class="details" id="details-${index}" style="display: none;">
@@ -436,16 +436,17 @@ window.refreshSmartList = refreshSmartList;
 
 // Event delegation for stats list interactions
 document.addEventListener('click', (e) => {
-  // Handle toggle details
-  if (e.target.classList.contains('toggle-details')) {
-    const wordIndex = e.target.getAttribute('data-word-index');
+  // Handle word name button click (toggle details)
+  if (e.target.closest('.word-name-button')) {
+    const wordIndex = e.target.closest('.word-name-button').getAttribute('data-word-index');
     const detailsDiv = document.getElementById(`details-${wordIndex}`);
-    const toggleBtn = e.target;
+    const toggleBtn = e.target.closest('.word-name-button');
+    const arrow = toggleBtn.querySelector('.dropdown-arrow');
     
-    if (detailsDiv) {
+    if (detailsDiv && arrow) {
       const isExpanded = detailsDiv.style.display === 'block';
       detailsDiv.style.display = isExpanded ? 'none' : 'block';
-      toggleBtn.textContent = isExpanded ? '▼' : '▲';
+      arrow.textContent = isExpanded ? '▼' : '▲';
       toggleBtn.setAttribute('aria-expanded', !isExpanded);
     }
   }
