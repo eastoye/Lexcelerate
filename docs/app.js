@@ -218,7 +218,6 @@ function renderStatsList(words) {
       <div class="word-stat-item" data-word-index="${index}">
         <div class="word-stat-header">
           <div class="word-info">
-            ${mistakeCount > 0 ? `<div class="mistake-indicator">${mistakeCount}</div>` : ''}
             <span class="word-name">${escapeHtml(wordObj.word)}</span>
           </div>
           <span class="word-score">Score: ${wordObj.score || 0}</span>
