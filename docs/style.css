@@ -1684,6 +1684,71 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   color: var(--color-background);
 }
 
+/* Enhanced details section styling */
+.details {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-top: 1px solid rgba(197, 179, 88, 0.2);
+  background: rgba(26, 30, 39, 0.5);
+  margin-top: 0;
+  font-size: 0.9rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  font-size: 0.9rem;
+}
+
+.detail-label {
+  color: var(--color-secondary-text);
+  font-weight: 500;
+}
+
+.detail-value {
+  color: var(--color-primary-text);
+  font-weight: 600;
+}
+
+.mistakes-section {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid rgba(197, 179, 88, 0.2);
+}
+
+.mistakes-title {
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mistake-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  font-size: 0.85rem;
+}
+
+.mistake-word {
+  color: #f87171;
+  font-family: 'Courier New', monospace;
+}
+
+.mistake-count {
+  color: var(--color-secondary-text);
+}
+
+.no-words {
+  text-align: center;
+  color: var(--color-secondary-text);
+  font-style: italic;
+  padding: var(--spacing-2xl);
+  font-size: 1rem;
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
   .minimal-container {
