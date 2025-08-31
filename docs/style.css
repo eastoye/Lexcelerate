@@ -1770,11 +1770,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
     margin-bottom: var(--spacing-md);
   }
   
-    margin: 15% auto;
-    padding: var(--spacing-xl);
-    max-width: calc(100vw - 16px);
-  }
-  
   .form-input,
   .form-textarea,
   .spell-input {
