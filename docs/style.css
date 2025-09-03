@@ -1604,7 +1604,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .word-stat-item:hover {
   border-color: rgba(197, 179, 88, 0.5);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 8px rgba(0, 0, 0, 0.3);
 }
 
 .word-stat-header {
