@@ -1596,12 +1596,11 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .word-stat-item {
   background: #0a0e17;
-  border: 1px solid rgba(1, 179, 88, 0.3);
+  border: 1px solid rgba(197, 179, 88, 0.3);
   border-radius: var(--radius-md);
   overflow: hidden;
   transition: all 0.3s ease;
   padding: 4px 12px;
-}
 
 .word-stat-item:hover {
   border-color: rgba(197, 179, 88, 0.5);
