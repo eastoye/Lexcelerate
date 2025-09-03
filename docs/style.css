@@ -2021,8 +2021,12 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: space-between;   /* left cluster | score | delete */
-  gap: 8px;
+  gap: 6px;
   flex-wrap: nowrap;                 /* no wrapping on normal screens */
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Left cluster: mistakes chip + word pill */
