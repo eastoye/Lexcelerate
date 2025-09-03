@@ -215,15 +215,15 @@ function renderStatsList(words) {
     const hasDetails = wordObj.totalAttempts > 0 || mistakeCount > 0;
     
     html += `
-      <div class="word-stat-item" data-word-index="${index}">
+      <div class="word-stat-item" data-word="${wordObj.word.toLowerCase()}">
         <div class="word-stat-header">
           <div class="word-info">
-            <button class="word-name-button" data-word-index="${index}" aria-label="View word details">
-              <span class="word-name">${escapeHtml(wordObj.word)}</span>
-              ${hasDetails ? '<span class="dropdown-arrow">▼</span>' : ''}
+            <div class="mistake-indicator">${mistakeCount}</div>
+            <button class="toggle-details" data-word-index="${index}" aria-label="Toggle details for ${escapeHtml(wordObj.word)}">
+              <span>${escapeHtml(wordObj.word.toLowerCase())}</span> ▾
             </button>
           </div>
-          <span class="word-score">Score: ${wordObj.score || 0}</span>
+          <div class="word-score">Score: ${wordObj.score || 0}</div>
           <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
         </div>
         ${hasDetails ? `
@@ -436,17 +436,24 @@ window.refreshSmartList = refreshSmartList;
 
 // Event delegation for stats list interactions
 document.addEventListener('click', (e) => {
-  // Handle word name button click (toggle details)
-  if (e.target.closest('.word-name-button')) {
-    const wordIndex = e.target.closest('.word-name-button').getAttribute('data-word-index');
+  // Handle toggle details button click
+  if (e.target.closest('.toggle-details')) {
+    const wordIndex = e.target.closest('.toggle-details').getAttribute('data-word-index');
     const detailsDiv = document.getElementById(`details-${wordIndex}`);
-    const toggleBtn = e.target.closest('.word-name-button');
-    const arrow = toggleBtn.querySelector('.dropdown-arrow');
     
-    if (detailsDiv && arrow) {
+    if (detailsDiv) {
       const isExpanded = detailsDiv.style.display === 'block';
       detailsDiv.style.display = isExpanded ? 'none' : 'block';
-      arrow.textContent = isExpanded ? '▼' : '▲';
+      
+      // Update arrow in button text
+      const toggleBtn = e.target.closest('.toggle-details');
+      const buttonText = toggleBtn.innerHTML;
+      if (isExpanded) {
+        toggleBtn.innerHTML = buttonText.replace('▴', '▾');
+      } else {
+        toggleBtn.innerHTML = buttonText.replace('▾', '▴');
+      }
+      
       toggleBtn.setAttribute('aria-expanded', !isExpanded);
     }
   }
