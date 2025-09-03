@@ -259,7 +259,7 @@ footer {
   display: grid;
   grid-template-columns: 1fr auto auto;
   gap: 1rem;
-  padding: 1.75rem;
+  padding: 0.75rem;
   border-bottom: 1px solid #eee;
   align-items: center;
 }
@@ -1692,7 +1692,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 @media (max-width: 600px) {
   .minimal-container {
     padding: var(--spacing-xl) var(--spacing-md);
-    max-width: calc(100vw - 16px);
+    max-width: calc(100vw - 8px);
   }
   
   .home-wrapper {
