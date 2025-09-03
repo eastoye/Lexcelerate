@@ -246,7 +246,7 @@ function renderStatsList(words) {
                   <div class="mistake-item">
                     <span class="mistake-word">${escapeHtml(mistake)}</span>
                     <span class="mistake-count">${count}x</span>
-                  <span>${escapeHtml(wordObj.word.toLowerCase())}</span> ▾
+                  </div>
                 `).join('')}
               </div>
             ` : ''}
