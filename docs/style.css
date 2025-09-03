@@ -1577,6 +1577,17 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   background: #f97316;
 }
 
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
 .stats-list {
   display: flex;
   flex-direction: column;
@@ -1677,77 +1688,11 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   color: var(--color-background);
 }
 
-/* Enhanced details section styling */
-.details {
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-top: 1px solid rgba(197, 179, 88, 0.2);
-  background: rgba(26, 30, 39, 0.5);
-  margin-top: 0;
-  font-size: 0.9rem;
-}
-
-.detail-row {
-  display: flex;
-  justify-content: space-between;
-  padding: var(--spacing-xs) 0;
-  font-size: 0.9rem;
-}
-
-.detail-label {
-  color: var(--color-secondary-text);
-  font-weight: 500;
-}
-
-.detail-value {
-  color: var(--color-primary-text);
-  font-weight: 600;
-}
-
-.mistakes-section {
-  margin-top: var(--spacing-sm);
-  padding-top: var(--spacing-sm);
-  border-top: 1px solid rgba(197, 179, 88, 0.2);
-}
-
-.mistakes-title {
-  color: var(--color-accent);
-  font-weight: 600;
-  font-size: 0.85rem;
-  margin-bottom: var(--spacing-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.mistake-item {
-  display: flex;
-  justify-content: space-between;
-  padding: var(--spacing-xs) 0;
-  font-size: 0.85rem;
-}
-
-.mistake-word {
-  color: #f87171;
-  font-family: 'Courier New', monospace;
-}
-
-.mistake-count {
-  color: var(--color-secondary-text);
-}
-
-.no-words {
-  text-align: center;
-  color: var(--color-secondary-text);
-  font-style: italic;
-  padding: var(--spacing-2xl);
-  font-size: 1rem;
-}
-
 /* Responsive Design */
 @media (max-width: 600px) {
   .minimal-container {
     padding: var(--spacing-xl) var(--spacing-md);
     max-width: calc(100vw - 16px);
-    margin: 0 4px;
   }
   
   .home-wrapper {
@@ -1755,26 +1700,40 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   }
   
   .app-title {
-    font-size: clamp(1.1rem, 4.5vw, 1.8rem);
-    margin-bottom: var(--spacing-md);
+    font-size: 2.2rem;
+  }
+  
+  .page-title {
+    font-size: 1.8rem;
+  }
+  
+  .wotd-word {
+    font-size: 1.8rem;
+  }
+  
+  .prompt-text {
+    font-size: 2rem;
+  }
+  
+  .modal-content {
+    margin: 15% auto;
+    padding: var(--spacing-xl);
   }
   
   .form-input,
   .form-textarea,
   .spell-input {
     padding: var(--spacing-sm) var(--spacing-md);
-    font-size: 0.9rem;
   }
   
   .add-btn,
   .submit-btn {
     padding: var(--spacing-md) var(--spacing-xl);
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
   
   .input-group {
     flex-direction: column;
-    gap: var(--spacing-sm);
   }
   
   .mode-section {
@@ -1789,81 +1748,50 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   .action-buttons {
     flex-direction: column;
     align-items: center;
-    gap: var(--spacing-sm);
   }
   
   .word-stat-header {
-    flex-direction: column;
-    gap: var(--spacing-md);
-    align-items: flex-start;
-  }
-  
-  .delete-word {
-    align-self: flex-end;
-  }
-  
-  .control-buttons {
+    flex-wrap: wrap;
     gap: var(--spacing-sm);
   }
   
-  .word-of-day-section {
-    margin-bottom: var(--spacing-lg);
-  }
-  
-  .action-buttons-minimal {
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
+  .word-actions {
+    margin-left: auto;
   }
 }
 
 @media (max-width: 480px) {
   .app-title {
-    font-size: clamp(1rem, 4vw, 1.4rem);
-    margin-bottom: var(--spacing-sm);
+    font-size: 1.3rem;
   }
   
   .page-title {
-    font-size: clamp(1.1rem, 3.8vw, 1.4rem);
+    font-size: 1.6rem;
   }
   
   .wotd-word {
-    font-size: clamp(1.1rem, 4.2vw, 1.4rem);
+    font-size: 1.6rem;
   }
   
   .prompt-text {
-    font-size: clamp(1.2rem, 4.5vw, 1.6rem);
-    letter-spacing: 0.08em;
+    font-size: 1.8rem;
   }
   
   .minimal-button {
     padding: var(--spacing-md) var(--spacing-lg);
-    font-size: 0.9rem;
-    min-height: 52px;
+    font-size: 1rem;
   }
   
   .word-prompt {
-    padding: var(--spacing-lg) var(--spacing-sm);
+    padding: var(--spacing-xl) var(--spacing-md);
   }
   
   .word-name {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
   
   .summary-value {
-    font-size: 1.4rem;
-  }
-  
-  .minimal-container {
-    padding: var(--spacing-md) var(--spacing-sm);
-    border-radius: var(--radius-md);
-  }
-  
-  .help-btn-card {
-    width: 32px;
-    height: 32px;
-    font-size: 1rem;
-    top: var(--spacing-sm);
-    right: var(--spacing-sm);
+    font-size: 1.5rem;
   }
 }
 
@@ -2149,3 +2077,4 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Slightly responsive text on the pill */
 .toggle-details{ font-size: clamp(.95rem, 3.2vw, 1.05rem); }
+}
