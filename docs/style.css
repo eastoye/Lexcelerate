@@ -2177,4 +2177,3 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Slightly responsive text on the pill */
 .toggle-details{ font-size: clamp(.95rem, 3.2vw, 1.05rem); }
-}
