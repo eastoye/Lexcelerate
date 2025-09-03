@@ -2013,7 +2013,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .word-stat-item{
   padding: 15px 8px;
   border-radius: 14px;
-  min-height: 40px;
+  min-height: 4px;
   max-height: 40px;
 }
 
