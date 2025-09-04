@@ -1601,7 +1601,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   overflow: hidden;
   transition: all 0.3s ease;
   padding: 4px 12px;
-}
 
 .word-stat-item:hover {
   border-color: rgba(197, 179, 88, 0.5);
