@@ -1600,6 +1600,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   overflow: hidden;
   transition: all 0.3s ease;
+  padding: 4px 12px;
 }
 
 .word-stat-item:hover {
@@ -2060,11 +2061,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: lowercase;
-}
-
-.toggle-details>span:last-child{
-  flex-shrink: 0;
-  margin-left: 4px;
 }
 
 /* Compact score on the right */

@@ -218,9 +218,8 @@ function renderStatsList(words) {
       <div class="word-stat-item" data-word="${wordObj.word.toLowerCase()}">
         <div class="word-stat-header">
           <div class="word-info">
-            <button class="toggle-details" data-word-index="${index}" aria-label="Toggle details for ${escapeHtml(wordObj.word)}" aria-expanded="false">
-              <span>${escapeHtml(wordObj.word.toLowerCase())}</span>
-              <span>▾</span>
+            <button class="toggle-details" data-word-index="${index}" aria-label="Toggle details for ${escapeHtml(wordObj.word)}">
+              <span>${escapeHtml(wordObj.word.toLowerCase())}</span> ▾
             </button>
           </div>
           <div class="word-score">Score: ${wordObj.score || 0}</div>
@@ -447,11 +446,11 @@ document.addEventListener('click', (e) => {
       
       // Update arrow in button text
       const toggleBtn = e.target.closest('.toggle-details');
-      const arrow = toggleBtn.querySelector('span:last-child') || toggleBtn;
+      const buttonText = toggleBtn.innerHTML;
       if (isExpanded) {
-        arrow.textContent = arrow.textContent.replace('▴', '▾');
+        toggleBtn.innerHTML = buttonText.replace('▴', '▾');
       } else {
-        arrow.textContent = arrow.textContent.replace('▾', '▴');
+        toggleBtn.innerHTML = buttonText.replace('▾', '▴');
       }
       
       toggleBtn.setAttribute('aria-expanded', !isExpanded);
