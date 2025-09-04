@@ -2062,6 +2062,11 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   text-transform: lowercase;
 }
 
+.toggle-details>span:last-child{
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
 /* Compact score on the right */
 .word-score{
   white-space: nowrap;
