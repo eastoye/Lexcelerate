@@ -1484,7 +1484,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Stats Scre/* Stats Screen Styles */
+/* Stats Screen Styles */
 .stats-summary {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
