@@ -1484,7 +1484,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Stats Screen Styles */
+/* Stats Scre/* Stats Screen Styles */
 .stats-summary {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2060,11 +2060,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: lowercase;
-}
-
-.toggle-details>span:last-child{
-  flex-shrink: 0;
-  margin-left: 4px;
 }
 
 /* Compact score on the right */
