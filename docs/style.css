@@ -1622,6 +1622,31 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   flex: 1;
 }
 
+.word-name-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  transition: all 0.3s ease;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+}
+
+.word-name-button:hover {
+  color: var(--color-accent);
+}
+
+.word-name-button:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 .word-name {
   font-family: 'Playfair Display', serif;
   font-size: 1.2rem;
@@ -1629,11 +1654,21 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   color: var(--color-primary-text);
 }
 
+.dropdown-arrow {
+  font-size: 0.8rem;
+  color: var(--color-accent);
+  transition: transform 0.2s ease;
+}
+
+.word-name-button:hover .dropdown-arrow {
+  transform: scale(1.2);
+}
+
 .mistake-indicator {
   background: #f87171;
   color: var(--color-background);
   border-radius: 50%;
-  width: 10px;
+  width: 20px;
   height: 20px;
   display: flex;
   align-items: center;
@@ -1648,12 +1683,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   font-weight: 500;
 }
 
-.word-actions {
-  display: flex;
-  gap: var(--spacing-sm);
-}
-
-.toggle-details,
 .delete-word {
   background: transparent;
   border: 1px solid rgba(197, 179, 88, 0.3);
@@ -1666,20 +1695,8 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   align-items: center;
   justify-content: center;
   font-size: 0.9rem;
-}
-
-.toggle-details {
-  color: var(--color-accent);
-}
-
-.toggle-details:hover {
-  background: var(--color-accent);
-  border-color: #c4a000;
-  color: var(--color-background);
-}
-
-.delete-word {
   color: #f87171;
+  font-weight: bold;
 }
 
 .delete-word:hover {
@@ -1688,11 +1705,77 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   color: var(--color-background);
 }
 
+/* Enhanced details section styling */
+.details {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-top: 1px solid rgba(197, 179, 88, 0.2);
+  background: rgba(26, 30, 39, 0.5);
+  margin-top: 0;
+  font-size: 0.9rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  font-size: 0.9rem;
+}
+
+.detail-label {
+  color: var(--color-secondary-text);
+  font-weight: 500;
+}
+
+.detail-value {
+  color: var(--color-primary-text);
+  font-weight: 600;
+}
+
+.mistakes-section {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid rgba(197, 179, 88, 0.2);
+}
+
+.mistakes-title {
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mistake-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  font-size: 0.85rem;
+}
+
+.mistake-word {
+  color: #f87171;
+  font-family: 'Courier New', monospace;
+}
+
+.mistake-count {
+  color: var(--color-secondary-text);
+}
+
+.no-words {
+  text-align: center;
+  color: var(--color-secondary-text);
+  font-style: italic;
+  padding: var(--spacing-2xl);
+  font-size: 1rem;
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
   .minimal-container {
     padding: var(--spacing-xl) var(--spacing-md);
     max-width: calc(100vw - 16px);
+    margin: 0 4px;
   }
   
   .home-wrapper {
@@ -1700,40 +1783,26 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   }
   
   .app-title {
-    font-size: 2.2rem;
-  }
-  
-  .page-title {
-    font-size: 1.8rem;
-  }
-  
-  .wotd-word {
-    font-size: 1.8rem;
-  }
-  
-  .prompt-text {
-    font-size: 2rem;
-  }
-  
-  .modal-content {
-    margin: 15% auto;
-    padding: var(--spacing-xl);
+    font-size: clamp(1.1rem, 4.5vw, 1.8rem);
+    margin-bottom: var(--spacing-md);
   }
   
   .form-input,
   .form-textarea,
   .spell-input {
     padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
   }
   
   .add-btn,
   .submit-btn {
     padding: var(--spacing-md) var(--spacing-xl);
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   
   .input-group {
     flex-direction: column;
+    gap: var(--spacing-sm);
   }
   
   .mode-section {
@@ -1748,50 +1817,81 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   .action-buttons {
     flex-direction: column;
     align-items: center;
-  }
-  
-  .word-stat-header {
-    flex-wrap: wrap;
     gap: var(--spacing-sm);
   }
   
-  .word-actions {
-    margin-left: auto;
+  .word-stat-header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+  }
+  
+  .delete-word {
+    align-self: flex-end;
+  }
+  
+  .control-buttons {
+    gap: var(--spacing-sm);
+  }
+  
+  .word-of-day-section {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .action-buttons-minimal {
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
   }
 }
 
 @media (max-width: 480px) {
   .app-title {
-    font-size: 1.3rem;
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    margin-bottom: var(--spacing-sm);
   }
   
   .page-title {
-    font-size: 1.6rem;
+    font-size: clamp(1.1rem, 3.8vw, 1.4rem);
   }
   
   .wotd-word {
-    font-size: 1.6rem;
+    font-size: clamp(1.1rem, 4.2vw, 1.4rem);
   }
   
   .prompt-text {
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 4.5vw, 1.6rem);
+    letter-spacing: 0.08em;
   }
   
   .minimal-button {
     padding: var(--spacing-md) var(--spacing-lg);
-    font-size: 1rem;
+    font-size: 0.9rem;
+    min-height: 52px;
   }
   
   .word-prompt {
-    padding: var(--spacing-xl) var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-sm);
   }
   
   .word-name {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   
   .summary-value {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
+  
+  .minimal-container {
+    padding: var(--spacing-md) var(--spacing-sm);
+    border-radius: var(--radius-md);
+  }
+  
+  .help-btn-card {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
   }
 }
 
@@ -2011,29 +2111,23 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* ---- Stats cards: keep header on one clean, responsive row ---- */
 .word-stat-item{
-  padding: 15px 8px;
+  padding: 14px 16px;
   border-radius: 14px;
-  min-height: 40px;
-  max-height: 40px;
 }
 
 .word-stat-header{
   display: flex;
   align-items: center;
   justify-content: space-between;   /* left cluster | score | delete */
-  gap: 6px;
+  gap: 12px;
   flex-wrap: nowrap;                 /* no wrapping on normal screens */
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 /* Left cluster: mistakes chip + word pill */
 .word-info{
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   min-width: 0;                      /* allow ellipsis */
   flex: 1 1 auto;                    /* take remaining space */
 }
@@ -2042,10 +2136,10 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .toggle-details{
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   width: auto;
   max-width: 100%;
-  padding: 6px 10px;
+  padding: 10px 14px;
   border-radius: 12px;
   border: 1px solid rgba(197,179,88,.35);
   background: rgba(10,14,23,.6);
@@ -2053,18 +2147,11 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   white-space: nowrap;
   font-weight: 700;
   text-transform: none;
-  font-size: 0.9rem;
 }
 
 .toggle-details > span{
   overflow: hidden;
   text-overflow: ellipsis;
-  text-transform: lowercase;
-}
-
-.toggle-details>span:last-child{
-  flex-shrink: 0;
-  margin-left: 4px;
 }
 
 /* Compact score on the right */
@@ -2072,16 +2159,14 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   white-space: nowrap;
   color: var(--color-accent, #C5B358);
   flex: 0 0 auto;
-  font-size: 0.85rem;
 }
 
 /* Delete button — consistent size/right aligned */
 .delete-word{
-  width: 32px;
-  height: 28px;
+  width: 40px;
+  height: 32px;
   border-radius: 12px;
   flex: 0 0 auto;
-  font-size: 1.1rem;
 }
 
 /* Very small phones: allow a graceful wrap */
