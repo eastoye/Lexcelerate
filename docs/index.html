@@ -376,26 +376,35 @@
             <span class="btn-icon">📥</span>
             <span class="btn-text">Import</span>
           </button>
-          <button id="toggle-random-stats-btn" class="action-btn">
+        </div>
+
+        <!-- Smart List Controls -->
+        <h3 class="section-title">Smart List</h3>
+        <div class="input-group" style="margin-bottom: var(--spacing-md);">
+          <input id="smart-list-n" type="number" class="form-input" value="10" min="1" max="100" style="width: 80px;" />
+          <select id="smart-list-source" class="form-input" style="flex: 1;">
+            <option value="all">All words</option>
+            <option value="error_history">With errors</option>
+            <option value="low_score">Low score (&lt; 50)</option>
+            <option value="high_score">High score (≥ 80)</option>
+          </select>
+          <button id="refresh-smart-list" class="minimal-button">Refresh</button>
+        </div>
+        <div id="smart-list-display"></div>
+
+        <!-- Random Trials Toggle -->
+        <div style="margin-top: var(--spacing-xl); text-align: center;">
+          <button id="toggle-random-stats-btn" class="minimal-button">
             <span class="btn-icon">🎲</span>
             <span class="btn-text">Show Random Trials</span>
           </button>
+          <div id="random-stats" style="display: none; margin-top: var(--spacing-md);"></div>
         </div>
 
-        <!-- Catalogue Words List -->
-        <div class="catalogue-section">
-          <h3 class="section-title">Word Catalogue</h3>
-          <div id="stats-list" class="stats-list">
-            <!-- Word statistics will be populated here -->
-          </div>
-        </div>
-
-        <!-- Random Trials Section (initially hidden) -->
-        <div id="random-stats" class="random-section" style="display: none;">
-          <h3 class="section-title">Random Word Trials</h3>
-          <div id="random-stats-list" class="random-stats-list">
-            <!-- Random trial statistics will be populated here -->
-          </div>
+        <!-- Word Statistics List -->
+        <h3 class="section-title" style="margin-top: var(--spacing-2xl);">Word Stats</h3>
+        <div id="stats-list" class="stats-list">
+          <!-- Word statistics will be populated here -->
         </div>
       </div>
     </div>
