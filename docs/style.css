@@ -1692,7 +1692,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 @media (max-width: 600px) {
   .minimal-container {
     padding: var(--spacing-xl) var(--spacing-md);
-    max-width: calc(100vw - 8px);
+    max-width: calc(100vw - 16px);
   }
   
   .home-wrapper {
@@ -2011,10 +2011,8 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* ---- Stats cards: keep header on one clean, responsive row ---- */
 .word-stat-item{
-  padding: 15px 8px;
+  padding: 8px 12px;
   border-radius: 14px;
-  min-height: 40px;
-  max-height: 40px;
 }
 
 .word-stat-header{
