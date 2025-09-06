@@ -10,151 +10,6 @@ let currentUser = null;
 let userProfile = null;
 let isSignUpMode = false;
 
-// Enhanced word statistics rendering functions
-function renderWordStatistics(words) {
-  const statsListDiv = document.getElementById('stats-list');
-  
-  if (!words || words.length === 0) {
-    statsListDiv.innerHTML = '<p class="no-words">No words added yet.</p>';
-    return;
-  }
-  
-  let html = '';
-  words.forEach((wordObj, index) => {
-    const mistakeCount = Object.keys(wordObj.mistakes || {}).length;
-    const hasDetails = wordObj.totalAttempts > 0 || mistakeCount > 0;
-    
-    html += `
-      <div class="word-stat-compact" data-word="${wordObj.word.toLowerCase()}">
-        <div class="word-stat-main">
-          <div class="word-name-with-dropdown ${hasDetails ? 'expandable' : ''}" data-word-index="${index}">
-            <span class="word-name-compact">${escapeHtml(wordObj.word.toLowerCase())}</span>
-            ${hasDetails ? '<span class="dropdown-arrow-compact">▾</span>' : ''}
-          </div>
-          <div class="word-score-compact">Score: ${wordObj.score || 0}</div>
-          <button class="delete-word-compact" data-word-index="${index}" aria-label="Delete word">×</button>
-        </div>
-        ${hasDetails ? `
-          <div class="word-details-compact" id="details-${index}">
-            <div class="detail-row">
-              <span class="detail-label">Total Attempts:</span>
-              <span class="detail-value">${wordObj.totalAttempts || 0}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Correct on First Try:</span>
-              <span class="detail-value">${wordObj.correctFirstTryCount || 0}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Current Streak:</span>
-              <span class="detail-value">${wordObj.streak || 0}</span>
-            </div>
-            ${mistakeCount > 0 ? `
-              <div class="mistakes-section">
-                <div class="mistakes-title">Common Mistakes</div>
-                ${Object.entries(wordObj.mistakes).map(([mistake, count]) => `
-                  <div class="mistake-item">
-                    <span class="mistake-word">${escapeHtml(mistake)}</span>
-                    <span class="mistake-count">${count}x</span>
-                  </div>
-                `).join('')}
-              </div>
-            ` : ''}
-          </div>
-        ` : ''}
-      </div>
-    `;
-  });
-  
-  statsListDiv.innerHTML = html;
-}
-
-// Enhanced event delegation for statistics interactions
-function setupStatsEventHandlers() {
-  document.addEventListener('click', (e) => {
-    // Handle expandable word details
-    if (e.target.closest('.word-name-with-dropdown.expandable')) {
-      const wordIndex = e.target.closest('.word-name-with-dropdown').getAttribute('data-word-index');
-      const detailsDiv = document.getElementById(`details-${wordIndex}`);
-      const dropdownArrow = e.target.closest('.word-name-with-dropdown').querySelector('.dropdown-arrow-compact');
-      
-      if (detailsDiv && dropdownArrow) {
-        const isExpanded = detailsDiv.classList.contains('expanded');
-        
-        if (isExpanded) {
-          detailsDiv.classList.remove('expanded');
-          detailsDiv.style.display = 'none';
-          dropdownArrow.textContent = '▾';
-          e.target.closest('.word-name-with-dropdown').classList.remove('expanded');
-        } else {
-          detailsDiv.classList.add('expanded');
-          detailsDiv.style.display = 'block';
-          dropdownArrow.textContent = '▴';
-          e.target.closest('.word-name-with-dropdown').classList.add('expanded');
-        }
-      }
-    }
-    
-    // Handle delete word
-    if (e.target.classList.contains('delete-word-compact')) {
-      const wordIndex = parseInt(e.target.getAttribute('data-word-index'));
-      const wordObj = window.wordCatalogue[wordIndex];
-      
-      if (wordObj && confirm(`Delete word "${wordObj.word}"?`)) {
-        window.wordCatalogue.splice(wordIndex, 1);
-        if (window.saveCatalogue) window.saveCatalogue();
-        updateEnhancedStatsList();
-        updateStatsSummary();
-        if (window.refreshSmartList) window.refreshSmartList();
-      }
-    }
-  });
-}
-
-// Enhanced stats list update function
-function updateEnhancedStatsList() {
-  // Update stats summary when updating stats list
-  updateStatsSummary();
-  renderWordStatistics(window.wordCatalogue);
-}
-
-// Update stats summary cards
-function updateStatsSummary() {
-  const totalWordsEl = document.getElementById('total-words');
-  const averageScoreEl = document.getElementById('average-score');
-  const bestStreakEl = document.getElementById('best-streak');
-  
-  if (!totalWordsEl || !averageScoreEl || !bestStreakEl) return;
-  
-  // Calculate total words
-  const totalWords = window.wordCatalogue ? window.wordCatalogue.length : 0;
-  totalWordsEl.textContent = totalWords;
-  
-  // Calculate average score
-  let averageScore = 0;
-  if (totalWords > 0 && window.wordCatalogue) {
-    const totalScore = window.wordCatalogue.reduce((sum, word) => sum + (word.score || 0), 0);
-    averageScore = Math.round(totalScore / totalWords);
-  }
-  averageScoreEl.textContent = averageScore;
-  
-  // Calculate best streak
-  let bestStreak = 0;
-  if (window.wordCatalogue) {
-    bestStreak = window.wordCatalogue.reduce((max, word) => {
-      const streak = word.streak || 0;
-      return streak > max ? streak : max;
-    }, 0);
-  }
-  bestStreakEl.textContent = bestStreak;
-}
-
-// Utility function to escape HTML
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
 // Initialize auth state listener
 onAuthStateChange(async (user) => {
   if (user) {
@@ -172,11 +27,7 @@ onAuthStateChange(async (user) => {
         return;
       }
       
-      // Update welcome message
-      const welcomeMsg = document.getElementById('welcome-message');
-      if (welcomeMsg) {
-        welcomeMsg.textContent = `Welcome, ${userProfile.username}!`;
-      }
+    
     }
     
     // Load user's catalogue from Supabase
@@ -190,11 +41,8 @@ onAuthStateChange(async (user) => {
     // Initialize smart list generator
     initializeSmartListGenerator();
     
-    // Setup enhanced stats event handlers
-    setupStatsEventHandlers();
-    
     window.showScreen('home-screen');
-    if (window.loadWordOfTheDay) window.loadWordOfTheDay();
+    loadWordOfTheDay();
   } else {
     currentUser = null;
     userProfile = null;
@@ -208,11 +56,6 @@ onAuthStateChange(async (user) => {
 // Initialize the app - show auth screen by default
 document.addEventListener('DOMContentLoaded', () => {
   window.showScreen('auth-screen');
-  
-  // Override the original updateStatsList function to use enhanced version
-  if (window.updateStatsList) {
-    window.updateStatsList = updateEnhancedStatsList;
-  }
 });
 
 // Load user's catalogue from Supabase
@@ -244,16 +87,12 @@ async function saveUserCatalogueToSupabase() {
     console.log('Catalogue saved to Supabase');
   } else {
     console.error('Failed to save catalogue to Supabase:', result.error);
-    if (window.showNotification) {
-      window.showNotification('Failed to save to cloud storage');
-    }
+    showNotification('Failed to save to cloud storage');
   }
 }
 
 // Override the original saveCatalogue function to use Supabase
 window.saveCatalogue = saveUserCatalogueToSupabase;
-
-// === Auth form + username setup (keep your existing code below) ===
 
 // Auth form handling
 document.getElementById('auth-submit-btn').addEventListener('click', async () => {
@@ -337,9 +176,7 @@ document.getElementById('logout-btn').addEventListener('click', async () => {
   const result = await logOut();
   if (!result.success) {
     console.error('Logout error:', result.error);
-    if (window.showNotification) {
-      window.showNotification('Error signing out');
-    }
+    showNotification('Error signing out');
   }
 });
 
@@ -398,15 +235,12 @@ document.getElementById('username-submit-btn').addEventListener('click', async (
       const profileResult = await getUserProfile();
       if (profileResult.success) {
         userProfile = profileResult.data;
-        const welcomeMsg = document.getElementById('welcome-message');
-        if (welcomeMsg) {
-          welcomeMsg.textContent = `Welcome, ${userProfile.username}!`;
-        }
+        document.getElementById('welcome-message').textContent = `Welcome, ${userProfile.username}!`;
       }
       
       await loadUserCatalogueFromSupabase();
       window.showScreen('home-screen');
-      if (window.loadWordOfTheDay) window.loadWordOfTheDay();
+      loadWordOfTheDay();
     }
   } catch (error) {
     showUsernameError('An unexpected error occurred. Please try again.');
@@ -437,7 +271,6 @@ window.currentUser = currentUser;
 window.userProfile = userProfile;
 window.saveUserCatalogueToSupabase = saveUserCatalogueToSupabase;
 window.loadUserCatalogueFromSupabase = loadUserCatalogueFromSupabase;
-window.updateEnhancedStatsList = updateEnhancedStatsList;
 
 // === Practice mode dropdown wiring ===
 (function () {
