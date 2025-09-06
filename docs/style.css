@@ -1991,15 +1991,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   z-index: 1000;
 }
 
-/* Very small phones: allow a graceful wrap */
-@media (max-width: 380px){
-  .word-stat-header{ flex-wrap: wrap; row-gap: 10px; }
-  .word-score{ order: 3; width: 100%; text-align: right; }
-}
-
-/* Slightly responsive text on the pill */
-.toggle-details{ font-size: clamp(.95rem, 3.2vw, 1.05rem); }
-
 /* Remove box styling from toggle-details button */
 .toggle-details{
   border: none !important;
@@ -2007,6 +1998,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   padding: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: left;
 }
 
 /* ---- Stats cards: keep header on one clean, responsive row ---- */
@@ -2019,7 +2013,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: space-between;   /* left cluster | score | delete */
-  gap: 12px;
+  gap: 8px;
   flex-wrap: nowrap;                 /* no wrapping on normal screens */
 }
 
@@ -2027,18 +2021,19 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .word-info{
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   min-width: 0;                      /* allow ellipsis */
-  flex: 1 1 auto;                    /* take remaining space */
+  flex: 1;
+  overflow: hidden;
 }
 
 /* Word pill (dropdown toggle) — must NOT be full width */
 .toggle-details{
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   width: auto;
-  max-width: 100%;
+  max-width: none;
   padding: 10px 14px;
   border-radius: 12px;
   border: 1px solid rgba(197,179,88,.35);
@@ -2047,18 +2042,26 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   white-space: nowrap;
   font-weight: 700;
   text-transform: none;
+  min-width: 0;
+  flex: 1;
+  justify-content: flex-start;
 }
 
 .toggle-details > span{
   overflow: hidden;
   text-overflow: ellipsis;
+  text-transform: lowercase;
+  flex: 1;
+  min-width: 0;
 }
 
 /* Compact score on the right */
 .word-score{
   white-space: nowrap;
   color: var(--color-accent, #C5B358);
-  flex: 0 0 auto;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  margin-left: 8px;
 }
 
 /* Delete button — consistent size/right aligned */
@@ -2066,17 +2069,39 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   width: 40px;
   height: 32px;
   border-radius: 12px;
-  flex: 0 0 auto;
+  flex-shrink: 0;
 }
 
 /* Very small phones: allow a graceful wrap */
 @media (max-width: 380px){
-  .word-stat-header{ flex-wrap: wrap; row-gap: 10px; }
-  .word-score{ order: 3; width: 100%; text-align: right; }
+  .word-stat-header{ 
+    flex-wrap: nowrap;
+    gap: 4px;
+  }
+  
+  .word-info {
+    gap: 4px;
+    min-width: 0;
+    flex: 1;
+  }
+  
+  .toggle-details {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    min-width: 0;
+  }
+  
+  .word-score {
+    font-size: 0.8rem;
+    margin-left: 4px;
+  }
+  
+  .delete-word {
+    width: 32px;
+    height: 28px;
+  }
 }
 
-/* Slightly responsive text on the pill */
-.toggle-details{ font-size: clamp(.95rem, 3.2vw, 1.05rem); }
 /* === Stats Screen Styles === */
 .stats-summary {
   display: grid;
@@ -2324,152 +2349,4 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .mistake-count {
   color: var(--color-secondary-text);
-}
-/* ---- Stats row: robust responsive layout ---- */
-.word-stat-item{
-  padding: 14px 16px;
-  border-radius: 14px;
-}
-
-.word-stat-header{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;   /* left cluster | score | delete */
-  gap: 12px;
-  flex-wrap: nowrap;                 /* no wrapping on normal screens */
-}
-
-/* Left cluster (mistake chip + word pill) */
-.word-info{
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;                      /* allow truncation */
-  flex: 1 1 auto;                    /* take remaining space */
-}
-
-/* Word pill (the dropdown toggle) */
-.toggle-details{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  width: auto;
-  max-width: 100%;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(197,179,88,.35);
-  background: rgba(10,14,23,.6);
-  cursor: pointer;
-  white-space: nowrap;
-  font-weight: 700;
-  text-transform: none; /* keep pill styling; we’ll lowercase inner span */
-  border: none !important;           /* remove any default button chrome */
-  box-shadow: none !important;
-}
-
-.toggle-details > span{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-transform: lowercase;         /* FORCE LOWERCASE WORD DISPLAY */
-}
-
-/* Compact score on the right */
-.word-score{
-  white-space: nowrap;
-  color: var(--color-accent, #C5B358);
-  flex: 0 0 auto;
-}
-
-/* Delete button — consistent size/right aligned */
-.delete-word{
-  width: 40px;
-  height: 32px;
-  border-radius: 12px;
-  flex: 0 0 auto;
-}
-
-/* Very small phones: allow a graceful wrap */
-@media (max-width: 380px){
-  .word-stat-header{ flex-wrap: wrap; row-gap: 10px; }
-  .word-score{ order: 3; width: 100%; text-align: right; } /* score moves to its own line */
-}
-/* === Stats row — match "stat ui target" look & spacing === */
-
-/* Card padding/radius like target */
-.word-stat-item{
-  padding: 14px 16px;
-  border-radius: 14px;
-}
-
-/* One clean row: word pill | score | delete  */
-.word-stat-header{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: nowrap;           /* keep one row on normal screens */
-}
-
-/* Left cluster (word pill) should flex and allow truncation */
-.word-info{
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;                /* enables ellipsis inside */
-  flex: 1 1 auto;
-}
-
-/* The clickable word pill (like target’s dropdown) */
-.toggle-details{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  max-width: 100%;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(197,179,88,.30);
-  background: rgba(10,14,23,.6);
-  cursor: pointer;
-  white-space: nowrap;
-  font-weight: 700;
-  color: var(--color-primary-text);
-  text-transform: none;        /* lowercase applied to inner span */
-  text-decoration: none;       /* remove any underline */
-}
-
-/* Lowercase + ellipsis for long words */
-.toggle-details > span{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-transform: lowercase;
-}
-
-/* Score: compact, never wraps into the word */
-.word-score{
-  flex: 0 0 auto;
-  white-space: nowrap;
-  margin-right: 8px;           /* like target spacing before the X */
-  color: var(--color-accent);
-  font-weight: 500;
-  font-size: 0.9rem;
-}
-
-/* Delete button: small bordered pill as in target */
-.delete-word{
-  flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: 1px solid rgba(197,179,88,.30);
-  color: #f87171;
-}
-
-/* Tiny phones: let score drop to its own line instead of colliding */
-@media (max-width: 380px){
-  .word-stat-header{ flex-wrap: wrap; row-gap: 10px; }
-  .word-score{ order: 3; width: 100%; text-align: right; margin-right: 0; }
 }
