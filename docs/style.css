@@ -2393,3 +2393,72 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   .word-stat-header{ flex-wrap: wrap; row-gap: 10px; }
   .word-score{ order: 3; width: 100%; text-align: right; } /* score moves to its own line */
 }
+/* ---- Stats rows: robust, no-collision layout ---- */
+.word-stat-item{
+  padding: 14px 16px;
+  border-radius: 14px;
+}
+
+.word-stat-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* left cluster | score | delete */
+  gap: 12px;
+  flex-wrap: nowrap;               /* no wrap on normal screens */
+}
+
+/* Left cluster (mistake chip + word pill) */
+.word-info{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;                    /* allow truncation */
+  flex: 1 1 auto;                  /* take remaining space */
+}
+
+/* The clickable word pill */
+.toggle-details{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  max-width: 100%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(197,179,88,.35);
+  background: rgba(10,14,23,.6);
+  cursor: pointer;
+  white-space: nowrap;
+  font-weight: 700;
+  text-transform: none;            /* lowercase handled on inner span */
+  border: none !important;         /* remove default button chrome */
+  box-shadow: none !important;
+}
+
+/* Truncate long words & force lowercase */
+.toggle-details > span{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: lowercase;
+}
+
+/* Keep score compact and non-wrapping */
+.word-score{
+  white-space: nowrap;
+  color: var(--color-accent, #C5B358);
+  flex: 0 0 auto;
+}
+
+/* Delete button sizing */
+.delete-word{
+  width: 40px;
+  height: 32px;
+  border-radius: 12px;
+  flex: 0 0 auto;
+}
+
+/* Ultra-small phones: let the score move to its own line */
+@media (max-width: 380px){
+  .word-stat-header{ flex-wrap: wrap; row-gap: 10px; }
+  .word-score{ order: 3; width: 100%; text-align: right; }
+}
