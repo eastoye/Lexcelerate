@@ -16,7 +16,7 @@ body {
 /* === iOS Safe Area Layout === */
 :root {
   --pad-top: clamp(8px, 2dvh, 16px);
-  --pad-bottom: max(calc(env(safe-area-inset-bottom) + 16px), 20px);
+  --pad-bottom: max(calc(env(safe-area-inset-bottom) + 20px), 24px);
   --spacing-xs: 0.5rem;
   --spacing-sm: 0.75rem;
   --spacing-md: 1rem;
@@ -33,8 +33,7 @@ body {
   --color-mint: #6bbba1;         /* mint */
   --color-primary-text: #fdf6e3; /* cream */
   --color-secondary-text: #f5ede0;
-  --maxw: 100%;                  /* full width for mobile */
-  --card-max-width: min(520px, calc(100vw - 16px)); /* responsive card width */
+  --maxw: 520px;                 /* match target card width */
 }
 
 /* === Home Wrapper for Centering === */
@@ -43,10 +42,9 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100dvh;
-  padding: var(--pad-top) 4px var(--pad-bottom);
+  padding: var(--pad-top) 8px var(--pad-bottom);
   width: 100%;
   max-width: 100%;
-  box-sizing: border-box;
 }
 
 .screen {
@@ -601,7 +599,7 @@ footer {
 /* Practice List Selector Styles */
 .practice-list-selector {
   position: relative;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 1rem;
 }
 
 .current-list-button {
@@ -609,9 +607,9 @@ footer {
   color: var(--color-primary-text);
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.9rem, 2.8vw, 1rem);
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -620,7 +618,7 @@ footer {
   letter-spacing: 0.05em;
   position: relative;
   overflow: hidden;
-  min-height: 48px;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -761,37 +759,38 @@ footer {
 
 /* 2) Keep layout centered and full-height without sideways nudge */
 body{ min-height: 100dvh; overflow-x: hidden; }
-.home-container{ max-width: 100%; }
+.home-container{ max-width: var(--maxw); }
 
 /* 3) Home card = same shape/size as target */
 .minimal-container{
   /* size/shape */
   min-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
   border-radius: var(--radius-xl);
-  padding: var(--spacing-2xl) var(--spacing-lg); /* more compact for mobile */
+  padding: var(--spacing-3xl) var(--spacing-2xl); /* roomier like target */
   /* look */
   background: var(--color-panel);
   border: 1px solid rgba(197,179,88,0.5); /* gold-subtle */
   box-shadow: 0 8px 32px rgba(0,0,0,0.5);
   width: 100%;
-  max-width: var(--card-max-width);
+  max-width: var(--maxw);
   margin: 0 auto;
   /* Ensure proper mobile fit */
   box-sizing: border-box;
-  position: relative;
+   position: relative; 
+
 }
 
 /* Help Button in Card */
 .help-btn-card{
   position: absolute;
-  top: var(--spacing-md);
-  right: var(--spacing-md);
+  top:  calc(var(--spacing-lg) - 20px);  /* increase this to move lower */
+  right: calc(var(--spacing-lg) - 20px);  /* decrease this to move further right */
   background: transparent;
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 1.1rem;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
   color: var(--color-accent);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -855,10 +854,10 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* App Title */
 .app-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.2rem, 5vw, 2.2rem);
+  font-size: clamp(1.4rem, 6vw, 2.75rem);
   font-weight: 700;
   color: var(--color-primary-text);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-2xl);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
@@ -872,7 +871,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   bottom: -8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 50px;
+  width: 60px;
   height: 2px;
   background: var(--color-accent);
   border-radius: 1px;
@@ -882,7 +881,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* Page Title for other screens */
 .page-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  font-size: 2.2rem;
   font-weight: 700;
   color: var(--color-primary-text);
   margin-bottom: var(--spacing-sm);
@@ -894,9 +893,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .page-subtitle {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  font-size: 1rem;
   color: var(--color-secondary-text);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-2xl);
   font-weight: 400;
   font-style: italic;
   text-align: center;
@@ -909,7 +908,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-sm) var(--spacing-md);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.8rem, 2.3vw, 0.85rem);
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -917,7 +916,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
   align-self: flex-start;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -938,12 +937,12 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Word of the Day */
 .word-of-day-section {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-2xl);
 }
 
 .word-of-day-section h2 {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.1rem, 3.5vw, 1.3rem);
+  font-size: 1.4rem;
   color: var(--color-primary-text);
   margin-bottom: var(--spacing-lg);
   font-weight: 600;
@@ -992,7 +991,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .wotd-word {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.4rem, 5vw, 2rem);
+  font-size: 2.2rem;
   font-weight: 700;
   color: var(--color-background);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -1000,7 +999,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 .wotd-hint {
-  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  font-size: 0.9rem;
   color: var(--color-secondary-text);
   font-style: italic;
   font-weight: 300;
@@ -1011,7 +1010,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-2xl);
 }
 
 .minimal-button {
@@ -1021,7 +1020,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-lg) var(--spacing-xl);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.95rem, 3vw, 1.1rem);
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1034,8 +1033,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .minimal-button::before {
@@ -1072,7 +1069,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-lg);
   color: var(--color-secondary-text);
-  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+  font-size: 0.95rem;
   font-weight: 500;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
@@ -1080,8 +1077,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .word-count-display:hover {
@@ -1103,12 +1098,11 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-md) var(--spacing-lg);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.9rem, 3vw, 1rem);
+  font-size: 1rem;
   color: var(--color-primary-text);
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   margin-bottom: var(--spacing-md);
-  box-sizing: border-box;
 }
 
 .form-input:focus,
@@ -1158,7 +1152,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-lg) var(--spacing-2xl);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.95rem, 3vw, 1.1rem);
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1172,9 +1166,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   margin: 0 auto;
   position: relative;
   overflow: hidden;
-  width: 100%;
-  max-width: 300px;
-  box-sizing: border-box;
 }
 
 .add-btn::before {
@@ -1215,10 +1206,10 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Practice Styles */
 .mode-section {
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-2xl);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
   align-items: center;
 }
 
@@ -1254,7 +1245,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-sm) var(--spacing-md);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.8rem, 2.3vw, 0.85rem);
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1264,7 +1255,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   gap: var(--spacing-xs);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  min-height: 40px;
 }
 
 .add-random-btn:hover {
@@ -1275,21 +1265,19 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 .practice-area {
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-2xl);
 }
 
 .word-prompt {
   background: #0a0e17;
   border: 2px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-lg) var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .word-prompt:hover {
@@ -1315,19 +1303,18 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .prompt-text {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.3rem, 5vw, 1.8rem);
+  font-size: 2.5rem;
   font-weight: 700;
   color: var(--color-primary-text);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   display: block;
-  margin-bottom: var(--spacing-xs);
-  word-break: break-word;
+  margin-bottom: var(--spacing-sm);
 }
 
 .prompt-hint {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  font-size: 0.9rem;
   color: var(--color-secondary-text);
   font-style: italic;
   font-weight: 400;
@@ -1336,29 +1323,26 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .control-buttons {
   display: flex;
   justify-content: center;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
 }
 
 .control-btn {
   background: #1a1e27;
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-md);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.8rem, 2.3vw, 0.9rem);
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   color: var(--color-primary-text);
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  flex: 1;
-  justify-content: center;
-  min-height: 44px;
 }
 
 .control-btn:hover {
@@ -1379,12 +1363,12 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 .spelling-section {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
 }
 
 .input-group {
   display: flex;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
   align-items: stretch;
 }
 
@@ -1393,9 +1377,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   background: #0a0e17;
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-md);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.9rem, 2.8vw, 1rem);
+  font-size: 1.1rem;
   color: var(--color-primary-text);
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -1403,7 +1387,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   letter-spacing: normal;
   width: 100%;
   box-sizing: border-box;
-  min-height: 44px;
 }
 
 .spell-input:focus {
@@ -1428,21 +1411,19 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   background: var(--color-mint);
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-md);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   color: var(--color-background);
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   white-space: nowrap;
-  flex-shrink: 0;
-  min-height: 44px;
 }
 
 .submit-btn:hover {
@@ -1457,16 +1438,16 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 .feedback-area {
-  min-height: 40px;
+  min-height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
 }
 
 .feedback-correct {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(1rem, 3vw, 1.1rem);
+  font-size: 1.2rem;
   font-weight: 700;
   color: #4ade80;
   text-transform: uppercase;
@@ -1476,7 +1457,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .feedback-incorrect {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(1rem, 3vw, 1.1rem);
+  font-size: 1.2rem;
   font-weight: 700;
   color: #f87171;
   text-transform: uppercase;
@@ -1484,7 +1465,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Stats Scre/* Stats Screen Styles */
+/* Stats Screen Styles */
 .stats-summary {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1809,7 +1790,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .add-random-btn:focus,
 .word-prompt:focus,
 .action-btn:focus,
-.word-name-button:focus,
+.toggle-details:focus,
 .delete-word:focus {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
@@ -1845,7 +1826,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   .add-random-btn:hover,
   .word-prompt:hover,
   .action-btn:hover,
-  .word-name-button:hover,
+  .toggle-details:hover,
   .delete-word:hover {
     transform: none;
   }
@@ -1861,15 +1842,14 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   font-weight: 700;
   text-transform: uppercase;
   line-height: 1.08;
-  font-size: clamp(1rem, 10cqw, 1.6rem);
+  font-size: clamp(1.25rem, 12cqw, 1.9rem);
   letter-spacing: 0.08em;
-  word-break: break-word;
 }
 
 /* Fallback for browsers without container queries */
 @supports not (font-size: 1cqw) {
   #home-screen .app-title h1 {
-    font-size: clamp(1rem, 4.5vw, 1.6rem);
+    font-size: clamp(1.25rem, 5.2vw, 1.9rem);
   }
 }
 /* Unify screen backgrounds to match Home */
@@ -1892,21 +1872,20 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   flex-direction: column;     /* stack input over button */
   align-items: center;        /* center children */
   width: 100%;
-  gap: var(--spacing-sm);
 }
 
 #practice-screen .spell-input{
   flex: 0 0 auto;             /* stop it from stretching weirdly */
   width: 100%;
-  max-width: min(360px, calc(100vw - 32px)); /* responsive max width */
+  max-width: 360px;           /* tweak: same width you want for the button */
   margin: 0 auto;             /* centers when not 100% */
   text-align: center;
 }
 
 #practice-screen .submit-btn{
   width: 100%;
-  max-width: min(360px, calc(100vw - 32px)); /* match the input */
-  margin: 0 auto;
+  max-width: 360px;           /* match the input */
+  margin: var(--spacing-md) auto 0;
 }
 
 /* === Lexcelerate final overrides (append at end) === */
@@ -1941,13 +1920,13 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .screen input[type="password"],
 .screen input[type="search"] {
   width: 100%;
-  max-width: min(360px, calc(100vw - 32px)); /* responsive max width */
+  max-width: 360px;                 /* match Practice */
   background: #0a0e17;
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-md);
   padding: var(--spacing-md) var(--spacing-lg);
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.95rem, 3vw, 1.1rem);
+  font-size: 1.1rem;
   color: var(--color-primary-text);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
@@ -1976,14 +1955,14 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* 3c) Form inputs already using .form-input stay visually identical to Practice */
 .form-input {
-  max-width: min(360px, calc(100vw - 32px));
+  max-width: 360px;
   margin-left: auto;
   margin-right: auto;
 }
 
 /* 3d) Keep Practice input + Submit centered & matched (belt & braces) */
-#practice-screen .spell-input { max-width: min(360px, calc(100vw - 32px)); }
-#practice-screen .submit-btn  { max-width: min(360px, calc(100vw - 32px)); }
+#practice-screen .spell-input { max-width: 360px; }
+#practice-screen .submit-btn  { max-width: 360px; }
 
 /* 3e) Ensure picker dropdown sits above cards on iOS */
 #practice-source-menu {
@@ -1991,89 +1970,350 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   z-index: 1000;
 }
 
-/* Very small phones: allow a graceful wrap */
-@media (max-width: 380px){
-  .word-stat-header{ flex-wrap: wrap; row-gap: 10px; }
-  .word-score{ order: 3; width: 100%; text-align: right; }
+/* === Enhanced Stats Page Layout === */
+.word-stat-compact {
+  background: #0a0e17;
+  border: 1px solid rgba(197, 179, 88, 0.3);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-sm);
+  transition: all 0.3s ease;
 }
 
-/* Slightly responsive text on the pill */
-.toggle-details{ font-size: clamp(.95rem, 3.2vw, 1.05rem); }
-
-/* Remove box styling from toggle-details button */
-.toggle-details{
-  border: none !important;
-  background: transparent !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
+.word-stat-compact:hover {
+  border-color: rgba(197, 179, 88, 0.5);
+  box-shadow: 0 2px 50px rgba(0, 0, 0, 0.3);
 }
 
-/* ---- Stats cards: keep header on one clean, responsive row ---- */
-.word-stat-item{
-  padding: 14px 16px;
-  border-radius: 14px;
-}
-
-.word-stat-header{
+.word-stat-main {
   display: flex;
   align-items: center;
-  justify-content: space-between;   /* left cluster | score | delete */
-  gap: 12px;
-  flex-wrap: nowrap;                 /* no wrapping on normal screens */
+  padding: var(--spacing-md) var(--spacing-lg);
+  gap: var(--spacing-sm);
 }
 
-/* Left cluster: mistakes chip + word pill */
-.word-info{
+.word-name-with-dropdown {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-width: 0;                      /* allow ellipsis */
-  flex: 1 1 auto;                    /* take remaining space */
-}
-
-/* Word pill (dropdown toggle) — must NOT be full width */
-.toggle-details{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  width: auto;
-  max-width: 100%;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(197,179,88,.35);
-  background: rgba(10,14,23,.6);
+  gap: var(--spacing-xs);
+  flex: 1;
   cursor: pointer;
-  white-space: nowrap;
-  font-weight: 700;
-  text-transform: none;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
 }
 
-.toggle-details > span{
+.word-name-with-dropdown:hover {
+  background: rgba(197, 179, 88, 0.1);
+}
+
+.word-name-compact {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary-text);
+}
+
+.dropdown-arrow-compact {
+  font-size: 0.8rem;
+  color: var(--color-accent);
+  transition: transform 0.2s ease;
+}
+
+.word-name-with-dropdown.expanded .dropdown-arrow-compact {
+  transform: rotate(180deg);
+}
+
+.word-score-compact {
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  font-weight: 500;
+  margin-right: var(--spacing-sm);
+}
+
+.delete-word-compact {
+  background: transparent;
+  border: none;
+  color: #f87171;
+  cursor: pointer;
+  font-size: 1.1rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.delete-word-compact:hover {
+  background: rgba(248, 113, 113, 0.1);
+  transform: scale(1.1);
+}
+
+.word-details-compact {
+  padding: 0 var(--spacing-lg) var(--spacing-md);
+  border-top: 1px solid rgba(197, 179, 88, 0.2);
+  background: rgba(26, 30, 39, 0.5);
+  display: none;
+}
+
+.word-details-compact.expanded {
+  display: block;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  font-size: 0.9rem;
+}
+
+.detail-label {
+  color: var(--color-secondary-text);
+  font-weight: 500;
+}
+
+.detail-value {
+  color: var(--color-primary-text);
+  font-weight: 600;
+}
+
+.mistakes-section {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid rgba(197, 179, 88, 0.2);
+}
+
+.mistakes-title {
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mistake-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  font-size: 0.85rem;
+}
+
+.mistake-word {
+  color: #f87171;
+  font-family: 'Courier New', monospace;
+}
+
+.mistake-count {
+  color: var(--color-secondary-text);
+}
+
+/* === Enhanced Add Word Page === */
+.add-word-enhanced {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  align-items: center;
+}
+
+.word-input-section {
+  width: 100%;
+  max-width: 360px;
+}
+
+.add-word-button-enhanced {
+  background: var(--color-mint);
+  color: var(--color-background);
+  border: 1px solid rgba(197, 179, 88, 0.5);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  position: relative;
   overflow: hidden;
-  text-overflow: ellipsis;
+  min-height: 56px;
 }
 
-/* Compact score on the right */
-.word-score{
-  white-space: nowrap;
-  color: var(--color-accent, #C5B358);
-  flex: 0 0 auto;
+.add-word-button-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: #5a9d85;
+  transition: left 0.3s ease;
+  z-index: -1;
 }
 
-/* Delete button — consistent size/right aligned */
-.delete-word{
-  width: 40px;
-  height: 32px;
-  border-radius: 12px;
-  flex: 0 0 auto;
+.add-word-button-enhanced:hover::before {
+  left: 0;
 }
 
-/* Very small phones: allow a graceful wrap */
-@media (max-width: 380px){
-  .word-stat-header{ flex-wrap: wrap; row-gap: 10px; }
-  .word-score{ order: 3; width: 100%; text-align: right; }
+.add-word-button-enhanced:hover {
+  border-color: #c4a000;
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(107, 187, 161, 0.3);
 }
 
-/* Slightly responsive text on the pill */
-.toggle-details{ font-size: clamp(.95rem, 3.2vw, 1.05rem); }
+.add-word-button-enhanced:active {
+  transform: translateY(-1px);
+}
+
+.add-word-button-enhanced:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* === Viewport Height Optimization === */
+.screen {
+  background: var(--color-background) !important;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+}
+
+.home-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+  padding: var(--pad-top) 8px var(--pad-bottom);
+  width: 100%;
+  max-width: 100%;
+}
+
+.minimal-container {
+  min-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
+  max-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl) var(--spacing-xl);
+  background: var(--color-panel);
+  border: 1px solid rgba(197, 179, 88, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Stats page exception - allow scrolling */
+#stats-screen .minimal-container {
+  max-height: none;
+  overflow-y: visible;
+}
+
+/* Compact spacing for better viewport utilization */
+.page-title {
+  font-size: 1.8rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.page-subtitle {
+  margin-bottom: var(--spacing-lg);
+}
+
+.back-btn {
+  margin-bottom: var(--spacing-md);
+}
+
+/* === Home Screen Specific Optimizations === */
+#home-screen .minimal-container {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* === Non-Home Screen Optimizations === */
+#add-word-screen .minimal-container,
+#practice-screen .minimal-container {
+  justify-content: flex-start;
+  padding-top: var(--spacing-lg);
+}
+
+/* === Practice Screen Specific === */
+#practice-screen .practice-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+#practice-screen .word-prompt {
+  margin-bottom: var(--spacing-lg);
+}
+
+#practice-screen .control-buttons {
+  margin-bottom: var(--spacing-lg);
+}
+
+#practice-screen .spelling-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+/* === Add Word Screen Specific === */
+#add-word-screen .add-word-enhanced {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-xl);
+}
+
+/* === Mobile Optimizations === */
+@media (max-width: 480px) {
+  .minimal-container {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .app-title h1 {
+    font-size: 1.8rem;
+  }
+  
+  .word-stat-main {
+    padding: var(--spacing-sm) var(--spacing-md);
+    gap: var(--spacing-xs);
+  }
+  
+  .word-name-compact {
+    font-size: 1rem;
+  }
+  
+  .delete-word-compact {
+    width: 20px;
+    height: 20px;
+    font-size: 1rem;
+  }
+}
