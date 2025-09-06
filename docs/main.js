@@ -340,3 +340,279 @@ window.loadUserCatalogueFromSupabase = loadUserCatalogueFromSupabase;
     menu.setAttribute('aria-hidden', 'true');
   });
 })();
+
+// Update stats summary cards
+function updateStatsSummary() {
+  const totalWordsEl = document.getElementById('total-words');
+  const averageScoreEl = document.getElementById('average-score');
+  const bestStreakEl = document.getElementById('best-streak');
+  
+  if (!totalWordsEl || !averageScoreEl || !bestStreakEl) return;
+  
+  // Calculate total words
+  const totalWords = wordCatalogue.length;
+  totalWordsEl.textContent = totalWords;
+  
+  // Calculate average score
+  let averageScore = 0;
+  if (totalWords > 0) {
+    const totalScore = wordCatalogue.reduce((sum, word) => sum + (word.score || 0), 0);
+    averageScore = Math.round(totalScore / totalWords);
+  }
+  averageScoreEl.textContent = averageScore;
+  
+  // Calculate best streak
+  const bestStreak = wordCatalogue.reduce((max, word) => {
+    const streak = word.streak || 0;
+    return streak > max ? streak : max;
+  }, 0);
+  bestStreakEl.textContent = bestStreak;
+}
+
+// Enhanced Stats List Rendering (TARGET UI)
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = String(text);
+  return div.innerHTML;
+}
+
+function renderStatsList(words) {
+  const statsListDiv = document.getElementById('stats-list');
+  if (!statsListDiv) return;
+  
+  if (!words || words.length === 0) {
+    statsListDiv.innerHTML = '<p class="no-words">No words added yet.</p>';
+    return;
+  }
+  
+  let html = '';
+  words.forEach((wordObj, index) => {
+    const mistakeCount = Object.keys(wordObj.mistakes || {}).length;
+    const hasDetails = (wordObj.totalAttempts || 0) > 0 || mistakeCount > 0;
+    
+    html += `
+      <div class="word-stat-item" data-word="${escapeHtml((wordObj.word || '').toLowerCase())}">
+        <div class="word-stat-header">
+          <div class="word-info">
+            <button class="toggle-details" data-word-index="${index}" aria-label="Toggle details for ${escapeHtml(wordObj.word)}">
+              <span class="word-name">${escapeHtml((wordObj.word || '').toLowerCase())}</span> ▾
+            </button>
+          </div>
+          <div class="word-score">Score: ${Math.round(wordObj.score || 0)}</div>
+          <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
+        </div>
+        ${hasDetails ? `
+          <div class="details" id="details-${index}" style="display: none;">
+            <div class="detail-row">
+              <span class="detail-label">Total Attempts:</span>
+              <span class="detail-value">${wordObj.totalAttempts || 0}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Correct on First Try:</span>
+              <span class="detail-value">${wordObj.correctFirstTryCount || 0}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Current Streak:</span>
+              <span class="detail-value">${wordObj.streak || 0}</span>
+            </div>
+            ${mistakeCount > 0 ? `
+              <div class="mistakes-section">
+                <div class="mistakes-title">Common Mistakes</div>
+                ${Object.entries(wordObj.mistakes).map(([mistake, count]) => `
+                  <div class="mistake-item">
+                    <span class="mistake-word">${escapeHtml(mistake)}</span>
+                    <span class="mistake-count">${count}x</span>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  });
+  
+  statsListDiv.innerHTML = html;
+}
+
+function updateStatsList() {
+  // Update stats summary when updating stats list
+  updateStatsSummary();
+  
+  // Use enhanced renderer
+  renderStatsList(wordCatalogue || []);
+}
+
+function updateRandomStatsList() {
+  const randomStatsDiv = document.getElementById('random-stats');
+  let html = '<h3 class="section-title">Random Word Trials</h3>';
+  if (randomTrials.length === 0) {
+    html += '<p class="no-words">No random word trials recorded.</p>';
+  } else {
+    html += '<div class="random-stats-list">';
+    randomTrials.forEach((trial, idx) => {
+      html += `
+        <div class="word-stat-item">
+          <div class="word-stat-header">
+            <div class="word-info">
+              <span class="word-name">${escapeHtml(trial.word)}</span>
+            </div>
+            <div class="word-score">
+              Attempts: ${trial.attempts} | ${trial.correct ? '✓' : '✗'}
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    html += '</div>';
+  }
+  randomStatsDiv.innerHTML = html;
+}
+
+document.getElementById('toggle-random-stats-btn').addEventListener('click', () => {
+  const randomStatsDiv = document.getElementById('random-stats');
+  const toggleBtn = document.getElementById('toggle-random-stats-btn');
+  
+  if (randomStatsDiv.style.display === 'block') {
+    randomStatsDiv.style.display = 'none';
+    toggleBtn.innerHTML = '<span class="btn-icon">🎲</span><span class="btn-text">Show Random Trials</span>';
+  } else {
+    updateRandomStatsList();
+    randomStatsDiv.style.display = 'block';
+    toggleBtn.innerHTML = '<span class="btn-icon">🎲</span><span class="btn-text">Hide Random Trials</span>';
+  }
+});
+
+// Event delegation for stats list interactions
+document.addEventListener('click', (e) => {
+  // Handle toggle details button click
+  if (e.target.closest('.toggle-details')) {
+    const wordIndex = e.target.closest('.toggle-details').getAttribute('data-word-index');
+    const detailsDiv = document.getElementById(`details-${wordIndex}`);
+    
+    if (detailsDiv) {
+      const isExpanded = detailsDiv.style.display === 'block';
+      detailsDiv.style.display = isExpanded ? 'none' : 'block';
+      
+      // Update arrow in button text
+      const toggleBtn = e.target.closest('.toggle-details');
+      const currentText = toggleBtn.innerHTML;
+      if (isExpanded) {
+        toggleBtn.innerHTML = currentText.replace('▴', '▾');
+      } else {
+        toggleBtn.innerHTML = currentText.replace('▾', '▴');
+      }
+      
+      toggleBtn.setAttribute('aria-expanded', !isExpanded);
+    }
+  }
+  
+  // Handle delete word
+  if (e.target.closest('.delete-word')) {
+    const wordIndex = parseInt(e.target.closest('.delete-word').getAttribute('data-word-index'));
+    const wordObj = wordCatalogue[wordIndex];
+    
+    if (wordObj && confirm(`Delete word "${wordObj.word}"?`)) {
+      wordCatalogue.splice(wordIndex, 1);
+      saveCatalogue();
+      updateStatsList();
+      refreshSmartList();
+    }
+  }
+});
+
+// ---------------------------
+// Smart List UI Functions
+// ---------------------------
+function updateSmartList() {
+  const nInput = document.getElementById('smart-list-n');
+  const sourceSelect = document.getElementById('smart-list-source');
+  const smartListDiv = document.getElementById('smart-list-display');
+  
+  if (!nInput || !sourceSelect || !smartListDiv) return;
+  
+  const n = parseInt(nInput.value) || 10;
+  const source = sourceSelect.value;
+  
+  const smartWords = getSmartList(n, source);
+  
+  let html = `<h4>Smart List (Top ${n} - ${source.replace('_', ' ')})</h4>`;
+  
+  if (smartWords.length === 0) {
+    html += '<p class="no-words">No words match the selected criteria.</p>';
+  } else {
+    html += '<div class="smart-list-words">';
+    smartWords.forEach((wordObj, index) => {
+      const errorCount = Object.keys(wordObj.mistakes || {}).length;
+      html += `
+        <div class="smart-word-item">
+          <div>
+            <span class="word-rank">#${index + 1}</span>
+            <strong>${escapeHtml(wordObj.word)}</strong>
+          </div>
+          <div>
+            <span class="word-score">Score: ${Math.round(wordObj.score || 0)}</span>
+            ${errorCount > 0 ? `<span class="error-indicator">${errorCount} errors</span>` : ''}
+          </div>
+        </div>
+      `;
+    });
+    html += '</div>';
+  }
+  
+  smartListDiv.innerHTML = html;
+}
+
+// Smart List refresh button handler
+document.addEventListener('DOMContentLoaded', () => {
+  // Use a MutationObserver to handle dynamically added elements
+  const observer = new MutationObserver(() => {
+    const refreshBtn = document.getElementById('refresh-smart-list');
+    if (refreshBtn && !refreshBtn._hasListener) {
+      refreshBtn._hasListener = true;
+      refreshBtn.addEventListener('click', () => {
+        updateSmartList();
+      });
+    }
+    
+    // Also handle smart list input changes
+    const nInput = document.getElementById('smart-list-n');
+    const sourceSelect = document.getElementById('smart-list-source');
+    
+    if (nInput && !nInput._hasListener) {
+      nInput._hasListener = true;
+      nInput.addEventListener('input', updateSmartList);
+    }
+    
+    if (sourceSelect && !sourceSelect._hasListener) {
+      sourceSelect._hasListener = true;
+      sourceSelect.addEventListener('change', updateSmartList);
+    }
+  });
+  
+  observer.observe(document.body, { childList: true, subtree: true });
+});
+
+// Auto-refresh mechanism - call after score updates
+function refreshSmartList() {
+  if (document.getElementById('smart-list-display')) {
+    updateSmartList();
+  }
+}
+
+function showScreen(screenId) {
+  document.querySelectorAll('.screen, #home-screen, #login-screen').forEach(screen => {
+    screen.style.display = 'none';
+  });
+  // Handle the renamed auth screen
+  if (screenId === 'login-screen') screenId = 'auth-screen';
+  document.getElementById(screenId).style.display = 'block';
+  if (screenId === 'home-screen') updateProgressSummary();
+  if (screenId === 'stats-screen') {
+    updateStatsList();
+    // Initialize smart list when stats screen is shown
+    setTimeout(() => {
+      updateSmartList();
+    }, 100);
+  }
+}
