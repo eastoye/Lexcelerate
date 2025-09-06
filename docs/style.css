@@ -2011,7 +2011,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* ---- Stats cards: keep header on one clean, responsive row ---- */
 .word-stat-item{
-  padding: 8px 12px;
+  padding: 14px 16px;
   border-radius: 14px;
 }
 
@@ -2019,7 +2019,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: space-between;   /* left cluster | score | delete */
-  gap: 8px;
+  gap: 12px;
   flex-wrap: nowrap;                 /* no wrapping on normal screens */
 }
 
@@ -2027,7 +2027,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .word-info{
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   min-width: 0;                      /* allow ellipsis */
   flex: 1 1 auto;                    /* take remaining space */
 }
@@ -2036,10 +2036,10 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .toggle-details{
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   width: auto;
   max-width: 100%;
-  padding: 6px 10px;
+  padding: 10px 14px;
   border-radius: 12px;
   border: 1px solid rgba(197,179,88,.35);
   background: rgba(10,14,23,.6);
@@ -2047,13 +2047,11 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   white-space: nowrap;
   font-weight: 700;
   text-transform: none;
-  font-size: 0.9rem;
 }
 
 .toggle-details > span{
   overflow: hidden;
   text-overflow: ellipsis;
-  text-transform: lowercase;
 }
 
 /* Compact score on the right */
@@ -2061,16 +2059,14 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   white-space: nowrap;
   color: var(--color-accent, #C5B358);
   flex: 0 0 auto;
-  font-size: 0.85rem;
 }
 
 /* Delete button — consistent size/right aligned */
 .delete-word{
-  width: 32px;
-  height: 28px;
+  width: 40px;
+  height: 32px;
   border-radius: 12px;
   flex: 0 0 auto;
-  font-size: 1.1rem;
 }
 
 /* Very small phones: allow a graceful wrap */
