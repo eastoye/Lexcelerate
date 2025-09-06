@@ -271,3 +271,72 @@ window.currentUser = currentUser;
 window.userProfile = userProfile;
 window.saveUserCatalogueToSupabase = saveUserCatalogueToSupabase;
 window.loadUserCatalogueFromSupabase = loadUserCatalogueFromSupabase;
+
+// === Practice mode dropdown wiring ===
+(function () {
+  // Event delegation so it works across screen switches
+  document.addEventListener('click', (e) => {
+    // Toggle open/close on the trigger
+    const trigger = e.target.closest('#current-list-button');
+    if (trigger) {
+      e.preventDefault();
+      const wrapper = trigger.closest('.practice-list-selector');
+      const menu = wrapper?.querySelector('#practice-source-menu');
+      if (!menu) return;
+      const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', String(!isOpen));
+      menu.style.display = isOpen ? 'none' : 'block';
+      menu.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+      return; // stop here so outside-click handler doesn't immediately close it
+    }
+
+    // Select a source from the menu
+    const item = e.target.closest('#practice-source-menu .dropdown-item[role="menuitem"]');
+    if (item) {
+      const wrapper = item.closest('.practice-list-selector');
+      const trigger = wrapper?.querySelector('#current-list-button');
+      const menu = wrapper?.querySelector('#practice-source-menu');
+      const source = item.dataset.source;
+      const action = item.dataset.action;
+
+      if (source) {
+        // Update the button label
+        const icon = source === 'random' ? '🎲' : '📚';
+        const label = source === 'random' ? 'Random Words' : 'Catalogue';
+        trigger.querySelector('span:first-child').textContent = `${icon} ${label}`;
+
+        // Announce the change (hook your logic here)
+        document.dispatchEvent(new CustomEvent('practiceSourceChanged', { detail: { source } }));
+      } else if (action === 'open-lists') {
+        // Either open a sub-menu or go to your Lists screen
+        if (window.showScreen) window.showScreen('my-lists-screen');
+      }
+
+      // Close the menu
+      trigger.setAttribute('aria-expanded', 'false');
+      menu.style.display = 'none';
+      menu.setAttribute('aria-hidden', 'true');
+      return;
+    }
+
+    // Close on outside click
+    const openMenu = document.querySelector('#practice-source-menu[aria-hidden="false"]');
+    if (openMenu && !openMenu.contains(e.target) && !e.target.closest('#current-list-button')) {
+      const trigger = document.querySelector('#current-list-button[aria-expanded="true"]');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      openMenu.style.display = 'none';
+      openMenu.setAttribute('aria-hidden', 'true');
+    }
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const menu = document.querySelector('#practice-source-menu[aria-hidden="false"]');
+    if (!menu) return;
+    const trigger = document.querySelector('#current-list-button[aria-expanded="true"]');
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    menu.style.display = 'none';
+    menu.setAttribute('aria-hidden', 'true');
+  });
+})();

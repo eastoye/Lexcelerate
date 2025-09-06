@@ -152,21 +152,12 @@ class PracticeListSelector {
 
   // Initialize the practice list selector
   init() {
-    // Ensure DOM is ready before initializing
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        this.createListSelector();
-        this.attachEventListeners();
-        this.loadAvailableLists();
-      });
-    } else {
-      this.createListSelector();
-      // Use longer timeout to ensure DOM is fully rendered
-      setTimeout(() => {
-        this.attachEventListeners();
-        this.loadAvailableLists();
-      }, 200);
-    }
+    this.createListSelector();
+    // Use setTimeout to ensure DOM is ready
+    setTimeout(() => {
+      this.attachEventListeners();
+      this.loadAvailableLists();
+    }, 100);
   }
 
   // Create the list selector UI
@@ -221,32 +212,15 @@ class PracticeListSelector {
 
   // Attach event listeners
   attachEventListeners() {
-    // Wait for DOM to be ready and attach event listeners
-    const attachListeners = () => {
-      const currentListBtn = document.getElementById('current-list-button');
-      const dropdown = document.getElementById('practice-source-menu');
-      
-      if (currentListBtn && dropdown) {
-        // Remove any existing listeners to prevent duplicates
-        currentListBtn.replaceWith(currentListBtn.cloneNode(true));
-        const newBtn = document.getElementById('current-list-button');
-        
-        newBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('Dropdown button clicked'); // Debug log
-          this.toggleDropdown();
-        });
-        
-        console.log('Event listeners attached successfully'); // Debug log
-      } else {
-        console.warn('Button or dropdown not found, retrying...'); // Debug log
-        setTimeout(attachListeners, 100); // Retry after 100ms
-      }
-    };
-    
-    // Try to attach listeners immediately, then retry if needed
-    attachListeners();
+    // Toggle dropdown
+    const currentListBtn = document.getElementById('current-list-btn');
+    if (currentListBtn) {
+      currentListBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleDropdown();
+      });
+    }
 
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
@@ -292,28 +266,20 @@ class PracticeListSelector {
 
   // Toggle dropdown visibility
   toggleDropdown() {
-    console.log('toggleDropdown called'); // Debug log
-    const dropdown = document.getElementById('practice-source-menu');
-    const button = document.getElementById('current-list-button');
-    
-    if (dropdown && button) {
+    const dropdown = document.getElementById('list-dropdown');
+    if (dropdown) {
       const isVisible = dropdown.style.display === 'block';
       dropdown.style.display = isVisible ? 'none' : 'block';
-      button.setAttribute('aria-expanded', isVisible ? 'false' : 'true');
-      
-      console.log('Dropdown toggled:', isVisible ? 'closed' : 'opened'); // Debug log
       
       if (!isVisible) {
         this.loadAvailableLists();
       }
-    } else {
-      console.error('Dropdown or button element not found'); // Debug log
     }
   }
 
   // Close dropdown
   closeDropdown() {
-    const dropdown = document.getElementById('practice-source-menu');
+    const dropdown = document.getElementById('list-dropdown');
     if (dropdown) {
       dropdown.style.display = 'none';
     }
@@ -342,24 +308,19 @@ class PracticeListSelector {
 
   // Update dropdown with user lists
   updateDropdownLists() {
-    const dropdown = document.getElementById('practice-source-menu');
-    if (!dropdown) {
-      console.warn('practice-source-menu not found');
-      return;
-    }
+    const container = document.getElementById('user-lists-dropdown');
     
-    const userListsDropdown = document.getElementById('user-lists-dropdown');
-    if (!userListsDropdown) {
-      console.warn('user-lists-dropdown not found');
+    if (!container) {
+      console.warn('user-lists-dropdown container not found');
       return;
     }
     
     if (this.availableLists.length === 0) {
-      userListsDropdown.innerHTML = '<div class="dropdown-empty">No custom lists yet</div>';
+      container.innerHTML = '<div class="dropdown-empty">No custom lists yet</div>';
       return;
     }
-    
-    userListsDropdown.innerHTML = this.availableLists.map(list => `
+
+    container.innerHTML = this.availableLists.map(list => `
       <div class="dropdown-item" data-list-id="${list.id}">
         <span class="list-icon">📋</span>
         <span>${this.escapeHtml(list.name)}</span>
@@ -380,10 +341,7 @@ class PracticeListSelector {
     this.currentListName = listName;
     
     // Update UI
-    const currentListNameEl = document.getElementById('current-list-button').querySelector('span:first-child');
-    if (currentListNameEl) {
-      currentListNameEl.textContent = listName;
-    }
+    document.getElementById('current-list-name').textContent = listName;
     
     // Update active state
     document.querySelectorAll('.dropdown-item').forEach(item => {
@@ -398,37 +356,22 @@ class PracticeListSelector {
 
   // Update practice mode based on selected list
   updatePracticeMode(listId) {
-    console.log('Updating practice mode to:', listId); // Debug log
-    
-    const addRandomBtn = document.getElementById('add-random-to-catalogue-btn');
-    
     if (listId === 'catalogue') {
       window.practiceMode = 'catalogue';
-      if (addRandomBtn) {
-        addRandomBtn.style.display = 'none';
-      }
+      document.getElementById('add-random-to-catalogue-btn').style.display = 'none';
     } else if (listId === 'random') {
       window.practiceMode = 'random';
-      if (addRandomBtn) {
-        addRandomBtn.style.display = 'inline-block';
-      }
+      document.getElementById('add-random-to-catalogue-btn').style.display = 'inline-block';
     } else {
       // Custom list mode - implement list-specific practice
       window.practiceMode = 'custom-list';
       window.currentPracticeListId = listId;
-      if (addRandomBtn) {
-        addRandomBtn.style.display = 'none';
-      }
+      document.getElementById('add-random-to-catalogue-btn').style.display = 'none';
     }
-    
-    console.log('Practice mode set to:', window.practiceMode); // Debug log
     
     // Reload Practice 
     if (window.loadPracticeWord) {
-      console.log('Loading new practice word...'); // Debug log
       window.loadPracticeWord();
-    } else {
-      console.error('loadPracticeWord function not found'); // Debug log
     }
   }
 }
