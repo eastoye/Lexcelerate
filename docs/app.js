@@ -225,33 +225,31 @@ function renderStatsList(words) {
           <div class="word-score">Score: ${wordObj.score || 0}</div>
           <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
         </div>
-        ${hasDetails ? `
-          <div class="details" id="details-${index}" style="display: none;">
-            <div class="detail-row">
-              <span class="detail-label">Total Attempts:</span>
-              <span class="detail-value">${wordObj.totalAttempts || 0}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Correct on First Try:</span>
-              <span class="detail-value">${wordObj.correctFirstTryCount || 0}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Current Streak:</span>
-              <span class="detail-value">${wordObj.streak || 0}</span>
-            </div>
-            ${mistakeCount > 0 ? `
-              <div class="mistakes-section">
-                <div class="mistakes-title">Common Mistakes</div>
-                ${Object.entries(wordObj.mistakes).map(([mistake, count]) => `
-                  <div class="mistake-item">
-                    <span class="mistake-word">${escapeHtml(mistake)}</span>
-                    <span class="mistake-count">${count}x</span>
-                  </div>
-                `).join('')}
-              </div>
-            ` : ''}
+        <div class="details" id="details-${index}" style="display: none;">
+          <div class="detail-row">
+            <span class="detail-label">Total Attempts:</span>
+            <span class="detail-value">${wordObj.totalAttempts || 0}</span>
           </div>
-        ` : ''}
+          <div class="detail-row">
+            <span class="detail-label">Correct on First Try:</span>
+            <span class="detail-value">${wordObj.correctFirstTryCount || 0}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Current Streak:</span>
+            <span class="detail-value">${wordObj.streak || 0}</span>
+          </div>
+          ${mistakeCount > 0 ? `
+            <div class="mistakes-section">
+              <div class="mistakes-title">Common Mistakes</div>
+              ${Object.entries(wordObj.mistakes || {}).map(([mistake, count]) => `
+                <div class="mistake-item">
+                  <span class="mistake-word">${escapeHtml(mistake)}</span>
+                  <span class="mistake-count">${count}x</span>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
       </div>
     `;
   });
