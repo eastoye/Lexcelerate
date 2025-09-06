@@ -1622,46 +1622,11 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   flex: 1;
 }
 
-.word-name-button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  transition: all 0.3s ease;
-  color: inherit;
-  font-family: inherit;
-  text-align: left;
-}
-
-.word-name-button:hover {
-  color: var(--color-accent);
-}
-
-.word-name-button:focus {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
 .word-name {
   font-family: 'Playfair Display', serif;
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--color-primary-text);
-}
-
-.dropdown-arrow {
-  font-size: 0.8rem;
-  color: var(--color-accent);
-  transition: transform 0.2s ease;
-}
-
-.word-name-button:hover .dropdown-arrow {
-  transform: scale(1.2);
 }
 
 .mistake-indicator {
@@ -1683,6 +1648,12 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   font-weight: 500;
 }
 
+.word-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.toggle-details,
 .delete-word {
   background: transparent;
   border: 1px solid rgba(197, 179, 88, 0.3);
@@ -1695,8 +1666,20 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   align-items: center;
   justify-content: center;
   font-size: 0.9rem;
+}
+
+.toggle-details {
+  color: var(--color-accent);
+}
+
+.toggle-details:hover {
+  background: var(--color-accent);
+  border-color: #c4a000;
+  color: var(--color-background);
+}
+
+.delete-word {
   color: #f87171;
-  font-weight: bold;
 }
 
 .delete-word:hover {
@@ -1787,6 +1770,11 @@ body{ min-height: 100dvh; overflow-x: hidden; }
     margin-bottom: var(--spacing-md);
   }
   
+    margin: 15% auto;
+    padding: var(--spacing-xl);
+    max-width: calc(100vw - 16px);
+  }
+  
   .form-input,
   .form-textarea,
   .spell-input {
@@ -1826,7 +1814,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
     align-items: flex-start;
   }
   
-  .delete-word {
+  .word-actions {
     align-self: flex-end;
   }
   
@@ -1909,7 +1897,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .add-random-btn:focus,
 .word-prompt:focus,
 .action-btn:focus,
-.word-name-button:focus,
+.toggle-details:focus,
 .delete-word:focus {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
@@ -1945,7 +1933,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   .add-random-btn:hover,
   .word-prompt:hover,
   .action-btn:hover,
-  .word-name-button:hover,
+  .toggle-details:hover,
   .delete-word:hover {
     transform: none;
   }
@@ -2090,90 +2078,3 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   position: absolute;
   z-index: 1000;
 }
-
-/* Very small phones: allow a graceful wrap */
-@media (max-width: 380px){
-  .word-stat-header{ flex-wrap: wrap; row-gap: 10px; }
-  .word-score{ order: 3; width: 100%; text-align: right; }
-}
-
-/* Slightly responsive text on the pill */
-.toggle-details{ font-size: clamp(.95rem, 3.2vw, 1.05rem); }
-
-/* Remove box styling from toggle-details button */
-.toggle-details{
-  border: none !important;
-  background: transparent !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-/* ---- Stats cards: keep header on one clean, responsive row ---- */
-.word-stat-item{
-  padding: 14px 16px;
-  border-radius: 14px;
-}
-
-.word-stat-header{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;   /* left cluster | score | delete */
-  gap: 12px;
-  flex-wrap: nowrap;                 /* no wrapping on normal screens */
-}
-
-/* Left cluster: mistakes chip + word pill */
-.word-info{
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;                      /* allow ellipsis */
-  flex: 1 1 auto;                    /* take remaining space */
-}
-
-/* Word pill (dropdown toggle) — must NOT be full width */
-.toggle-details{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  width: auto;
-  max-width: 100%;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(197,179,88,.35);
-  background: rgba(10,14,23,.6);
-  cursor: pointer;
-  white-space: nowrap;
-  font-weight: 700;
-  text-transform: none;
-}
-
-.toggle-details > span{
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Compact score on the right */
-.word-score{
-  white-space: nowrap;
-  color: var(--color-accent, #C5B358);
-  flex: 0 0 auto;
-}
-
-/* Delete button — consistent size/right aligned */
-.delete-word{
-  width: 40px;
-  height: 32px;
-  border-radius: 12px;
-  flex: 0 0 auto;
-}
-
-/* Very small phones: allow a graceful wrap */
-@media (max-width: 380px){
-  .word-stat-header{ flex-wrap: wrap; row-gap: 10px; }
-  .word-score{ order: 3; width: 100%; text-align: right; }
-}
-
-/* Slightly responsive text on the pill */
-.toggle-details{ font-size: clamp(.95rem, 3.2vw, 1.05rem); }
