@@ -1596,7 +1596,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .word-stat-item {
   background: #0a0e17;
-  border: 1px solid rgba(;
+  border: 1px solid rgba(197, 179, 88, 0.3);
   border-radius: var(--radius-md);
   overflow: hidden;
   transition: all 0.3s ease;
@@ -2011,10 +2011,8 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* ---- Stats cards: keep header on one clean, responsive row ---- */
 .word-stat-item{
-  padding: 4px 8px;
+  padding: 8px 12px;
   border-radius: 14px;
-  min-height: 40px;
-  max-height: 40px;
 }
 
 .word-stat-header{
