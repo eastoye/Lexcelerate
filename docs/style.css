@@ -16,7 +16,7 @@ body {
 /* === iOS Safe Area Layout === */
 :root {
   --pad-top: clamp(8px, 2dvh, 16px);
-  --pad-bottom: max(calc(env(safe-area-inset-bottom) + 20px), 24px);
+  --pad-bottom: max(calc(env(safe-area-inset-bottom) + 16px), 20px);
   --spacing-xs: 0.5rem;
   --spacing-sm: 0.75rem;
   --spacing-md: 1rem;
@@ -33,7 +33,8 @@ body {
   --color-mint: #6bbba1;         /* mint */
   --color-primary-text: #fdf6e3; /* cream */
   --color-secondary-text: #f5ede0;
-  --maxw: 520px;                 /* match target card width */
+  --maxw: 100%;                  /* full width for mobile */
+  --card-max-width: min(520px, calc(100vw - 16px)); /* responsive card width */
 }
 
 /* === Home Wrapper for Centering === */
@@ -42,9 +43,10 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100dvh;
-  padding: var(--pad-top) 8px var(--pad-bottom);
+  padding: var(--pad-top) 4px var(--pad-bottom);
   width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 .screen {
@@ -759,38 +761,37 @@ footer {
 
 /* 2) Keep layout centered and full-height without sideways nudge */
 body{ min-height: 100dvh; overflow-x: hidden; }
-.home-container{ max-width: var(--maxw); }
+.home-container{ max-width: 100%; }
 
 /* 3) Home card = same shape/size as target */
 .minimal-container{
   /* size/shape */
   min-height: calc(100dvh - (var(--pad-top) + var(--pad-bottom)));
   border-radius: var(--radius-xl);
-  padding: var(--spacing-3xl) var(--spacing-2xl); /* roomier like target */
+  padding: var(--spacing-2xl) var(--spacing-lg); /* more compact for mobile */
   /* look */
   background: var(--color-panel);
   border: 1px solid rgba(197,179,88,0.5); /* gold-subtle */
   box-shadow: 0 8px 32px rgba(0,0,0,0.5);
   width: 100%;
-  max-width: var(--maxw);
+  max-width: var(--card-max-width);
   margin: 0 auto;
   /* Ensure proper mobile fit */
   box-sizing: border-box;
-   position: relative; 
-
+  position: relative;
 }
 
 /* Help Button in Card */
 .help-btn-card{
   position: absolute;
-  top:  calc(var(--spacing-lg) - 20px);  /* increase this to move lower */
-  right: calc(var(--spacing-lg) - 20px);  /* decrease this to move further right */
+  top: var(--spacing-md);
+  right: var(--spacing-md);
   background: transparent;
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 1.2rem;
+  width: 36px;
+  height: 36px;
+  font-size: 1.1rem;
   color: var(--color-accent);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -854,10 +855,10 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* App Title */
 .app-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.4rem, 6vw, 2.75rem);
+  font-size: clamp(1.2rem, 5vw, 2.2rem);
   font-weight: 700;
   color: var(--color-primary-text);
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-xl);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
@@ -871,7 +872,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   bottom: -8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
+  width: 50px;
   height: 2px;
   background: var(--color-accent);
   border-radius: 1px;
@@ -881,7 +882,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* Page Title for other screens */
 .page-title {
   font-family: 'Playfair Display', serif;
-  font-size: 2.2rem;
+  font-size: clamp(1.4rem, 4.5vw, 2rem);
   font-weight: 700;
   color: var(--color-primary-text);
   margin-bottom: var(--spacing-sm);
@@ -893,9 +894,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .page-subtitle {
   font-family: 'Inter', sans-serif;
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 3vw, 1rem);
   color: var(--color-secondary-text);
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-xl);
   font-weight: 400;
   font-style: italic;
   text-align: center;
@@ -937,12 +938,12 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Word of the Day */
 .word-of-day-section {
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-xl);
 }
 
 .word-of-day-section h2 {
   font-family: 'Playfair Display', serif;
-  font-size: 1.4rem;
+  font-size: clamp(1.1rem, 3.5vw, 1.3rem);
   color: var(--color-primary-text);
   margin-bottom: var(--spacing-lg);
   font-weight: 600;
@@ -991,7 +992,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .wotd-word {
   font-family: 'Playfair Display', serif;
-  font-size: 2.2rem;
+  font-size: clamp(1.4rem, 5vw, 2rem);
   font-weight: 700;
   color: var(--color-background);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -999,7 +1000,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 .wotd-hint {
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
   color: var(--color-secondary-text);
   font-style: italic;
   font-weight: 300;
@@ -1010,7 +1011,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-xl);
 }
 
 .minimal-button {
@@ -1020,7 +1021,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-lg) var(--spacing-xl);
   font-family: 'Inter', sans-serif;
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 3vw, 1.1rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1033,6 +1034,8 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .minimal-button::before {
@@ -1069,7 +1072,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-lg);
   color: var(--color-secondary-text);
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
   font-weight: 500;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
@@ -1077,6 +1080,8 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .word-count-display:hover {
@@ -1098,11 +1103,12 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-md) var(--spacing-lg);
   font-family: 'Inter', sans-serif;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 3vw, 1rem);
   color: var(--color-primary-text);
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   margin-bottom: var(--spacing-md);
+  box-sizing: border-box;
 }
 
 .form-input:focus,
@@ -1152,7 +1158,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-lg) var(--spacing-2xl);
   font-family: 'Inter', sans-serif;
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 3vw, 1.1rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1166,6 +1172,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   margin: 0 auto;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  max-width: 300px;
+  box-sizing: border-box;
 }
 
 .add-btn::before {
@@ -1206,7 +1215,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Practice Styles */
 .mode-section {
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-xl);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
@@ -1265,19 +1274,21 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 .practice-area {
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-xl);
 }
 
 .word-prompt {
   background: #0a0e17;
   border: 2px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-2xl) var(--spacing-lg);
+  padding: var(--spacing-xl) var(--spacing-md);
   margin-bottom: var(--spacing-xl);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .word-prompt:hover {
@@ -1303,18 +1314,19 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .prompt-text {
   font-family: 'Playfair Display', serif;
-  font-size: 2.5rem;
+  font-size: clamp(1.6rem, 6vw, 2.2rem);
   font-weight: 700;
   color: var(--color-primary-text);
   letter-spacing: 0.2em;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   display: block;
   margin-bottom: var(--spacing-sm);
+  word-break: break-word;
 }
 
 .prompt-hint {
   font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
   color: var(--color-secondary-text);
   font-style: italic;
   font-weight: 400;
@@ -1333,7 +1345,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-md) var(--spacing-lg);
   font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1343,6 +1355,8 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   gap: var(--spacing-sm);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  flex: 1;
+  justify-content: center;
 }
 
 .control-btn:hover {
@@ -1379,7 +1393,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-md) var(--spacing-lg);
   font-family: 'Inter', sans-serif;
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 3vw, 1.1rem);
   color: var(--color-primary-text);
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -1413,7 +1427,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   border-radius: var(--radius-md);
   padding: var(--spacing-md) var(--spacing-lg);
   font-family: 'Inter', sans-serif;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.8vw, 1rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1424,6 +1438,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   text-transform: uppercase;
   letter-spacing: 0.05em;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .submit-btn:hover {
@@ -1672,49 +1687,55 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* Responsive Design */
 @media (max-width: 600px) {
   .minimal-container {
-    padding: var(--spacing-xl) var(--spacing-md);
-    max-width: calc(100vw - 16px);
+    padding: var(--spacing-lg) var(--spacing-md);
+    max-width: calc(100vw - 8px);
+    margin: 0 4px;
   }
   
   .home-wrapper {
-    padding: var(--pad-top) 4px var(--pad-bottom);
+    padding: var(--pad-top) 2px var(--pad-bottom);
   }
   
   .app-title {
-    font-size: 2.2rem;
+    font-size: clamp(1.1rem, 4.5vw, 1.8rem);
+    margin-bottom: var(--spacing-md);
   }
   
   .page-title {
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
   }
   
   .wotd-word {
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 4.5vw, 1.6rem);
   }
   
   .prompt-text {
-    font-size: 2rem;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    letter-spacing: 0.1em;
   }
   
   .modal-content {
     margin: 15% auto;
-    padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    max-width: calc(100vw - 16px);
   }
   
   .form-input,
   .form-textarea,
   .spell-input {
     padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
   }
   
   .add-btn,
   .submit-btn {
     padding: var(--spacing-md) var(--spacing-xl);
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   
   .input-group {
     flex-direction: column;
+    gap: var(--spacing-sm);
   }
   
   .mode-section {
@@ -1729,6 +1750,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   .action-buttons {
     flex-direction: column;
     align-items: center;
+    gap: var(--spacing-sm);
   }
   
   .word-stat-header {
@@ -1740,40 +1762,69 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   .word-actions {
     align-self: flex-end;
   }
+  
+  .control-buttons {
+    gap: var(--spacing-sm);
+  }
+  
+  .word-of-day-section {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .action-buttons-minimal {
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
 }
 
 @media (max-width: 480px) {
   .app-title {
-    font-size: 1.3rem;
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    margin-bottom: var(--spacing-sm);
   }
   
   .page-title {
-    font-size: 1.6rem;
+    font-size: clamp(1.1rem, 3.8vw, 1.4rem);
   }
   
   .wotd-word {
-    font-size: 1.6rem;
+    font-size: clamp(1.1rem, 4.2vw, 1.4rem);
   }
   
   .prompt-text {
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 4.5vw, 1.6rem);
+    letter-spacing: 0.08em;
   }
   
   .minimal-button {
     padding: var(--spacing-md) var(--spacing-lg);
-    font-size: 1rem;
+    font-size: 0.9rem;
+    min-height: 52px;
   }
   
   .word-prompt {
-    padding: var(--spacing-xl) var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-sm);
   }
   
   .word-name {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   
   .summary-value {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
+  
+  .minimal-container {
+    padding: var(--spacing-md) var(--spacing-sm);
+    border-radius: var(--radius-md);
+  }
+  
+  .help-btn-card {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
   }
 }
 
@@ -1843,14 +1894,15 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   font-weight: 700;
   text-transform: uppercase;
   line-height: 1.08;
-  font-size: clamp(1.25rem, 12cqw, 1.9rem);
+  font-size: clamp(1rem, 10cqw, 1.6rem);
   letter-spacing: 0.08em;
+  word-break: break-word;
 }
 
 /* Fallback for browsers without container queries */
 @supports not (font-size: 1cqw) {
   #home-screen .app-title h1 {
-    font-size: clamp(1.25rem, 5.2vw, 1.9rem);
+    font-size: clamp(1rem, 4.5vw, 1.6rem);
   }
 }
 /* Unify screen backgrounds to match Home */
@@ -1873,20 +1925,21 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   flex-direction: column;     /* stack input over button */
   align-items: center;        /* center children */
   width: 100%;
+  gap: var(--spacing-sm);
 }
 
 #practice-screen .spell-input{
   flex: 0 0 auto;             /* stop it from stretching weirdly */
   width: 100%;
-  max-width: 360px;           /* tweak: same width you want for the button */
+  max-width: min(360px, calc(100vw - 32px)); /* responsive max width */
   margin: 0 auto;             /* centers when not 100% */
   text-align: center;
 }
 
 #practice-screen .submit-btn{
   width: 100%;
-  max-width: 360px;           /* match the input */
-  margin: var(--spacing-md) auto 0;
+  max-width: min(360px, calc(100vw - 32px)); /* match the input */
+  margin: 0 auto;
 }
 
 /* === Lexcelerate final overrides (append at end) === */
@@ -1921,13 +1974,13 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .screen input[type="password"],
 .screen input[type="search"] {
   width: 100%;
-  max-width: 360px;                 /* match Practice */
+  max-width: min(360px, calc(100vw - 32px)); /* responsive max width */
   background: #0a0e17;
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-md);
   padding: var(--spacing-md) var(--spacing-lg);
   font-family: 'Inter', sans-serif;
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 3vw, 1.1rem);
   color: var(--color-primary-text);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
@@ -1956,14 +2009,14 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* 3c) Form inputs already using .form-input stay visually identical to Practice */
 .form-input {
-  max-width: 360px;
+  max-width: min(360px, calc(100vw - 32px));
   margin-left: auto;
   margin-right: auto;
 }
 
 /* 3d) Keep Practice input + Submit centered & matched (belt & braces) */
-#practice-screen .spell-input { max-width: 360px; }
-#practice-screen .submit-btn  { max-width: 360px; }
+#practice-screen .spell-input { max-width: min(360px, calc(100vw - 32px)); }
+#practice-screen .submit-btn  { max-width: min(360px, calc(100vw - 32px)); }
 
 /* 3e) Ensure picker dropdown sits above cards on iOS */
 #practice-source-menu {
