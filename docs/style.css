@@ -1633,7 +1633,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   background: #f87171;
   color: var(--color-background);
   border-radius: 50%;
-  width: 20px;
+  width: 10px;
   height: 20px;
   display: flex;
   align-items: center;
@@ -2011,23 +2011,29 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* ---- Stats cards: keep header on one clean, responsive row ---- */
 .word-stat-item{
-  padding: 14px 16px;
+  padding: 15px 8px;
   border-radius: 14px;
+  min-height: 40px;
+  max-height: 40px;
 }
 
 .word-stat-header{
   display: flex;
   align-items: center;
   justify-content: space-between;   /* left cluster | score | delete */
-  gap: 12px;
+  gap: 6px;
   flex-wrap: nowrap;                 /* no wrapping on normal screens */
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Left cluster: mistakes chip + word pill */
 .word-info{
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   min-width: 0;                      /* allow ellipsis */
   flex: 1 1 auto;                    /* take remaining space */
 }
@@ -2036,10 +2042,10 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .toggle-details{
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   width: auto;
   max-width: 100%;
-  padding: 10px 14px;
+  padding: 6px 10px;
   border-radius: 12px;
   border: 1px solid rgba(197,179,88,.35);
   background: rgba(10,14,23,.6);
@@ -2047,11 +2053,13 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   white-space: nowrap;
   font-weight: 700;
   text-transform: none;
+  font-size: 0.9rem;
 }
 
 .toggle-details > span{
   overflow: hidden;
   text-overflow: ellipsis;
+  text-transform: lowercase;
 }
 
 /* Compact score on the right */
@@ -2059,14 +2067,16 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   white-space: nowrap;
   color: var(--color-accent, #C5B358);
   flex: 0 0 auto;
+  font-size: 0.85rem;
 }
 
 /* Delete button — consistent size/right aligned */
 .delete-word{
-  width: 40px;
-  height: 32px;
+  width: 32px;
+  height: 28px;
   border-radius: 12px;
   flex: 0 0 auto;
+  font-size: 1.1rem;
 }
 
 /* Very small phones: allow a graceful wrap */
@@ -2077,3 +2087,82 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Slightly responsive text on the pill */
 .toggle-details{ font-size: clamp(.95rem, 3.2vw, 1.05rem); }
+
+/* ---- Details dropdown content styling ---- */
+.details {
+  padding: 16px;
+  background: rgba(26, 30, 39, 0.8);
+  border-top: 1px solid rgba(197, 179, 88, 0.2);
+  margin-top: 8px;
+  border-radius: 0 0 12px 12px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(197, 179, 88, 0.1);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: var(--color-secondary-text);
+  font-weight: 500;
+}
+
+.detail-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: var(--color-primary-text);
+  font-weight: 600;
+}
+
+.mistakes-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(197, 179, 88, 0.2);
+}
+
+.mistakes-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.mistake-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  margin-bottom: 6px;
+  background: rgba(248, 113, 113, 0.1);
+  border-radius: 8px;
+  border-left: 3px solid #f87171;
+}
+
+.mistake-word {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem;
+  color: var(--color-primary-text);
+  font-weight: 500;
+}
+
+.mistake-count {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: #f87171;
+  font-weight: 600;
+  background: rgba(248, 113, 113, 0.2);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
