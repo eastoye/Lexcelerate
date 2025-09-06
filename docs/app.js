@@ -215,17 +215,15 @@ function renderStatsList(words) {
     const hasDetails = wordObj.totalAttempts > 0 || mistakeCount > 0;
     
     html += `
-      <div class="word-stat-item" data-word-index="${index}">
+      <div class="word-stat-item" data-word="${wordObj.word.toLowerCase()}">
         <div class="word-stat-header">
           <div class="word-info">
-            ${mistakeCount > 0 ? `<div class="mistake-indicator">${mistakeCount}</div>` : ''}
-            <span class="word-name">${escapeHtml(wordObj.word)}</span>
+            <button class="toggle-details" data-word-index="${index}" aria-label="Toggle details for ${escapeHtml(wordObj.word)}">
+              <span>${escapeHtml(wordObj.word.toLowerCase())}</span> ▾
+            </button>
           </div>
-          <span class="word-score">Score: ${wordObj.score || 0}</span>
-          <div class="word-actions">
-            ${hasDetails ? `<button class="toggle-details" data-word-index="${index}" aria-label="Toggle details">▼</button>` : ''}
-            <button class="delete-word" data-word-index="${index}" aria-label="Delete word">🗑</button>
-          </div>
+          <div class="word-score">Score: ${wordObj.score || 0}</div>
+          <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
         </div>
         ${hasDetails ? `
           <div class="details" id="details-${index}" style="display: none;">
@@ -437,16 +435,24 @@ window.refreshSmartList = refreshSmartList;
 
 // Event delegation for stats list interactions
 document.addEventListener('click', (e) => {
-  // Handle toggle details
-  if (e.target.classList.contains('toggle-details')) {
-    const wordIndex = e.target.getAttribute('data-word-index');
+  // Handle toggle details button click
+  if (e.target.closest('.toggle-details')) {
+    const wordIndex = e.target.closest('.toggle-details').getAttribute('data-word-index');
     const detailsDiv = document.getElementById(`details-${wordIndex}`);
-    const toggleBtn = e.target;
     
     if (detailsDiv) {
       const isExpanded = detailsDiv.style.display === 'block';
       detailsDiv.style.display = isExpanded ? 'none' : 'block';
-      toggleBtn.textContent = isExpanded ? '▼' : '▲';
+      
+      // Update arrow in button text
+      const toggleBtn = e.target.closest('.toggle-details');
+      const buttonText = toggleBtn.innerHTML;
+      if (isExpanded) {
+        toggleBtn.innerHTML = buttonText.replace('▴', '▾');
+      } else {
+        toggleBtn.innerHTML = buttonText.replace('▾', '▴');
+      }
+      
       toggleBtn.setAttribute('aria-expanded', !isExpanded);
     }
   }
