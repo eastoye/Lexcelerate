@@ -197,73 +197,58 @@ function updateStatsList() {
   // Update stats summary when updating stats list
   updateStatsSummary();
   
-  renderStatsList(wordCatalogue);
-}
-
-// Modern card-based rendering function
-function renderStatsList(words) {
-  const statsListDiv = document.getElementById('stats-list');
-  
-  if (!words || words.length === 0) {
-    statsListDiv.innerHTML = '<p class="no-words">No words added yet.</p>';
-    return;
-  }
-  
   let html = '';
-  words.forEach((wordObj, index) => {
-    const mistakeCount = Object.keys(wordObj.mistakes || {}).length;
-    const hasDetails = wordObj.totalAttempts > 0 || mistakeCount > 0;
-    
-    html += `
-      <div class="word-stat-item" data-word="${wordObj.word.toLowerCase()}">
-        <div class="word-stat-header">
-          <div class="word-info">
-            <button class="toggle-details" data-word-index="${index}" aria-label="Toggle details for ${escapeHtml(wordObj.word)}">
-              <span>${escapeHtml(wordObj.word.toLowerCase())}</span> ▾
-            </button>
-          </div>
-          <div class="word-score">Score: ${wordObj.score || 0}</div>
-          <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
-        </div>
-        ${hasDetails ? `
-          <div class="details" id="details-${index}" style="display: none;">
-            <div class="detail-row">
-              <span class="detail-label">Total Attempts:</span>
-              <span class="detail-value">${wordObj.totalAttempts || 0}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Correct on First Try:</span>
-              <span class="detail-value">${wordObj.correctFirstTryCount || 0}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Current Streak:</span>
-              <span class="detail-value">${wordObj.streak || 0}</span>
-            </div>
-            ${mistakeCount > 0 ? `
-              <div class="mistakes-section">
-                <div class="mistakes-title">Common Mistakes</div>
-                ${Object.entries(wordObj.mistakes).map(([mistake, count]) => `
-                  <div class="mistake-item">
-                    <span class="mistake-word">${escapeHtml(mistake)}</span>
-                    <span class="mistake-count">${count}x</span>
-                  <span>${escapeHtml(wordObj.word.toLowerCase())}</span> ▾
-                `).join('')}
-              </div>
-            ` : ''}
-          </div>
-        ` : ''}
-      </div>
-    `;
+  if (wordCatalogue.length === 0) {
+    html = '<p>No words added.</p>';
+  } else {
+    wordCatalogue.forEach((wordObj, index) => {
+      html += `<div class="word-stat">
+                <strong>${wordObj.word}</strong> ${Object.keys(wordObj.mistakes).length > 0 ? '!' : ''}
+                (Score: ${wordObj.score})
+                <button class="toggle-details" data-index="${index}">▼</button>
+                <button class="delete-word" data-index="${index}">Delete</button>
+                <div class="details" id="details-${index}">
+                  <p>Total Attempts: ${wordObj.totalAttempts}</p>
+                  <p>Correct on First Try: ${wordObj.correctFirstTryCount}</p>
+                  <p>Streak: ${wordObj.streak}</p>`;
+      if (Object.keys(wordObj.mistakes).length > 0) {
+        html += `<p>Mistakes:</p><ul>`;
+        for (let mistake in wordObj.mistakes) {
+          html += `<li>${mistake} : ${wordObj.mistakes[mistake]} time(s)</li>`;
+        }
+        html += `</ul>`;
+      } else {
+        html += `<p>No mistakes recorded.</p>`;
+      }
+      html += `</div></div>`;
+    });
+  }
+  statsListDiv.innerHTML = html;
+  
+  document.querySelectorAll('.toggle-details').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      let idx = e.target.getAttribute('data-index');
+      let detailsDiv = document.getElementById('details-' + idx);
+      if (detailsDiv.style.display === 'block') {
+        detailsDiv.style.display = 'none';
+        e.target.textContent = '▼';
+      } else {
+        detailsDiv.style.display = 'block';
+        e.target.textContent = '▲';
+      }
+    });
   });
   
-  statsListDiv.innerHTML = html;
-}
-
-// Utility function to escape HTML
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
+  document.querySelectorAll('.delete-word').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      let idx = e.target.getAttribute('data-index');
+      if (confirm(`Delete word "${wordCatalogue[idx].word}"?`)) {
+        wordCatalogue.splice(idx, 1);
+        saveCatalogue();
+        updateStatsList();
+      }
+    });
+  });
 }
 
 // Update stats summary cards
@@ -433,44 +418,29 @@ function refreshSmartList() {
 // Make refresh function globally accessible
 window.refreshSmartList = refreshSmartList;
 
-// Event delegation for stats list interactions
-document.addEventListener('click', (e) => {
-  // Handle toggle details button click
-  if (e.target.closest('.toggle-details')) {
-    const wordIndex = e.target.closest('.toggle-details').getAttribute('data-word-index');
-    const detailsDiv = document.getElementById(`details-${wordIndex}`);
-    
-    if (detailsDiv) {
-      const isExpanded = detailsDiv.style.display === 'block';
-      detailsDiv.style.display = isExpanded ? 'none' : 'block';
-      
-      // Update arrow in button text
-      const toggleBtn = e.target.closest('.toggle-details');
-      const buttonText = toggleBtn.innerHTML;
-      if (isExpanded) {
-        toggleBtn.innerHTML = buttonText.replace('▴', '▾');
-      } else {
-        toggleBtn.innerHTML = buttonText.replace('▾', '▴');
-      }
-      
-      toggleBtn.setAttribute('aria-expanded', !isExpanded);
-    }
-  }
+// ---------------------------
+// Custom List Word Selection
+// ---------------------------
+function getRandomWordFromCustomList(listId) {
+  // This function will need to be implemented to fetch words from a custom list
+  // For now, return a placeholder to prevent errors
+  console.log('Getting random word from custom list:', listId);
   
-  // Handle delete word
-  if (e.target.classList.contains('delete-word')) {
-    const wordIndex = parseInt(e.target.getAttribute('data-word-index'));
-    const wordObj = wordCatalogue[wordIndex];
-    
-    if (wordObj && confirm(`Delete word "${wordObj.word}"?`)) {
-      wordCatalogue.splice(wordIndex, 1);
-      saveCatalogue();
-      updateStatsList();
-      updateStatsSummary();
-      refreshSmartList();
-    }
-  }
-});
+  // TODO: Implement custom list word fetching
+  // This should fetch words from the selected custom list
+  // and return a random word object in the same format as catalogue words
+  
+  return {
+    word: "placeholder",
+    totalAttempts: 0,
+    correctFirstTryCount: 0,
+    mistakes: {},
+    nextReview: Date.now(),
+    interval: 1,
+    score: 0,
+    streak: 0
+  };
+}
 
 // ---------------------------
 // Navigation Button Listeners
