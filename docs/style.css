@@ -2301,3 +2301,72 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Slightly responsive text on the pill */
 .toggle-details{ font-size: clamp(.95rem, 3.2vw, 1.05rem); }
+/* === Stats card: match reference look === */
+.word-stat-compact{
+  background: #0a0e17;
+  border: 1px solid rgba(197,179,88,.35);
+  border-radius: 14px;
+  box-shadow: none;
+}
+
+/* header row spacing */
+.word-stat-main{
+  padding: var(--spacing-lg);
+  gap: var(--spacing-sm);
+}
+
+/* word pill + arrow (left) */
+.word-name-with-dropdown{
+  flex: 1 1 auto;
+  padding: 4px 8px;
+  border-radius: 10px;
+  transition: background .2s ease;
+}
+.word-name-with-dropdown:hover{ background: rgba(197,179,88,.08); }
+
+/* make the word lowercase like the reference */
+.word-name-compact{
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-transform: lowercase;
+  letter-spacing: .02em;
+  color: var(--color-primary-text);
+}
+
+/* keep the little triangle upright */
+.dropdown-arrow-compact{
+  font-size: .85rem;
+  color: var(--color-accent);
+  transform: none !important;
+}
+
+/* Score on the right in gold */
+.word-score-compact{
+  margin-left: auto;
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+/* delete button as a small rounded outlined pill */
+.delete-word-compact{
+  width: 32px; height: 28px;
+  display: inline-flex; align-items:center; justify-content:center;
+  border: 1px solid rgba(197,179,88,.55);
+  border-radius: 10px;
+  color: var(--color-primary-text);
+  background: transparent;
+  font-size: .9rem;
+  transition: all .2s ease;
+}
+.delete-word-compact:hover{
+  background: rgba(197,179,88,.08);
+  transform: none;
+}
+
+/* thin divider above the details, and same dark background */
+.word-details-compact{
+  background: #0d121b;
+  border-top: 1px solid rgba(197,179,88,.35);
+  padding: 0 var(--spacing-lg) var(--spacing-lg);
+}
