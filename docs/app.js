@@ -416,7 +416,7 @@ function updateSmartList() {
           ${errorCount > 0 ? `<span class="error-indicator">${errorCount} errors</span>` : ''}
         </div>
       `;
-    });
+            <div class="word-score"><span>${wordObj.score || 0}</span></div>
     html += '</div>';
   }
   
