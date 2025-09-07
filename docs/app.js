@@ -222,7 +222,8 @@ function renderStatsList(words) {
               <span>${escapeHtml(wordObj.word.toLowerCase())}</span>
             </button>
           </div>
-          <div class="word-Score">Score: ${wordObj.score || 0}</div>
+        <div class="word-score"><span>2</span></div>
+
           <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
         </div>
         ${hasDetails ? `
