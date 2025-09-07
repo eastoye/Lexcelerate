@@ -163,7 +163,7 @@ function generateSyllableHint(word, attemptCount) {
 }
 
 // ---------------------------
-// Global Variables for Practice ession & Sound
+// Global Variables for Practice Session & Sound
 // ---------------------------
 let attemptCount = 0;
 let currentWordObj = null;
@@ -416,7 +416,7 @@ function updateSmartList() {
           ${errorCount > 0 ? `<span class="error-indicator">${errorCount} errors</span>` : ''}
         </div>
       `;
-            <div class="word-score"><span>${wordObj.score || 0}</span></div>
+    });
     html += '</div>';
   }
   
@@ -537,7 +537,7 @@ function getRandomWord() {
 }
 
 // ---------------------------
-// Load Practice  (based on mode)
+// Load Practice Word (based on mode)
 function loadPracticeWord() {
   if (practiceMode === 'random') {
     currentWordObj = getRandomDictionaryWord();
@@ -606,7 +606,7 @@ document.getElementById('spell-input').addEventListener('keydown', function(even
 });
 
 // ---------------------------
-// Practice ubmission Handler for Catalogue Practice
+// Practice Submission Handler for Catalogue Practice
 document.getElementById('submit-spelling-btn').addEventListener('click', () => {
   let actualWord = currentWordObj.word;
   const userSpelling = document.getElementById('spell-input').value.trim();
