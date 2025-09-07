@@ -1622,9 +1622,12 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.word-stat-header{
-  /* existing props … */
-  container-type: inline-size;   /* enables the container queries below */
+.word-stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 12px;  /* Smaller padding = borders closer to content */
+  cursor: pointer;
 }
 
 
