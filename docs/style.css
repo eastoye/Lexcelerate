@@ -1644,10 +1644,16 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   font-weight: bold;
 }
 
-.word-score {
-  font-size: 0.9rem;
-  color: var(--color-accent);
-  font-weight: 500;
+..word-score {
+  display: flex;
+  flex-direction: column;   /* stack label + number */
+  align-items: center;      /* center horizontally */
+  text-align: center;       /* center text */
+  line-height: 1.3;
+  color: var(--color-accent, #C5B358);
+  flex: 0 0 auto;
+}
+
 }
 
 .word-actions {
