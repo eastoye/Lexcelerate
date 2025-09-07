@@ -1923,6 +1923,21 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 /* === Lexcelerate final overrides (append at end) === */
+/* When the header gets narrow, stack label over number */
+@container (max-width: 360px) {
+  .word-score{
+    flex-direction: column;    /* two lines */
+    align-items: center;
+    text-align: center;
+    white-space: normal;       /* allow wrapping */
+    gap: 0;
+  }
+}
+
+/* When it’s *really* tight, hide the label – show number only */
+@container (max-width: 260px) {
+  .word-score::before { display: none; }
+}
 
 /* 3a) Ensure any unclassed screen buttons inherit our theme safely */
 .screen button {
