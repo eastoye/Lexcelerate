@@ -758,3 +758,6 @@ window.addEventListener('click', (event) => {
 document.addEventListener('DOMContentLoaded', () => {
   initializeAudio();
 });
+
+// Export to make this file an ES module for Vite
+export {};
