@@ -163,7 +163,7 @@ function generateSyllableHint(word, attemptCount) {
 }
 
 // ---------------------------
-// Global Variables for Practice ession & Sound
+// Global Variables for Practice Session & Sound
 // ---------------------------
 let attemptCount = 0;
 let currentWordObj = null;
@@ -222,7 +222,8 @@ function renderStatsList(words) {
               <span>${escapeHtml(wordObj.word.toLowerCase())}</span>
             </button>
           </div>
-          <div class="word-score">Score: ${wordObj.score || 0}</div>
+        <div class="word-score"><span>2</span></div>
+
           <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
         </div>
         ${hasDetails ? `
@@ -412,7 +413,7 @@ function updateSmartList() {
         <div class="smart-word-item">
           <span class="word-rank">#${index + 1}</span>
           <strong>${wordObj.word}</strong>
-          <span class="word-score">Score: ${wordObj.score}</span>
+          <span class="word-score">Score: ${wordObj.Score}</span>
           ${errorCount > 0 ? `<span class="error-indicator">${errorCount} errors</span>` : ''}
         </div>
       `;
@@ -537,7 +538,7 @@ function getRandomWord() {
 }
 
 // ---------------------------
-// Load Practice  (based on mode)
+// Load Practice Word (based on mode)
 function loadPracticeWord() {
   if (practiceMode === 'random') {
     currentWordObj = getRandomDictionaryWord();
@@ -606,7 +607,7 @@ document.getElementById('spell-input').addEventListener('keydown', function(even
 });
 
 // ---------------------------
-// Practice ubmission Handler for Catalogue Practice
+// Practice Submission Handler for Catalogue Practice
 document.getElementById('submit-spelling-btn').addEventListener('click', () => {
   let actualWord = currentWordObj.word;
   const userSpelling = document.getElementById('spell-input').value.trim();
@@ -758,3 +759,6 @@ window.addEventListener('click', (event) => {
 document.addEventListener('DOMContentLoaded', () => {
   initializeAudio();
 });
+
+// Export to make this file an ES module for Vite
+export {};
