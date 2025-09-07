@@ -389,7 +389,7 @@ footer {
   align-items: stretch;
 }
 
-/* Ensure the input’s wrapper uses full width */
+/* Ensure the input's wrapper uses full width */
 .add-word-form .form-group {
   width: 100%;
   margin: 0;
@@ -1505,6 +1505,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-2xl);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .summary-card {
@@ -1514,6 +1517,8 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   padding: var(--spacing-lg);
   text-align: center;
   transition: all 0.3s ease;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .summary-card:hover {
@@ -1714,6 +1719,11 @@ body{ min-height: 100dvh; overflow-x: hidden; }
     padding: var(--pad-top) 4px var(--pad-bottom);
   }
   
+  .stats-summary {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
   .app-title {
     font-size: 2.2rem;
   }
@@ -1753,11 +1763,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   
   .mode-section {
     gap: var(--spacing-sm);
-  }
-  
-  .stats-summary {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
   }
   
   .action-buttons {
