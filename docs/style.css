@@ -1927,12 +1927,12 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* === Lexcelerate final overrides (append at end) === */
 /* When the header gets narrow, stack label over number */
-@container (max-width: 360px) {
+@container (max-width: 520px) {
   .word-score{
-    flex-direction: column;    /* two lines */
+    flex-direction: column;   /* two lines */
     align-items: center;
     text-align: center;
-    white-space: normal;       /* allow wrapping */
+    white-space: normal;
     gap: 0;
   }
 }
