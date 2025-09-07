@@ -1763,10 +1763,17 @@ body{ min-height: 100dvh; overflow-x: hidden; }
     align-items: center;
   }
   
-  .word-stat-header {
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-  }
+ .word-stat-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 12px;
+  cursor: pointer;
+
+  /* key changes */
+  flex-wrap: wrap;            /* let items move to a second line when cramped */
+  gap: 12px;
+  container-type: inline-size;/* lets us use @container below */
   
   .word-actions {
     margin-left: auto;
