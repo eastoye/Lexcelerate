@@ -1623,16 +1623,8 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 .word-stat-header{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 12px;
-  cursor: pointer;
-
-  /* key changes */
-  flex-wrap: wrap;            /* let items move to a second line when cramped */
-  gap: 12px;
-  container-type: inline-size;/* lets us use @container below */
+  /* existing props … */
+  container-type: inline-size;   /* enables the container queries below */
 }
 
 
@@ -2053,9 +2045,14 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .word-stat-header{
   display: flex;
   align-items: center;
-  justify-content: space-between;   /* left cluster | score | delete */
+  justify-content: space-between;
+  padding: 15px 12px;
+  cursor: pointer;
+
+  /* key changes */
+  flex-wrap: wrap;            /* let items move to a second line when cramped */
   gap: 12px;
-  flex-wrap: nowrap;                 /* no wrapping on normal screens */
+  container-type: inline-size;/* lets us use @container below */
 }
 
 /* Left cluster: mistakes chip + word pill */
