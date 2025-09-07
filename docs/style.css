@@ -2069,8 +2069,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   font-size: 0.8em;
   color: var(--color-accent);
   text-transform: lowercase;
-  flex: 1;
-  min-width: 0;
 }
 
 /* Compact score on the right */

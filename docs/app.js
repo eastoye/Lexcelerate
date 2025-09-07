@@ -219,7 +219,7 @@ function renderStatsList(words) {
         <div class="word-stat-header">
           <div class="word-info">
             <button class="toggle-details" data-word-index="${index}" aria-label="Toggle details for ${escapeHtml(wordObj.word)}">
-              <span>${escapeHtml(wordObj.word.toLowerCase())}</span> ▾
+              <span>${escapeHtml(wordObj.word.toLowerCase())}</span>
             </button>
           </div>
           <div class="word-score">Score: ${wordObj.score || 0}</div>
