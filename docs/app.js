@@ -222,7 +222,7 @@ function renderStatsList(words) {
               <span>${escapeHtml(wordObj.word.toLowerCase())}</span>
             </button>
           </div>
-          <div class="word-Score">Score: ${wordObj.Score || 0}</div>
+          <div class="word-Score">Score: ${wordObj.score || 0}</div>
           <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
         </div>
         ${hasDetails ? `
@@ -758,6 +758,3 @@ window.addEventListener('click', (event) => {
 document.addEventListener('DOMContentLoaded', () => {
   initializeAudio();
 });
-
-// Export to make this file an ES module for Vite
-export {};
