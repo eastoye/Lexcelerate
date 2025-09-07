@@ -1927,27 +1927,18 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* === Lexcelerate final overrides (append at end) === */
 /* When the header gets narrow, stack label over number */
-/* when the header gets narrow, put number under the label */
-@container (max-width: 520px) {
+@container (max-width: 360px) {
   .word-score{
-    flex-direction: column;   /* two lines */
+    flex-direction: column;    /* two lines */
     align-items: center;
     text-align: center;
-    white-space: normal;
+    white-space: normal;       /* allow wrapping */
     gap: 0;
   }
 }
 
-/* when it’s VERY tight, show just the number */
-@container (max-width: 360px) {
-  .word-score::before { display: none; }
-}
-
-/* fallback for browsers without container queries */
-@media (max-width: 360px) {
-  .word-score{ flex-direction: column; align-items: center; gap: 0; }
-}
-@media (max-width: 280px) {
+/* When it’s *really* tight, hide the label – show number only */
+@container (max-width: 260px) {
   .word-score::before { display: none; }
 }
 
@@ -2126,16 +2117,15 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* default = inline "Score: " */
 .word-score{
   display: inline-flex;
-  flex-direction: row;
+  flex-direction: row;         /* inline by default */
   align-items: center;
   justify-content: flex-end;
   gap: 4px;
-  white-space: nowrap;
+  white-space: nowrap;         /* stay on one line when there’s room */
   text-align: right;
   line-height: 1.2;
   color: var(--color-accent, #C5B358);
-  flex: 0 1 auto;             /* allow shrinking when space gets tight */
-  min-width: 0;
+  flex: 0 0 auto;
 }
 
 /* Delete button — consistent size/right aligned */
@@ -2147,21 +2137,15 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 /* Split "Score: X" into two parts (label + number) */
-.word-score::before {
-  content: "Score:";
-  font-size: 0.9rem;
-  text-transform: none; /* or uppercase if you want SCORE */
-  color: var(--color-accent);
-  line-height: 1.2;
+/* when it’s VERY tight, show just the number */
+@container (max-width: 360px) {
+  .word-score::before { display: none; }
 }
 
-.word-score span {
-  font-weight: 700;
-  color: var(--color-accent);
-  font-size: 0.9rem;
+/* fallback for browsers without container queries */
+@media (max-width: 360px) {
+  .word-score{ flex-direction: column; align-items: center; gap: 0; }
 }
-
-/* Hide the word "score" on very small screens, show only the number */
 @media (max-width: 280px) {
   .word-score::before { display: none; }
 }
