@@ -2093,19 +2093,15 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 /* Compact score on the right */
-.word-score{
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-  white-space: nowrap;          /* keep on one line when there’s room */
-  text-align: right;
-  line-height: 1.2;
+.word-score {
+  display: flex;
+  flex-direction: column;   /* stack label + number */
+  align-items: center;      /* center horizontally */
+  text-align: center;
+  line-height: 1.3;
   color: var(--color-accent, #C5B358);
   flex: 0 0 auto;
 }
-
 
 /* Delete button — consistent size/right aligned */
 .delete-word{
@@ -2131,15 +2127,10 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 /* Hide the word "score" on very small screens, show only the number */
-@media (max-width: 380px) {
-  .word-score{
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0;
+@media (max-width: 340px) {
+  .word-score::before {
+    display: none;
   }
-}
-
 }
 
 /* Ensure word never gets truncated - remove ellipsis and allow full width */
@@ -2155,7 +2146,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
     flex-wrap: nowrap;
     gap: 4px;
   }
-
+  
   .word-info {
     gap: 4px;
     min-width: 0;
