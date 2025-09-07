@@ -393,7 +393,7 @@ footer {
 }
 
 .add-word-form button {
-  width: 120%;             /* full width under input */
+  width: 50%;             /* full width under input */
   margin: 0;
 }
 
