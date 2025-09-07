@@ -1628,12 +1628,15 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 
-.word-info {
+.word-info{
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
-  flex: 1;
+  gap: 12px;
+  min-width: 0;               /* allow it to shrink without clipping */
+  flex: 1 1 auto;             /* take remaining space first */
+  overflow: visible;
 }
+
 
 .word-name {
   font-family: 'Playfair Display', serif;
