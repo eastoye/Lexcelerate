@@ -2008,7 +2008,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   padding: -20px 14px; /* Reduce for smaller box */
   border-radius: 15px;
   min-height: 48px; 
-  margin-bottom: 0px;/* Set minimum height */
+  margin-bottom: 10px;/* Set minimum height */
   /* You can also add: */
   /* max-width: 400px; */ /* Limit maximum width */
   /* margin-bottom: 8px; */ /* Adjust spacing between boxes */
