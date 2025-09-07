@@ -1928,18 +1928,13 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* === Lexcelerate final overrides (append at end) === */
 /* When the header gets narrow, stack label over number */
 @container (max-width: 360px) {
- .word-score{
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-  white-space: nowrap;
-  text-align: right;
-  line-height: 1.2;
-  color: var(--color-accent, #C5B358);
-  flex: 0 1 auto;             /* allow shrinking when space gets tight */
-  min-width: 0;
+  .word-score{
+    flex-direction: column;    /* two lines */
+    align-items: center;
+    text-align: center;
+    white-space: normal;       /* allow wrapping */
+    gap: 0;
+  }
 }
 
 /* When it’s *really* tight, hide the label – show number only */
@@ -2122,15 +2117,16 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* default = inline "Score: " */
 .word-score{
   display: inline-flex;
-  flex-direction: row;         /* inline by default */
+  flex-direction: row;
   align-items: center;
   justify-content: flex-end;
   gap: 4px;
-  white-space: nowrap;         /* stay on one line when there’s room */
+  white-space: nowrap;
   text-align: right;
   line-height: 1.2;
   color: var(--color-accent, #C5B358);
-  flex: 0 0 auto;
+  flex: 0 1 auto;             /* allow shrinking when space gets tight */
+  min-width: 0;
 }
 
 /* Delete button — consistent size/right aligned */
