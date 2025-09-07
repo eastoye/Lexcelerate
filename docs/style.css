@@ -2017,7 +2017,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: space-between;   /* left cluster | score | delete */
-  gap: 10px;
+  gap: 8px;
   flex-wrap: nowrap;                 /* no wrapping on normal screens */
 }
 
