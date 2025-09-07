@@ -2144,10 +2144,10 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 /* Hide the word "score" on very small screens, show only the number */
-@media (max-width: 340px) {
-  .word-score::before {
-    display: none;
-  }
+@/* Fallback for browsers without container queries */
+@media (max-width: 280px) {
+  .word-score::before { display: none; }
+}
 }
 
 /* Ensure word never gets truncated - remove ellipsis and allow full width */
