@@ -2097,8 +2097,8 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* Split "Score: X" into two parts (label + number) */
 .word-score::before {
   content: "score";
-  font-size: 0.75rem;
-  text-transform: lowercase;
+  font-size: 0.9rem;
+  text-transform: capitalize;
   color: var(--color-accent);
   line-height: 1.2;
 }
