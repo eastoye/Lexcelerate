@@ -1611,7 +1611,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-lg);
+  padding: 100px 12px;  /* Smaller padding = borders closer to content */
   cursor: pointer;
 }
 
