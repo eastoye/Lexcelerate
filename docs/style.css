@@ -2060,6 +2060,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   text-overflow: ellipsis;
   flex-shrink: 1;
   min-width: 0;
+  text-transform: lowercase;
 }
 
 .toggle-details::after {
