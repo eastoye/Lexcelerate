@@ -136,6 +136,8 @@ footer {
   display: none;
   margin-top: 5px;
   font-size: 0.9rem;
+  padding: 12px 16px;
+  box-sizing: border-box;
 }
 
 .toggle-details {
