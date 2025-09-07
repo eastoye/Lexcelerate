@@ -446,16 +446,10 @@ document.addEventListener('click', (e) => {
       detailsDiv.style.display = isExpanded ? 'none' : 'block';
       
       // Update arrow in button text
-      const toggleBtn = e.target.closest('.toggle-details');
-      const buttonText = toggleBtn.innerHTML;
-      if (isExpanded) {
-        toggleBtn.innerHTML = buttonText.replace('▴', '▾');
-      } else {
-        toggleBtn.innerHTML = buttonText.replace('▾', '▴');
-      }
-      
-      toggleBtn.setAttribute('aria-expanded', !isExpanded);
-    }
+      cconst toggleBtn = e.target.closest('.toggle-details');
+// no innerHTML rewriting (prevents flicker)
+toggleBtn.setAttribute('aria-expanded', String(!isExpanded));
+
   }
   
   // Handle delete word
