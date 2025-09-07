@@ -1927,18 +1927,27 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* === Lexcelerate final overrides (append at end) === */
 /* When the header gets narrow, stack label over number */
-@container (max-width: 360px) {
+/* when the header gets narrow, put number under the label */
+@container (max-width: 520px) {
   .word-score{
-    flex-direction: column;    /* two lines */
+    flex-direction: column;   /* two lines */
     align-items: center;
     text-align: center;
-    white-space: normal;       /* allow wrapping */
+    white-space: normal;
     gap: 0;
   }
 }
 
-/* When it’s *really* tight, hide the label – show number only */
-@container (max-width: 260px) {
+/* when it’s VERY tight, show just the number */
+@container (max-width: 360px) {
+  .word-score::before { display: none; }
+}
+
+/* fallback for browsers without container queries */
+@media (max-width: 360px) {
+  .word-score{ flex-direction: column; align-items: center; gap: 0; }
+}
+@media (max-width: 280px) {
   .word-score::before { display: none; }
 }
 
