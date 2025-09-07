@@ -2096,9 +2096,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Split "Score: X" into two parts (label + number) */
 .word-score::before {
-  content: "Score";
-  font-size: 0.9rem;
-  text-transform: capitalize;
+  content: "score";
+  font-size: 0.75rem;
+  text-transform: lowercase;
   color: var(--color-accent);
   line-height: 1.2;
 }
@@ -2400,67 +2400,4 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .mistake-count {
   color: var(--color-secondary-text);
-}
-/* Word always wins; score adapts */
-.word-stat-header{
-  align-items: flex-start; /* so the two-line score sits neatly */
-}
-
-/* Left side (word pill) takes priority */
-.word-info{
-  flex: 1 0 auto;      /* give it the space first */
-  min-width: 0;
-}
-.toggle-details{
-  position: relative;  /* if anything overlaps, word stays on top */
-  z-index: 1;
-  white-space: nowrap; /* keep word on one line; remove if you prefer wrapping */
-}
-.toggle-details > span{
-  overflow: visible;        /* stop ellipsis cutting the word */
-  text-overflow: clip;
-}
-
-/* Score box: shrink first, react responsively via container queries */
-.word-score{
-  flex: 0 1 120px;          /* this is the bit that will shrink first */
-  display: flex;
-  gap: 4px;
-  justify-content: flex-end;
-  align-items: center;
-  white-space: nowrap;
-  text-align: right;
-  container-type: inline-size;  /* enable width-aware rules below */
-  min-width: 0;
-  color: var(--color-accent);
-}
-
-/* Add the 'score' label via CSS (so we can hide it later) */
-.word-score::before{
-  content: "score";
-  font-size: 0.75rem;
-  text-transform: lowercase;
-  line-height: 1.1;
-}
-
-/* Number style */
-.word-score > span{
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-/* When the score box gets narrow, stack label above number */
-@container (max-width: 90px){
-  .word-score{
-    flex-direction: column;
-    align-items: flex-end;
-    white-space: normal; /* allow the label to break naturally */
-  }
-}
-
-/* When it's very narrow, hide the label and show only the number */
-@container (max-width: 56px){
-  .word-score::before{
-    display: none;
-  }
 }
