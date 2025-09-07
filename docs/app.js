@@ -447,9 +447,14 @@ document.addEventListener('click', (e) => {
       
       // Update arrow in button text
       const toggleBtn = e.target.closest('.toggle-details');
-// no innerHTML rewriting (prevents flicker)
-toggleBtn.setAttribute('aria-expanded', String(!isExpanded));
-
+      const buttonText = toggleBtn.innerHTML;
+      if (isExpanded) {
+        toggleBtn.innerHTML = buttonText.replace('▴', '▾');
+      } else {
+        toggleBtn.innerHTML = buttonText.replace('▾', '▴');
+      }
+      
+      toggleBtn.setAttribute('aria-expanded', !isExpanded);
     }
   }
   

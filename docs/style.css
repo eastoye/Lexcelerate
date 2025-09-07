@@ -1622,21 +1622,20 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.word-stat-header{
-  /* existing props … */
-  container-type: inline-size;   /* enables the container queries below */
+.word-stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 12px;  /* Smaller padding = borders closer to content */
+  cursor: pointer;
 }
 
-
-.word-info{
+.word-info {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-width: 0;               /* allow it to shrink without clipping */
-  flex: 1 1 auto;             /* take remaining space first */
-  overflow: visible;
+  gap: var(--spacing-md);
+  flex: 1;
 }
-
 
 .word-name {
   font-family: 'Playfair Display', serif;
@@ -1926,21 +1925,6 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 /* === Lexcelerate final overrides (append at end) === */
-/* When the header gets narrow, stack label over number */
-@container (max-width: 520px) {
-  .word-score{
-    flex-direction: column;   /* two lines */
-    align-items: center;
-    text-align: center;
-    white-space: normal;
-    gap: 0;
-  }
-}
-
-/* When it’s *really* tight, hide the label – show number only */
-@container (max-width: 260px) {
-  .word-score::before { display: none; }
-}
 
 /* 3a) Ensure any unclassed screen buttons inherit our theme safely */
 .screen button {
@@ -2048,14 +2032,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .word-stat-header{
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 15px 12px;
-  cursor: pointer;
-
-  /* key changes */
-  flex-wrap: wrap;            /* let items move to a second line when cramped */
+  justify-content: space-between;   /* left cluster | score | delete */
   gap: 12px;
-  container-type: inline-size;/* lets us use @container below */
+  flex-wrap: nowrap;                 /* no wrapping on normal screens */
 }
 
 /* Left cluster: mistakes chip + word pill */
@@ -2101,32 +2080,24 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 .toggle-details::after {
   content: "▾";
-  margin-left: -6px;
+  margin-left: 4px;
   flex-shrink: 0;
-  font-size: 1.5em;
+  font-size: 0.8em;
   color: var(--color-accent);
-  transition: transform 0.2s ease; /* add this */
-}
-
-/* when open, rotate the caret */
-.toggle-details[aria-expanded="true"]::after {
-  transform: rotate(180deg);
+  text-transform: lowercase;
 }
 
 /* Compact score on the right */
-/* default = inline "Score: " */
-.word-score{
-  display: inline-flex;
-  flex-direction: row;         /* inline by default */
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-  white-space: nowrap;         /* stay on one line when there’s room */
-  text-align: right;
-  line-height: 1.2;
+.word-score {
+  display: flex;
+  flex-direction: column;   /* stack label + number */
+  align-items: center;      /* center horizontally */
+  text-align: center;
+  line-height: 1.3;
   color: var(--color-accent, #C5B358);
   flex: 0 0 auto;
 }
+
 
 /* Delete button — consistent size/right aligned */
 .delete-word{
@@ -2137,17 +2108,25 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 /* Split "Score: X" into two parts (label + number) */
-/* when it’s VERY tight, show just the number */
-@container (max-width: 360px) {
-  .word-score::before { display: none; }
+.word-score::before {
+  content: "Score:";
+  font-size: 0.9rem;
+  text-transform: none; /* or uppercase if you want SCORE */
+  color: var(--color-accent);
+  line-height: 1.2;
 }
 
-/* fallback for browsers without container queries */
-@media (max-width: 360px) {
-  .word-score{ flex-direction: column; align-items: center; gap: 0; }
+.word-score span {
+  font-weight: 700;
+  color: var(--color-accent);
+  font-size: 0.9rem;
 }
-@media (max-width: 280px) {
-  .word-score::before { display: none; }
+
+/* Hide the word "score" on very small screens, show only the number */
+@media (max-width: 340px) {
+  .word-score::before {
+    display: none;
+  }
 }
 
 /* Ensure word never gets truncated - remove ellipsis and allow full width */
