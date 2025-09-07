@@ -2146,10 +2146,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 @media (max-width: 380px){
-  .word-stat-header{
-    flex-wrap: nowrap;
-    gap: 4px;
-  }
+ .word-stat-header { container-type: inline-size; }
   
   .word-info {
     gap: 4px;
