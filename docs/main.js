@@ -232,25 +232,63 @@ class ScreenManager {
   static handleScreenInitialization(screenId) {
     switch (screenId) {
       case 'home-screen':
-        if (window.ProgressManager && window.ProgressManager.updateSummary) {
-          window.ProgressManager.updateSummary();
-        }
+        this.initializeHomeScreen();
         break;
       case 'stats-screen':
-        // Initialize stats page with proper data
-        if (window.ProgressManager) {
-          if (window.ProgressManager.updateStatsList) {
-            window.ProgressManager.updateStatsList();
-          }
-          if (window.ProgressManager.updateStatsSummary) {
-            window.ProgressManager.updateStatsSummary();
-          }
+        this.initializeStatsScreen();
+        break;
+    }
+  }
+
+  /**
+   * Initialize home screen
+   */
+  static initializeHomeScreen() {
+    if (window.ProgressManager && window.ProgressManager.updateSummary) {
+      window.ProgressManager.updateSummary();
+    }
+  }
+
+  /**
+   * Initialize stats screen with proper data
+   */
+  static initializeStatsScreen() {
+    // Ensure word catalog is available
+    if (!window.wordCatalogue) {
+      window.wordCatalogue = AppState.wordCatalogue || [];
+    }
+
+    // Initialize stats with a small delay to ensure DOM is ready
+    setTimeout(() => {
+      try {
+        // Update stats summary (total words, average score, best streak)
+        if (window.ProgressManager && window.ProgressManager.updateStatsSummary) {
+          window.ProgressManager.updateStatsSummary();
         }
+        
+        // Update the detailed stats list
+        if (window.ProgressManager && window.ProgressManager.updateStatsList) {
+          window.ProgressManager.updateStatsList();
+        }
+        
+        // Update smart list if available
         if (window.SmartListManager && window.SmartListManager.updateSmartList) {
           window.SmartListManager.updateSmartList();
         }
-        break;
-    }
+        
+        // Force refresh if stats are still empty
+        if (window.wordCatalogue && window.wordCatalogue.length > 0) {
+          const statsListElement = document.getElementById('stats-list');
+          if (statsListElement && statsListElement.innerHTML.includes('No words added yet')) {
+            if (window.ProgressManager && window.ProgressManager.renderStatsList) {
+              window.ProgressManager.renderStatsList(window.wordCatalogue);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error initializing stats screen:', error);
+      }
+    }, 100);
   }
 }
 
@@ -416,6 +454,7 @@ class AuthFormHandler {
     }
     
     await DataManager.loadUserCatalogue();
+    await AuthenticationManager.initializeUserFeatures();
     ScreenManager.showScreen('home-screen');
     
     if (window.loadWordOfTheDay) {
@@ -828,18 +867,36 @@ class ApplicationInitializer {
     // Override the original saveCatalogue function to use Supabase
     window.saveCatalogue = DataManager.saveUserCatalogue.bind(DataManager);
     
-    // Ensure stats functionality is available globally
+    // Ensure stats functionality is available globally with proper data access
     window.updateStatsList = () => {
+      if (!window.wordCatalogue) {
+        window.wordCatalogue = AppState.wordCatalogue || [];
+      }
       if (window.ProgressManager && window.ProgressManager.updateStatsList) {
         window.ProgressManager.updateStatsList();
       }
     };
     
     window.updateStatsSummary = () => {
+      if (!window.wordCatalogue) {
+        window.wordCatalogue = AppState.wordCatalogue || [];
+      }
       if (window.ProgressManager && window.ProgressManager.updateStatsSummary) {
         window.ProgressManager.updateStatsSummary();
       }
     };
+
+    // Ensure word catalog is always accessible
+    Object.defineProperty(window, 'wordCatalogue', {
+      get: function() {
+        return AppState.wordCatalogue || [];
+      },
+      set: function(value) {
+        AppState.wordCatalogue = value || [];
+      },
+      enumerable: true,
+      configurable: true
+    });
   }
 }
 
