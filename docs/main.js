@@ -1,5 +1,5 @@
 // Main application entry point with Supabase Auth integration
-import { signUp, signIn, logOut, onAuthStateChange, createProfile, getUserProfile } from './auth.js';
+import { signUp, signIn, signOut, onAuthStateChange, createProfile, getUserProfile } from './auth.js';
 import { saveToSupabase, loadFromSupabase } from './supabase-api.js';
 import './user-lists-ui.js';
 import { initializeSmartListGenerator } from './smart-list-generator.js';
@@ -173,7 +173,7 @@ function showAuthError(message) {
 
 // Update logout button to use Supabase auth
 document.getElementById('logout-btn').addEventListener('click', async () => {
-  const result = await logOut();
+  const result = await signOut();
   if (!result.success) {
     console.error('Logout error:', result.error);
     showNotification('Error signing out');
