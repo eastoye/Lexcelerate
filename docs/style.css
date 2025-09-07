@@ -2005,9 +2005,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* ---- Stats cards: keep header on one clean, responsive row ---- */
 .word-stat-item{
-  padding: 12px 14px; /* Reduce for smaller box */
+  padding: 10px 14px; /* Reduce for smaller box */
   border-radius: 14px;
-  min-height: 15px; /* Set minimum height */
+  min-height: 48px; /* Set minimum height */
   /* You can also add: */
   /* max-width: 400px; */ /* Limit maximum width */
   /* margin-bottom: 8px; */ /* Adjust spacing between boxes */
