@@ -104,10 +104,11 @@ Would you like to add this word to your catalogue?`)&&(wordCatalogue.find(t=>t.w
         <div class="word-stat-header">
           <div class="word-info">
             <button class="toggle-details" data-word-index="${n}" aria-label="Toggle details for ${Qe(s.word)}">
-              <span>${Qe(s.word.toLowerCase())}</span> ▾
+              <span>${Qe(s.word.toLowerCase())}</span>
             </button>
           </div>
-          <div class="word-score">Score: ${s.score||0}</div>
+          <div class="word-score"><span>${s.score||0}</span></div>
+
           <button class="delete-word" data-word-index="${n}" aria-label="Delete word">×</button>
         </div>
         ${o?`
