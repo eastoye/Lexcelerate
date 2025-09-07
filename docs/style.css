@@ -2146,8 +2146,11 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 @media (max-width: 380px){
- .word-stat-header { container-type: inline-size; }
-  
+  .word-stat-header{
+    flex-wrap: nowrap;
+    gap: 4px;
+  }
+
   .word-info {
     gap: 4px;
     min-width: 0;
