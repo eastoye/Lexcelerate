@@ -2131,10 +2131,15 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 /* Hide the word "score" on very small screens, show only the number */
-@media (max-width: 340px) {
-  .word-score::before {
-    display: none;
+@media (max-width: 380px) {
+  .word-score{
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0;
   }
+}
+
 }
 
 /* Ensure word never gets truncated - remove ellipsis and allow full width */
