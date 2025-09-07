@@ -221,6 +221,36 @@ class ScreenManager {
     } else {
       console.warn(`Screen with ID '${screenId}' not found`);
     }
+
+    // Handle screen-specific initialization
+    this.handleScreenInitialization(screenId);
+  }
+
+  /**
+   * Handle screen-specific initialization
+   */
+  static handleScreenInitialization(screenId) {
+    switch (screenId) {
+      case 'home-screen':
+        if (window.ProgressManager && window.ProgressManager.updateSummary) {
+          window.ProgressManager.updateSummary();
+        }
+        break;
+      case 'stats-screen':
+        // Initialize stats page with proper data
+        if (window.ProgressManager) {
+          if (window.ProgressManager.updateStatsList) {
+            window.ProgressManager.updateStatsList();
+          }
+          if (window.ProgressManager.updateStatsSummary) {
+            window.ProgressManager.updateStatsSummary();
+          }
+        }
+        if (window.SmartListManager && window.SmartListManager.updateSmartList) {
+          window.SmartListManager.updateSmartList();
+        }
+        break;
+    }
   }
 }
 
@@ -797,6 +827,19 @@ class ApplicationInitializer {
     
     // Override the original saveCatalogue function to use Supabase
     window.saveCatalogue = DataManager.saveUserCatalogue.bind(DataManager);
+    
+    // Ensure stats functionality is available globally
+    window.updateStatsList = () => {
+      if (window.ProgressManager && window.ProgressManager.updateStatsList) {
+        window.ProgressManager.updateStatsList();
+      }
+    };
+    
+    window.updateStatsSummary = () => {
+      if (window.ProgressManager && window.ProgressManager.updateStatsSummary) {
+        window.ProgressManager.updateStatsSummary();
+      }
+    };
   }
 }
 
