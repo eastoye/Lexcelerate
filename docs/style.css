@@ -1502,10 +1502,11 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* Stats Scre/* Stats Screen Styles */
 .stats-summary {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-2xl);
 }
+
 
 .summary-card {
   background: #0a0e17;
