@@ -1941,7 +1941,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .screen input[type="password"],
 .screen input[type="search"] {
   width: 100%;
-  max-width: min(360px, calc(100vw - 32px)); /* responsive max width */
+  max-width: min(360px, calc(100vw - 1px)); /* responsive max width */
   background: #0a0e17;
   border: 1px solid rgba(197, 179, 88, 0.5);
   border-radius: var(--radius-md);
