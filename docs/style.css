@@ -2172,7 +2172,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 /* === Stats Screen Styles === */
 .stats-summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-2xl);
 }
@@ -2442,4 +2442,22 @@ body{ min-height: 100dvh; overflow-x: hidden; }
     border-radius: 16px;
     padding: 16px;
   }
+}
+/* --- Centered, tidy stats trio --- */
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-lg);
+  /* keep the whole group no wider than 3 cards + gaps, then center it */
+  max-width: calc(3 * 170px + 2 * var(--spacing-lg));
+  margin: 0 auto var(--spacing-2xl);
+}
+
+.summary-card {
+  /* equal visual mass */
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
