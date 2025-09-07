@@ -2084,7 +2084,12 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   flex-shrink: 0;
   font-size: 0.8em;
   color: var(--color-accent);
-  text-transform: lowercase;
+  transition: transform 0.2s ease; /* add this */
+}
+
+/* when open, rotate the caret */
+.toggle-details[aria-expanded="true"]::after {
+  transform: rotate(180deg);
 }
 
 /* Compact score on the right */
