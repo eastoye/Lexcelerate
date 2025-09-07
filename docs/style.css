@@ -2007,8 +2007,8 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* ---- Stats cards: keep header on one clean, responsive row ---- */
 .word-stat-item{
-  padding: 14px 16px;
-  border-radius: 14px;
+  padding: -20px 14px; /* Reduce for smaller box */
+  border-radius: 15px;
   min-height: 15px; 
   /* Set minimum height */
   /* You can also add: */
@@ -2020,7 +2020,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: space-between;   /* left cluster | score | delete */
-  gap: 12px;
+  gap: 8px;
   flex-wrap: nowrap;                 /* no wrapping on normal screens */
 }
 
@@ -2028,23 +2028,23 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .word-info{
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   min-width: 0;                      /* allow ellipsis */
-  flex: 1 1 auto;
+  flex: 1;
   overflow: hidden;
 }
 
 /* Word pill (dropdown toggle) — must NOT be full width */
 .toggle-details{
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   width: auto;
-  max-width: 100%;
+  max-width: none;
   padding: 10px 14px;
   border-radius: 12px;
   border: 1px solid rgba(197,179,88,.35);
-  background: #0a0e1799;
+  background: rgba(10,14,23,.6);
   cursor: pointer;
   white-space: nowrap;
   font-weight: 700;
@@ -2079,11 +2079,19 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  white-space: normal;
+  color: var(--color-accent, #C5B358);
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  margin-left: 8px;
   text-align: right;
   line-height: 1.2;
-  color: var(--color-accent, #C5B358);
-  flex: 0 0 auto;
+}
+
+.word-score::before {
+  content: "Score";
+  font-size: 0.7rem;
+  opacity: 0.8;
+  margin-bottom: 2px;
 }
 
 /* Delete button — consistent size/right aligned */
@@ -2091,41 +2099,12 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   width: 40px;
   height: 32px;
   border-radius: 12px;
-  flex: 0 0 auto;
+  flex-shrink: 0;
 }
 
-/* Split "Score: X" into two parts (label + number) */
-.word-score::before {
-  content: "score";
-  font-size: 0.75rem;
-  text-transform: lowercase;
-  color: var(--color-accent);
-  line-height: 1.2;
-}
-
-.word-score span {
-  font-weight: 700;
-  color: var(--color-accent);
-  font-size: 0.9rem;
-}
-
-/* Hide the word "score" on very small screens, show only the number */
-@media (max-width: 340px) {
-  .word-score::before {
-    display: none;
-  }
-}
-
-/* Ensure word never gets truncated - remove ellipsis and allow full width */
-.toggle-details > span {
-  overflow: visible;
-  text-overflow: clip;
-  flex-shrink: 1;
-  min-width: 0;
-}
-
+/* Very small phones: allow a graceful wrap */
 @media (max-width: 380px){
-  .word-stat-header{
+  .word-stat-header{ 
     flex-wrap: nowrap;
     gap: 4px;
   }

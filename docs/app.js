@@ -163,7 +163,7 @@ function generateSyllableHint(word, attemptCount) {
 }
 
 // ---------------------------
-// Global Variables for Practice Session & Sound
+// Global Variables for Practice ession & Sound
 // ---------------------------
 let attemptCount = 0;
 let currentWordObj = null;
@@ -537,7 +537,7 @@ function getRandomWord() {
 }
 
 // ---------------------------
-// Load Practice Word (based on mode)
+// Load Practice  (based on mode)
 function loadPracticeWord() {
   if (practiceMode === 'random') {
     currentWordObj = getRandomDictionaryWord();
@@ -606,7 +606,7 @@ document.getElementById('spell-input').addEventListener('keydown', function(even
 });
 
 // ---------------------------
-// Practice Submission Handler for Catalogue Practice
+// Practice ubmission Handler for Catalogue Practice
 document.getElementById('submit-spelling-btn').addEventListener('click', () => {
   let actualWord = currentWordObj.word;
   const userSpelling = document.getElementById('spell-input').value.trim();
