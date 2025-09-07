@@ -2076,11 +2076,22 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Compact score on the right */
 .word-score{
-  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   color: var(--color-accent, #C5B358);
   flex-shrink: 0;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   margin-left: 8px;
+  text-align: right;
+  line-height: 1.2;
+}
+
+.word-score::before {
+  content: "Score";
+  font-size: 0.7rem;
+  opacity: 0.8;
+  margin-bottom: 2px;
 }
 
 /* Delete button — consistent size/right aligned */
