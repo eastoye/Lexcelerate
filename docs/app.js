@@ -413,7 +413,7 @@ function updateSmartList() {
         <div class="smart-word-item">
           <span class="word-rank">#${index + 1}</span>
           <strong>${wordObj.word}</strong>
-          <span class="word-score">score: ${wordObj.score}</span>
+          <span class="word-score">Score: ${wordObj.Score}</span>
           ${errorCount > 0 ? `<span class="error-indicator">${errorCount} errors</span>` : ''}
         </div>
       `;
