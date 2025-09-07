@@ -2415,3 +2415,28 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .mistake-count {
   color: var(--color-secondary-text);
 }
+/* === Help modal: perfectly centered + fits viewport === */
+.modal-content {
+  position: fixed;                 /* pin to viewport */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);/* true center */
+  margin: 0 !important;            /* kill earlier auto margins */
+  box-sizing: border-box;
+
+  /* Size: match card feel, never overflow screen */
+  width: min(520px, calc(100vw - 32px));
+  max-width: var(--card-max-width);/* uses your card width var */
+  max-height: min(80vh, 640px);
+  overflow: auto;                  /* scroll inside if content is tall */
+}
+
+/* Mobile comfort */
+@media (max-width: 480px) {
+  .modal-content {
+    width: calc(100vw - 24px);
+    max-height: calc(100vh - 24px);
+    border-radius: 16px;
+    padding: 16px;
+  }
+}
