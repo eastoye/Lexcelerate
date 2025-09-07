@@ -2082,7 +2082,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   content: "▾";
   margin-left: 4px;
   flex-shrink: 0;
-  font-size: 5em;
+  font-size: 2em;
   color: var(--color-accent);
   transition: transform 0.2s ease; /* add this */
 }
