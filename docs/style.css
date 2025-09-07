@@ -378,22 +378,35 @@ footer {
 }
 
 /* List Detail Styles */
+/* Shared width for the input + button on Add Word form */
 .add-word-form {
   display: flex;
-  flex-direction: column;   /* stack input and button */
+  flex-direction: column;
   gap: 0.75rem;
-  margin: 0 auto 1rem auto; /* center horizontally */
-  align-items: center;      /* center children */
   width: 100%;
-  max-width: 300px;         /* controls shared width */
+  max-width: 360px;          /* pick your exact shared width */
+  margin: 0 auto 1rem;       /* center the block */
+  align-items: stretch;
 }
 
-.add-word-form input,
-.add-word-form button {
-  width: 100%;              /* both take same width */
+/* Ensure the input’s wrapper uses full width */
+.add-word-form .form-group {
+  width: 100%;
   margin: 0;
-  box-sizing: border-box;   /* padding doesn’t break width */
 }
+
+/* Make the input and button exactly the same width */
+.add-word-form .form-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.add-word-form .add-btn {
+  width: 100%;
+  max-width: 100%;           /* override the global 300px cap */
+  box-sizing: border-box;
+}
+
 
 .add-word-form button:hover {
   background-color: #218838;
