@@ -1645,13 +1645,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 .word-score {
-  display: flex;
-  flex-direction: column;   /* stack label + number */
-  align-items: center;      /* center horizontally */
-  text-align: center;       /* center text */
-  line-height: 1.3;
-  color: var(--color-accent, #C5B358);
-  flex: 0 0 auto;
+  font-size: 0.9rem;
+  color: var(--color-accent);
+  font-weight: 500;
 }
 
 .word-actions {
