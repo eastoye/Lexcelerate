@@ -2096,7 +2096,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 
 /* Split "Score: X" into two parts (label + number) */
 .word-score::before {
-  content: "Score";
+  content: "Score:";
   font-size: 0.9rem;
   text-transform: none; /* or uppercase if you want SCORE */
   color: var(--color-accent);
