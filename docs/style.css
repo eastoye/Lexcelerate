@@ -2093,12 +2093,16 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 }
 
 /* Compact score on the right */
-.word-score {
-  display: flex;
-  flex-direction: column;   /* stack label + number */
-  align-items: center;      /* center horizontally */
-  text-align: center;
-  line-height: 1.3;
+/* default = inline "Score: " */
+.word-score{
+  display: inline-flex;
+  flex-direction: row;         /* inline by default */
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  white-space: nowrap;         /* stay on one line when there’s room */
+  text-align: right;
+  line-height: 1.2;
   color: var(--color-accent, #C5B358);
   flex: 0 0 auto;
 }
