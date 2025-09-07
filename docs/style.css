@@ -2035,7 +2035,7 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .toggle-details{
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 0px;
   width: auto;
   max-width: none;
   padding: 10px 14px;
