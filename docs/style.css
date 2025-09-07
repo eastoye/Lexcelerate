@@ -2047,6 +2047,9 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   white-space: nowrap;
   font-weight: 700;
   text-transform: none;
+  justify-content: flex-start;
+  flex-shrink: 1;
+  min-width: 0;
   min-width: 0;
   flex: 1;
   justify-content: flex-start;
@@ -2055,6 +2058,16 @@ body{ min-height: 100dvh; overflow-x: hidden; }
 .toggle-details > span{
   overflow: hidden;
   text-overflow: ellipsis;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.toggle-details::after {
+  content: "▾";
+  margin-left: 4px;
+  flex-shrink: 0;
+  font-size: 0.8em;
+  color: var(--color-accent);
   text-transform: lowercase;
   flex: 1;
   min-width: 0;
