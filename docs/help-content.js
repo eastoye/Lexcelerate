@@ -40,9 +40,8 @@ export const HELP_TEXT = {
     //Practice//
  `   <ul>
       <li>Choose where to practice from: Catalogue, Random, or one of your Lists.</li>
-      <li>Type your answer in the box. The app checks accuracy and updates your score.</li>
-      <li>Use the <strong>?</strong> help buttons if you’re stuck.</li>
-      <li>Your progress adapts based on how you do.</li>
+      <li>Type your answer in the box and tap on the hidden word to reveal it for a moment.</li>
+      <li>Tap <strong>submit</strong> when you've finished your attempt.</li>
     </ul>
   `,
 
