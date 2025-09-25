@@ -12,9 +12,9 @@ export const HELP_TEXT = {
   home: 
     //Home// 
    ` <ul>
-      <li>See your <strong>Word of the Day</strong>, quick links to Practice, and your progress snapshot.</li>
+      <li>See your <strong>Word of the Day</strong>.</li>
       <li>Tap the Word of the Day to expand details or add it to your catalogue.</li>
-      <li>Use the bottom navigation bar to move between Add Word, Practice, Stats, and Lists.</li>
+      <li>Use the bottoms bellow to move between Add Word, Practice, Stats, and Lists.</li>
     </ul>
   `,
 
