@@ -29,8 +29,7 @@ export const HELP_TEXT = {
   "add-word": 
     //Add Word//
   `  <ul>
-      <li>Type in the word and its definition.</li>
-      <li>You can also add an example sentence, tags, or a source.</li>
+      <li>Type in the word.</li>
       <li>Press <strong>Add Word</strong> to save it to your catalogue.</li>
       <li>New words are available immediately in Practice and Lists.</li>
     </ul>
