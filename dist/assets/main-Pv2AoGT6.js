@@ -103,25 +103,23 @@
       <li>Your words and stats are saved to your account so you can learn anywhere.</li>
     </ul>
   `,home:` <ul>
-      <li>See your <strong>Word of the Day</strong>, quick links to Practice, and your progress snapshot.</li>
+      <li>See your <strong>Word of the Day</strong>.</li>
       <li>Tap the Word of the Day to expand details or add it to your catalogue.</li>
-      <li>Use the bottom navigation bar to move between Add Word, Practice, Stats, and Lists.</li>
+      <li>Use the bottoms bellow to move between Add Word, Practice, Stats, and Lists.</li>
     </ul>
   `,username:`  <ul>
       <li>Pick a unique username to complete your profile.</li>
       <li>Usernames must be at least 3 characters long and can include letters, numbers, or underscores.</li>
     </ul>
   `,"add-word":`  <ul>
-      <li>Type in the word and its definition.</li>
-      <li>You can also add an example sentence, tags, or a source.</li>
+      <li>Type in the word.</li>
       <li>Press <strong>Add Word</strong> to save it to your catalogue.</li>
       <li>New words are available immediately in Practice and Lists.</li>
     </ul>
   `,practice:`   <ul>
       <li>Choose where to practice from: Catalogue, Random, or one of your Lists.</li>
-      <li>Type your answer in the box. The app checks accuracy and updates your score.</li>
-      <li>Use the <strong>?</strong> help buttons if you’re stuck.</li>
-      <li>Your progress adapts based on how you do.</li>
+      <li>Type your answer in the box and tap on the hidden word to reveal it for a moment.</li>
+      <li>Tap <strong>submit</strong> when you've finished your attempt.</li>
     </ul>
   `,lists:` <ul>
       <li>Create and manage custom word lists for focused study.</li>
@@ -135,9 +133,9 @@
       <li>Use <strong>Practice</strong> from here to study only this list.</li>
     </ul>
   `,stats:`  <ul>
-      <li>See how you’re doing with each word.</li>
-      <li>Scores update as you practice.</li>
-      <li>Remove a word from tracking if you no longer want to study it.</li>
+      <li>See how you’re doing with each word and common mistakes u made.</li>
+      <li>Scores update as you practice, the hight the score the less the word will come up in practice.</li>
+      <li>Remove a words if you no longer want to study them.</li>
       <li>Use stats to spot weak areas and focus your practice.</li>
     </ul>
   `};function Si(r){const e=document.getElementById("help-modal"),t=document.getElementById("help-text"),s=ki[r]||`<p>No help available for: <code>${r}</code></p>`;t&&(t.innerHTML=s),e&&(e.style.display="block")}window.wordCatalogue=[];let is=[],St=0,me=null;function Ii(){try{me=new Audio("./correctbell.wav"),me.volume=.3,me.preload="auto"}catch(r){console.warn("Could not load success audio:",r)}}function Ci(){if(me&&pe)try{me.currentTime=0,me.play().catch(r=>{console.warn("Could not play success audio:",r)})}catch(r){console.warn("Error playing success audio:",r)}}function we(){window.saveUserCatalogueToSupabase&&window.saveUserCatalogueToSupabase()}function G(r){const e=document.getElementById("notification");e.textContent=r,e.style.display="block",setTimeout(()=>{e.style.display="none"},2e3)}function Ti(){const r=["serendipity","eloquence","ephemeral","labyrinth","mellifluous","arenaceous","soliloquy","pahoehoe","soporific","skerry","guffaw","oubliette","fusty","proprioception","hermetic","bokeh","smarmy","pavonine","redound","citify","holus-bolus","stelliferous","doodad","jubilate","exculpatory","dislimn","favonian","gainsay","burnish","whitherward","heyday","chatoyant","pied-à-terre","debonair","scrimshank","tagliatelle","harrumph","afterclap","unalienable","mundify","chartaceous","mugwump","gutta-percha","laudatory","glair","garble","scrabbly","pugilistic","polemics","solstitial"],e=localStorage.getItem("wotd"),t=localStorage.getItem("wotdTimestamp"),s=Date.now();if(e&&t&&s-t<864e5)document.getElementById("wotd").textContent=e;else{let n=r[Math.floor(Math.random()*r.length)];localStorage.setItem("wotd",n),localStorage.setItem("wotdTimestamp",s),document.getElementById("wotd").textContent=n}}let Ze=!1;document.getElementById("wotd").addEventListener("click",()=>{if(Ze)return;Ze=!0;const r=document.getElementById("wotd").textContent;Li(r,e=>{confirm(`Definition: ${e}
