@@ -1,8 +1,59 @@
 // User Lists API functions
 import { supabase } from './supabase-config.js';
 
+// Check if we're in guest mode
+function isGuestMode() {
+  return window.isGuestMode || localStorage.getItem('lexcelerate_guest_mode') === 'true';
+}
+
+// Guest mode localStorage functions
+function getGuestLists() {
+  try {
+    const lists = localStorage.getItem('lexcelerate_guest_lists');
+    return lists ? JSON.parse(lists) : [];
+  } catch (error) {
+    console.error('Error loading guest lists:', error);
+    return [];
+  }
+}
+
+function saveGuestLists(lists) {
+  try {
+    localStorage.setItem('lexcelerate_guest_lists', JSON.stringify(lists));
+  } catch (error) {
+    console.error('Error saving guest lists:', error);
+  }
+}
+
+function getGuestListWords(listId) {
+  try {
+    const words = localStorage.getItem(`lexcelerate_guest_list_words_${listId}`);
+    return words ? JSON.parse(words) : [];
+  } catch (error) {
+    console.error('Error loading guest list words:', error);
+    return [];
+  }
+}
+
+function saveGuestListWords(listId, words) {
+  try {
+    localStorage.setItem(`lexcelerate_guest_list_words_${listId}`, JSON.stringify(words));
+  } catch (error) {
+    console.error('Error saving guest list words:', error);
+  }
+}
+
+function generateGuestId() {
+  return 'guest_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
 // Get all user lists
 export const getUserLists = async () => {
+  if (isGuestMode()) {
+    const lists = getGuestLists();
+    return { success: true, data: lists };
+  }
+  
   try {
     const { data: { user } } = await supabase.auth.getUser();
     
@@ -28,6 +79,20 @@ export const getUserLists = async () => {
 
 // Create a new user list
 export const createUserList = async (name) => {
+  if (isGuestMode()) {
+    const lists = getGuestLists();
+    const newList = {
+      id: generateGuestId(),
+      user_id: 'guest',
+      name: name.trim(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    lists.push(newList);
+    saveGuestLists(lists);
+    return { success: true, data: newList };
+  }
+  
   try {
     const { data: { user } } = await supabase.auth.getUser();
     
@@ -56,6 +121,18 @@ export const createUserList = async (name) => {
 
 // Update a user list
 export const updateUserList = async (listId, name) => {
+  if (isGuestMode()) {
+    const lists = getGuestLists();
+    const listIndex = lists.findIndex(list => list.id === listId);
+    if (listIndex === -1) {
+      return { success: false, error: 'List not found', status: 404 };
+    }
+    lists[listIndex].name = name.trim();
+    lists[listIndex].updated_at = new Date().toISOString();
+    saveGuestLists(lists);
+    return { success: true, data: lists[listIndex] };
+  }
+  
   try {
     const { data: { user } } = await supabase.auth.getUser();
     
@@ -90,6 +167,19 @@ export const updateUserList = async (listId, name) => {
 
 // Delete a user list
 export const deleteUserList = async (listId) => {
+  if (isGuestMode()) {
+    const lists = getGuestLists();
+    const listIndex = lists.findIndex(list => list.id === listId);
+    if (listIndex === -1) {
+      return { success: false, error: 'List not found', status: 404 };
+    }
+    const deletedList = lists.splice(listIndex, 1)[0];
+    saveGuestLists(lists);
+    // Also remove the words for this list
+    localStorage.removeItem(`lexcelerate_guest_list_words_${listId}`);
+    return { success: true, data: deletedList };
+  }
+  
   try {
     const { data: { user } } = await supabase.auth.getUser();
     
@@ -121,6 +211,11 @@ export const deleteUserList = async (listId) => {
 
 // Get words in a user list
 export const getListWords = async (listId) => {
+  if (isGuestMode()) {
+    const words = getGuestListWords(listId);
+    return { success: true, data: words };
+  }
+  
   try {
     const { data: { user } } = await supabase.auth.getUser();
     
@@ -159,6 +254,27 @@ export const getListWords = async (listId) => {
 
 // Add word to a user list
 export const addWordToList = async (listId, word) => {
+  if (isGuestMode()) {
+    const words = getGuestListWords(listId);
+    
+    // Check if word already exists
+    if (words.find(w => w.word.toLowerCase() === word.toLowerCase())) {
+      return { success: false, error: 'Word already exists in this list', status: 409 };
+    }
+    
+    const newWord = {
+      id: generateGuestId(),
+      list_id: listId,
+      word: word.trim(),
+      position: words.length,
+      added_at: new Date().toISOString()
+    };
+    
+    words.push(newWord);
+    saveGuestListWords(listId, words);
+    return { success: true, data: newWord };
+  }
+  
   try {
     const { data: { user } } = await supabase.auth.getUser();
     
@@ -215,6 +331,17 @@ export const addWordToList = async (listId, word) => {
 
 // Remove word from a user list
 export const removeWordFromList = async (listId, wordId) => {
+  if (isGuestMode()) {
+    const words = getGuestListWords(listId);
+    const wordIndex = words.findIndex(w => w.id === wordId);
+    if (wordIndex === -1) {
+      return { success: false, error: 'Word not found in list', status: 404 };
+    }
+    const deletedWord = words.splice(wordIndex, 1)[0];
+    saveGuestListWords(listId, words);
+    return { success: true, data: deletedWord };
+  }
+  
   try {
     const { data: { user } } = await supabase.auth.getUser();
     

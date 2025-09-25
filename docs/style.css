@@ -1080,6 +1080,22 @@ body{ min-height: 100dvh; overflow-x: hidden; }
   transform: translateY(-1px);
 }
 
+/* Guest Mode Button Styling */
+.guest-mode-btn {
+  background: var(--color-mint) !important;
+  color: var(--color-background) !important;
+  border-color: rgba(107, 187, 161, 0.8) !important;
+}
+
+.guest-mode-btn:before {
+  background: #5a9d85 !important;
+}
+
+.guest-mode-btn:hover {
+  border-color: #5a9d85 !important;
+  box-shadow: 0 0 20px rgba(107, 187, 161, 0.3) !important;
+}
+
 /* Progress Summary */
 .word-count-display {
   background: #1a1e27;

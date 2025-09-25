@@ -9,6 +9,7 @@ import './app.js';
 let currentUser = null;
 let userProfile = null;
 let isSignUpMode = false;
+let isGuestMode = false;
 
 // Initialize auth state listener
 onAuthStateChange(async (user) => {
@@ -55,11 +56,65 @@ onAuthStateChange(async (user) => {
 
 // Initialize the app - show auth screen by default
 document.addEventListener('DOMContentLoaded', () => {
+  // Check if user was previously in guest mode
+  const wasGuestMode = localStorage.getItem('lexcelerate_guest_mode') === 'true';
+  if (wasGuestMode) {
+    enterGuestMode();
+    return;
+  }
+  
   window.showScreen('auth-screen');
 });
 
+// Guest mode functions
+function enterGuestMode() {
+  isGuestMode = true;
+  currentUser = { id: 'guest', email: 'guest@local' };
+  userProfile = { username: 'Guest User' };
+  
+  // Store guest mode preference
+  localStorage.setItem('lexcelerate_guest_mode', 'true');
+  
+  // Load data from localStorage instead of Supabase
+  loadGuestCatalogueFromLocalStorage();
+  
+  // Initialize user lists functionality (will use localStorage)
+  if (window.initializeUserLists) {
+    window.initializeUserLists();
+  }
+  
+  // Initialize smart list generator
+  if (window.initializeSmartListGenerator) {
+    window.initializeSmartListGenerator();
+  }
+  
+  document.getElementById('welcome-message').textContent = 'Welcome, Guest User!';
+  window.showScreen('home-screen');
+  window.loadWordOfTheDay();
+}
+
+function exitGuestMode() {
+  isGuestMode = false;
+  currentUser = null;
+  userProfile = null;
+  
+  // Clear guest mode preference
+  localStorage.removeItem('lexcelerate_guest_mode');
+  
+  // Clear word catalogue
+  window.wordCatalogue = [];
+  
+  // Show auth screen
+  window.showScreen('auth-screen');
+}
+
 // Load user's catalogue from Supabase
 async function loadUserCatalogueFromSupabase() {
+  if (isGuestMode) {
+    loadGuestCatalogueFromLocalStorage();
+    return;
+  }
+  
   const result = await loadFromSupabase();
   if (result.success) {
     window.wordCatalogue = result.data;
@@ -78,9 +133,38 @@ async function loadUserCatalogueFromSupabase() {
   }
 }
 
+// Load guest catalogue from localStorage
+function loadGuestCatalogueFromLocalStorage() {
+  try {
+    const storedCatalogue = localStorage.getItem('lexcelerate_guest_catalogue');
+    if (storedCatalogue) {
+      window.wordCatalogue = JSON.parse(storedCatalogue);
+      // Ensure all word objects have required properties
+      window.wordCatalogue.forEach(wordObj => {
+        if (typeof wordObj.score !== 'number') wordObj.score = 0;
+        if (typeof wordObj.streak !== 'number') wordObj.streak = 0;
+        if (!wordObj.mistakes) wordObj.mistakes = {};
+        if (!wordObj.nextReview) wordObj.nextReview = Date.now();
+        if (!wordObj.interval) wordObj.interval = 1;
+      });
+      console.log('Guest catalogue loaded from localStorage:', window.wordCatalogue.length, 'words');
+    } else {
+      window.wordCatalogue = [];
+    }
+  } catch (error) {
+    console.error('Error loading guest catalogue from localStorage:', error);
+    window.wordCatalogue = [];
+  }
+}
+
 // Save user's catalogue to Supabase
 async function saveUserCatalogueToSupabase() {
   if (!currentUser) return;
+  
+  if (isGuestMode) {
+    saveGuestCatalogueToLocalStorage();
+    return;
+  }
   
   const result = await saveToSupabase(window.wordCatalogue);
   if (result.success) {
@@ -91,8 +175,43 @@ async function saveUserCatalogueToSupabase() {
   }
 }
 
+// Save guest catalogue to localStorage
+function saveGuestCatalogueToLocalStorage() {
+  try {
+    localStorage.setItem('lexcelerate_guest_catalogue', JSON.stringify(window.wordCatalogue));
+    console.log('Guest catalogue saved to localStorage');
+  } catch (error) {
+    console.error('Error saving guest catalogue to localStorage:', error);
+    if (window.showNotification) {
+      window.showNotification('Failed to save data locally');
+    }
+  }
+}
+
 // Override the original saveCatalogue function to use Supabase
 window.saveCatalogue = saveUserCatalogueToSupabase;
+
+// Add guest mode button to auth screen
+document.addEventListener('DOMContentLoaded', () => {
+  const authScreen = document.getElementById('auth-screen');
+  if (authScreen) {
+    const guestButton = document.createElement('button');
+    guestButton.id = 'guest-mode-btn';
+    guestButton.className = 'minimal-button guest-mode-btn';
+    guestButton.textContent = 'Continue as Guest';
+    guestButton.style.marginTop = '1rem';
+    guestButton.style.backgroundColor = 'var(--color-mint)';
+    guestButton.style.color = 'var(--color-background)';
+    
+    guestButton.addEventListener('click', enterGuestMode);
+    
+    // Insert before the toggle text
+    const toggleText = document.getElementById('auth-toggle');
+    if (toggleText) {
+      toggleText.parentNode.insertBefore(guestButton, toggleText);
+    }
+  }
+});
 
 // Auth form handling
 document.getElementById('auth-submit-btn').addEventListener('click', async () => {
@@ -173,6 +292,13 @@ function showAuthError(message) {
 
 // Update logout button to use Supabase auth
 document.getElementById('logout-btn').addEventListener('click', async () => {
+  if (isGuestMode) {
+    if (confirm('Are you sure you want to exit guest mode? Your data will remain saved locally.')) {
+      exitGuestMode();
+    }
+    return;
+  }
+  
   const result = await logOut();
   if (!result.success) {
     console.error('Logout error:', result.error);
@@ -269,6 +395,7 @@ function showUsernameError(message) {
 // Make functions available globally for the existing app.js
 window.currentUser = currentUser;
 window.userProfile = userProfile;
+window.isGuestMode = isGuestMode;
 window.saveUserCatalogueToSupabase = saveUserCatalogueToSupabase;
 window.loadUserCatalogueFromSupabase = loadUserCatalogueFromSupabase;
 
