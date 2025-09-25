@@ -67,7 +67,7 @@ export const HELP_TEXT = {
   stats: 
     //Stats//
   `  <ul>
-      <li>See how you’re doing with each word.</li>
+      <li>See how you’re doing with each word and common mistakes u made.</li>
       <li>Scores update as you practice.</li>
       <li>Remove a word from tracking if you no longer want to study it.</li>
       <li>Use stats to spot weak areas and focus your practice.</li>
