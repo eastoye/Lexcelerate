@@ -15,6 +15,7 @@ let isGuestMode = false;
 onAuthStateChange(async (user) => {
   if (user) {
     currentUser = user;
+    isGuestMode = false; // Ensure we're not in guest mode when signed in
     console.log('User signed in:', user.email);
     
     // Load user profile
@@ -28,6 +29,11 @@ onAuthStateChange(async (user) => {
         return;
       }
       
+      // Update welcome message for authenticated user
+      const welcomeMessage = document.getElementById('welcome-message');
+      if (welcomeMessage) {
+        welcomeMessage.textContent = `Welcome, ${userProfile.username}!`;
+      }
     
     }
     
@@ -47,6 +53,7 @@ onAuthStateChange(async (user) => {
   } else {
     currentUser = null;
     userProfile = null;
+    isGuestMode = false;
     console.log('User signed out');
     
     window.wordCatalogue = [];
@@ -88,7 +95,12 @@ function enterGuestMode() {
     window.initializeSmartListGenerator();
   }
   
-  document.getElementById('welcome-message').textContent = 'Welcome, Guest User!';
+  // Update welcome message for guest user
+  const welcomeMessage = document.getElementById('welcome-message');
+  if (welcomeMessage) {
+    welcomeMessage.textContent = 'Welcome, Guest User!';
+  }
+  
   window.showScreen('home-screen');
   window.loadWordOfTheDay();
 }
@@ -361,7 +373,11 @@ document.getElementById('username-submit-btn').addEventListener('click', async (
       const profileResult = await getUserProfile();
       if (profileResult.success) {
         userProfile = profileResult.data;
-        document.getElementById('welcome-message').textContent = `Welcome, ${userProfile.username}!`;
+        // Update welcome message with username
+        const welcomeMessage = document.getElementById('welcome-message');
+        if (welcomeMessage) {
+          welcomeMessage.textContent = `Welcome, ${userProfile.username}!`;
+        }
       }
       
       await loadUserCatalogueFromSupabase();
