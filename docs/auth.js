@@ -54,7 +54,7 @@ export const getUserProfile = async () => {
 };
 
 // Sign up function
-export const signUp = async (email, password) => {
+export const signUp = async (email, password, username) => {
   try {
     const { data, error } = await supabase.auth.signUp({
       email: email,
@@ -65,15 +65,42 @@ export const signUp = async (email, password) => {
       return { success: false, error: error.message };
     }
     
+    // If signup successful and we have a username, create profile immediately
+    if (data.user && username) {
+      const profileResult = await createProfile(username);
+      if (!profileResult.success) {
+        console.warn('Profile creation failed during signup:', profileResult.error);
+      }
+    }
+    
     return { success: true, user: data.user };
   } catch (error) {
     return { success: false, error: error.message };
   }
 };
 
-// Sign in function
-export const signIn = async (email, password) => {
+// Sign in function - supports both email and username
+export const signIn = async (identifier, password) => {
   try {
+    let email = identifier;
+    
+    // Check if identifier is a username (doesn't contain @)
+    if (!identifier.includes('@')) {
+      // Look up email by username
+      const { data: userData, error: lookupError } = await supabase
+        .rpc('get_user_by_username_or_email', { identifier: identifier });
+      
+      if (lookupError) {
+        return { success: false, error: 'Username not found' };
+      }
+      
+      if (!userData || userData.length === 0) {
+        return { success: false, error: 'Username not found' };
+      }
+      
+      email = userData[0].email;
+    }
+    
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,

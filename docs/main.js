@@ -227,13 +227,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Auth form handling
 document.getElementById('auth-submit-btn').addEventListener('click', async () => {
-  const email = document.getElementById('auth-email').value.trim();
+  const emailOrUsername = document.getElementById('auth-email').value.trim();
   const password = document.getElementById('auth-password').value.trim();
+  const username = document.getElementById('auth-username')?.value.trim();
   const errorDiv = document.getElementById('auth-error');
   const loadingDiv = document.getElementById('auth-loading');
   
-  if (!email || !password) {
-    showAuthError('Please enter both email and password.');
+  if (!emailOrUsername || !password) {
+    showAuthError(isSignUpMode ? 'Please fill in all fields.' : 'Please enter your email/username and password.');
+    return;
+  }
+  
+  if (isSignUpMode && !username) {
+    showAuthError('Please enter a username.');
+    return;
+  }
+  
+  if (isSignUpMode && username.length < 3) {
+    showAuthError('Username must be at least 3 characters long.');
+    return;
+  }
+  
+  if (isSignUpMode && !/^[a-zA-Z0-9_]+$/.test(username)) {
+    showAuthError('Username can only contain letters, numbers, and underscores.');
     return;
   }
   
@@ -245,9 +261,15 @@ document.getElementById('auth-submit-btn').addEventListener('click', async () =>
   try {
     let result;
     if (isSignUpMode) {
-      result = await signUp(email, password);
+      // For signup, emailOrUsername should be an email
+      if (!emailOrUsername.includes('@')) {
+        showAuthError('Please enter a valid email address for signup.');
+        return;
+      }
+      result = await signUp(emailOrUsername, password, username);
     } else {
-      result = await signIn(email, password);
+      // For signin, can be either email or username
+      result = await signIn(emailOrUsername, password);
     }
     
     if (!result.success) {
@@ -272,15 +294,21 @@ function handleAuthToggle(e) {
   const submitBtn = document.getElementById('auth-submit-btn');
   const toggleText = document.getElementById('auth-toggle');
   const toggleLink = document.getElementById('auth-toggle-link');
+  const emailInput = document.getElementById('auth-email');
+  const usernameContainer = document.getElementById('auth-username-container');
   
   if (isSignUpMode) {
     title.textContent = 'Sign Up for Lexcelerate';
     submitBtn.textContent = 'Sign Up';
     toggleText.innerHTML = 'Already have an account? <a href="#" id="auth-toggle-link">Sign in</a>';
+    emailInput.placeholder = 'Email';
+    if (usernameContainer) usernameContainer.style.display = 'block';
   } else {
     title.textContent = 'Sign In to Lexcelerate';
     submitBtn.textContent = 'Sign In';
     toggleText.innerHTML = 'Don\'t have an account? <a href="#" id="auth-toggle-link">Sign up</a>';
+    emailInput.placeholder = 'Email or Username';
+    if (usernameContainer) usernameContainer.style.display = 'none';
   }
   
   // Re-attach event listener to the new link
@@ -288,6 +316,9 @@ function handleAuthToggle(e) {
   
   // Clear form and errors
   document.getElementById('auth-email').value = '';
+  if (document.getElementById('auth-username')) {
+    document.getElementById('auth-username').value = '';
+  }
   document.getElementById('auth-password').value = '';
   document.getElementById('auth-error').style.display = 'none';
 }

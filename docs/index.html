@@ -34,7 +34,10 @@
         
         <h2 id="auth-title" class="app-title">Sign In to Lexcelerate</h2>
         <div id="auth-error" class="error-message" style="display: none;"></div>
-        <input type="email" id="auth-email" class="form-input" placeholder="Email" autocomplete="email" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <input type="text" id="auth-email" class="form-input" placeholder="Email or Username" autocomplete="username" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <div id="auth-username-container" style="display: none;">
+          <input type="text" id="auth-username" class="form-input" placeholder="Username" autocomplete="username" autocorrect="off" autocapitalize="off" spellcheck="false">
+        </div>
         <input type="password" id="auth-password" class="form-input" placeholder="Password" autocomplete="current-password" autocorrect="off" autocapitalize="off" spellcheck="false">
         <button id="auth-submit-btn" class="minimal-button">Sign In</button>
         <p id="auth-toggle">
