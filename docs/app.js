@@ -68,23 +68,14 @@ function playSuccessSound() {
 // Enable audio on first user interaction (required by modern browsers)
 function enableAudioOnFirstInteraction() {
   const enableAudio = () => {
-    console.log('Enabling audio on first interaction');
     if (successAudio) {
       // Play a silent sound to unlock audio context
-      const originalVolume = successAudio.volume;
-      successAudio.volume = 0.01; // Very quiet but not silent
-      const unlockPromise = successAudio.play();
-      if (unlockPromise !== undefined) {
-        unlockPromise.then(() => {
-          successAudio.pause();
-          successAudio.currentTime = 0;
-          successAudio.volume = originalVolume; // Restore volume
-          console.log('Audio context unlocked successfully');
-        }).catch((error) => {
-          console.warn('Audio unlock failed:', error);
-          successAudio.volume = originalVolume; // Restore volume anyway
-        });
-      }
+      successAudio.volume = 0;
+      successAudio.play().then(() => {
+        successAudio.volume = 0.3; // Restore volume
+      }).catch(() => {
+        // Ignore errors for this unlock attempt
+      });
     }
     
     // Remove the event listeners after first interaction
