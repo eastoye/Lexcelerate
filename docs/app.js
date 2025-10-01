@@ -250,6 +250,7 @@ function renderStatsList(words) {
             </button>
           </div>
           <div class="word-score"><span>${wordObj.score || 0}</span></div>
+          <div class="word-score"><span>${(wordObj.score || 0).toFixed(2)}</span></div>
 
           <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
         </div>
