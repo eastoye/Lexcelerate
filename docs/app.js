@@ -249,7 +249,7 @@ function renderStatsList(words) {
               <span>${escapeHtml(wordObj.word.toLowerCase())}</span>
             </button>
           </div>
-          <div class="word-score"><span>${wordObj.score || 0}</span></div>
+          <div class="word-score"><span>${(wordObj.score || 0).toFixed(1)}</span></div>
 
           <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
         </div>
