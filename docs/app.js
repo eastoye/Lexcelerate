@@ -642,6 +642,7 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
   
   if (userSpelling.toLowerCase() === actualWord.toLowerCase()) {
     feedbackEl.textContent = "Correct!";
+    feedbackEl.className = "feedback-area feedback-correct";
     playSuccessSound(); // Play success audio
     if (practiceMode === 'catalogue') {
       currentWordObj.totalAttempts++;
@@ -665,6 +666,7 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
   } else {
     attemptCount++;
     feedbackEl.textContent = "Incorrect. Try again!";
+    feedbackEl.className = "feedback-area feedback-incorrect";
     if (practiceMode === 'catalogue') {
       if (!currentWordObj.mistakes) currentWordObj.mistakes = {};
       let attemptLower = userSpelling.toLowerCase();
