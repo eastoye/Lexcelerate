@@ -21,9 +21,18 @@ let successAudio = null;
 // Initialize audio
 function initializeAudio() {
   try {
-    successAudio = new Audio('./correctbell.wav');
+    successAudio = new Audio('correctbell.wav');
     successAudio.volume = 0.3; // Set moderate volume
     successAudio.preload = 'auto';
+    
+    // Add event listeners to debug audio loading
+    successAudio.addEventListener('canplaythrough', () => {
+      console.log('Success audio loaded successfully');
+    });
+    
+    successAudio.addEventListener('error', (e) => {
+      console.error('Error loading success audio:', e);
+    });
   } catch (error) {
     console.warn('Could not load success audio:', error);
   }
@@ -31,14 +40,27 @@ function initializeAudio() {
 
 // Play success sound
 function playSuccessSound() {
+  console.log('playSuccessSound called, soundEnabled:', soundEnabled, 'successAudio exists:', !!successAudio);
   if (successAudio && soundEnabled) {
     try {
       successAudio.currentTime = 0; // Reset to beginning
-      successAudio.play().catch(error => {
-        console.warn('Could not play success audio:', error);
-      });
+      const playPromise = successAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          console.log('Success audio played successfully');
+        }).catch(error => {
+          console.warn('Could not play success audio:', error);
+        });
+      }
     } catch (error) {
       console.warn('Error playing success audio:', error);
+    }
+  } else {
+    if (!soundEnabled) {
+      console.log('Sound is disabled');
+    }
+    if (!successAudio) {
+      console.log('Success audio not loaded');
     }
   }
 }
@@ -249,7 +271,7 @@ function renderStatsList(words) {
               <span>${escapeHtml(wordObj.word.toLowerCase())}</span>
             </button>
           </div>
-          <div class="word-score"><span>${wordObj.score || 0}</span></div>
+          <div class="word-score"><span>${(wordObj.score || 0).toFixed(1)}</span></div>
 
           <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
         </div>
