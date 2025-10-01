@@ -9,13 +9,13 @@ import './app.js';
 let currentUser = null;
 let userProfile = null;
 let isSignUpMode = false;
-let isGuestMode = false;
+window.isGuestMode = false;
 
 // Initialize auth state listener
 onAuthStateChange(async (user) => {
   if (user) {
     currentUser = user;
-    isGuestMode = false; // Ensure we're not in guest mode when signed in
+    window.isGuestMode = false; // Ensure we're not in guest mode when signed in
     console.log('User signed in:', user.email);
     
     // Load user profile
@@ -53,7 +53,7 @@ onAuthStateChange(async (user) => {
   } else {
     currentUser = null;
     userProfile = null;
-    isGuestMode = false;
+    window.isGuestMode = false;
     console.log('User signed out');
     
     window.wordCatalogue = [];
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Guest mode functions
 function enterGuestMode() {
-  isGuestMode = true;
+  window.isGuestMode = true;
   currentUser = { id: 'guest', email: 'guest@local' };
   userProfile = { username: 'Guest User' };
   
@@ -106,7 +106,7 @@ function enterGuestMode() {
 }
 
 function exitGuestMode() {
-  isGuestMode = false;
+  window.isGuestMode = false;
   currentUser = null;
   userProfile = null;
   
@@ -122,7 +122,7 @@ function exitGuestMode() {
 
 // Load user's catalogue from Supabase
 async function loadUserCatalogueFromSupabase() {
-  if (isGuestMode) {
+  if (window.isGuestMode) {
     loadGuestCatalogueFromLocalStorage();
     return;
   }
@@ -173,7 +173,7 @@ function loadGuestCatalogueFromLocalStorage() {
 async function saveUserCatalogueToSupabase() {
   if (!currentUser) return;
   
-  if (isGuestMode) {
+  if (window.isGuestMode) {
     saveGuestCatalogueToLocalStorage();
     return;
   }
@@ -335,7 +335,7 @@ function showAuthError(message) {
 
 // Update logout button to use Supabase auth
 document.getElementById('logout-btn').addEventListener('click', async () => {
-  if (isGuestMode) {
+  if (window.isGuestMode) {
     if (confirm('Are you sure you want to exit guest mode? Your data will remain saved locally.')) {
       exitGuestMode();
     }
@@ -442,7 +442,6 @@ function showUsernameError(message) {
 // Make functions available globally for the existing app.js
 window.currentUser = currentUser;
 window.userProfile = userProfile;
-window.isGuestMode = isGuestMode;
 window.saveUserCatalogueToSupabase = saveUserCatalogueToSupabase;
 window.loadUserCatalogueFromSupabase = loadUserCatalogueFromSupabase;
 
