@@ -43,6 +43,31 @@ function playSuccessSound() {
   }
 }
 
+// Enable audio on first user interaction (required by modern browsers)
+function enableAudioOnFirstInteraction() {
+  const enableAudio = () => {
+    if (successAudio) {
+      // Play a silent sound to unlock audio context
+      successAudio.volume = 0;
+      successAudio.play().then(() => {
+        successAudio.volume = 0.3; // Restore volume
+      }).catch(() => {
+        // Ignore errors for this unlock attempt
+      });
+    }
+    
+    // Remove the event listeners after first interaction
+    document.removeEventListener('click', enableAudio);
+    document.removeEventListener('touchstart', enableAudio);
+    document.removeEventListener('keydown', enableAudio);
+  };
+  
+  // Add event listeners for first user interaction
+  document.addEventListener('click', enableAudio);
+  document.addEventListener('touchstart', enableAudio);
+  document.addEventListener('keydown', enableAudio);
+}
+
 // ---------------------------
 // Save catalogue for current user (now uses Supabase via main.js)
 function saveCatalogue() {
