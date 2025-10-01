@@ -730,4 +730,5 @@ window.addEventListener('click', (event) => {
 // Initialize audio when the page loads
 document.addEventListener('DOMContentLoaded', () => {
   initializeAudio();
+  enableAudioOnFirstInteraction();
 });
