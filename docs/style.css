@@ -44,7 +44,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100dvh;
-  padding: var(--pad-top) 4px var(--pad-bottom);
+  padding: var(--pad-top) 12px var(--pad-bottom);
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
