@@ -649,6 +649,12 @@ body {
   overflow: hidden;
   width: 100%;
   box-sizing: border-box;
+  min-height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .word-prompt:hover {
