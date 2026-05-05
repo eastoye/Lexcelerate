@@ -698,6 +698,9 @@ body {
   color: var(--color-secondary-text);
   font-style: italic;
   font-weight: 400;
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 
 .control-buttons {
