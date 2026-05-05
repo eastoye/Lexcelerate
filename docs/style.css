@@ -1828,7 +1828,7 @@ body {
   margin-bottom: 1rem;
   text-align: center;
 }
-
+ 
 /* === Responsive === */
 @media (max-width: 600px) {
   .minimal-container {
