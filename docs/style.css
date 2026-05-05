@@ -341,8 +341,12 @@ body {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   position: relative;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 .word-of-day-card::before {
   content: '';
   position: absolute;
