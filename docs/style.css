@@ -394,10 +394,14 @@ body {
 }
 
 .wotd-hint {
+  display: block;
+  width: 100%;
   font-size: clamp(0.8rem, 2.5vw, 0.9rem);
   color: var(--color-secondary-text);
   font-style: italic;
   font-weight: 300;
+  text-align: center;
+  margin-top: var(--spacing-sm);
 }
 
 /* === Progress Summary === */
