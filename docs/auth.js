@@ -41,10 +41,14 @@ export const getUserProfile = async () => {
       .from('profiles')
       .select('*')
       .eq('id', user.id)
-      .single();
+      .maybeSingle();
 
     if (error) {
       return { success: false, error: error.message };
+    }
+
+    if (!data) {
+      return { success: true, data: { id: user.id, username: null, email: user.email } };
     }
 
     return { success: true, data };
