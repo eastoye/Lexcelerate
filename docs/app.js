@@ -93,30 +93,39 @@ function showNotification(message) {
 // ---------------------------
 // Word of the Day: Persist for 24 hours
 // ---------------------------
-function loadWordOfTheDay() {
-  const defaultWords = [
-  "serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous",
-  "arenaceous", "soliloquy", "pahoehoe", "soporific", "skerry", "guffaw",
-  "oubliette", "fusty", "proprioception", "hermetic", "bokeh", "smarmy",
-  "pavonine", "redound", "citify", "holus-bolus", "stelliferous", "doodad",
-  "jubilate", "exculpatory", "dislimn", "favonian", "gainsay", "burnish",
-  "whitherward", "heyday", "chatoyant", "pied-à-terre", "debonair",
-  "scrimshank", "tagliatelle", "harrumph", "afterclap", "unalienable",
-  "mundify", "chartaceous", "mugwump", "gutta-percha", "laudatory",
-  "glair", "garble", "scrabbly", "pugilistic", "polemics", "solstitial"
+const WOTD_POOL = [
+  "acceptable", "accidentally", "accommodate", "acquire", "acquit",
+  "amateur", "apparent", "argument", "calendar", "cemetery",
+  "changeable", "committed", "conscience", "conscientious", "conscious",
+  "consensus", "definitely", "discipline", "embarrass", "exhilarate",
+  "exceed", "existence", "experience", "fiery", "foreign",
+  "gauge", "grateful", "guarantee", "harass", "hierarchy",
+  "immediate", "independent", "indispensable", "intelligence", "jewellery",
+  "judgement", "liaison", "licence", "maintenance", "manoeuvre",
+  "millennium", "minuscule", "mischievous", "noticeable", "occasionally",
+  "occurrence", "perseverance", "possession", "privilege", "pronunciation",
+  "halcyon", "querulous", "lampoon", "temperance", "precocious",
+  "ramshackle", "praxis", "coterminous", "palimpsest", "reify",
+  "fervent", "quiescent", "harangue", "puckish", "antiquarian",
+  "vainglory", "incommunicado", "beatific", "triumvirate", "candour",
+  "effulgent", "perspicacious", "ascribe", "platitude", "breviloquent",
+  "lodestar", "schlep", "faux pas", "equanimous", "ossify",
+  "gambit", "plangent", "supervene", "pedagogy", "mondegreen",
+  "flummox", "extempore", "jocund", "reticent", "caesura",
+  "aphorism", "farrago", "clement", "moxie", "euphonious",
+  "alpenglow", "vehement", "piquant", "sempiternal", "parsimony"
 ];
 
-  const storedWOTD = localStorage.getItem('wotd');
-  const wotdTimestamp = localStorage.getItem('wotdTimestamp');
+function getWordOfTheDay() {
+  const EPOCH = Date.UTC(2025, 0, 1);
   const now = Date.now();
-  if (storedWOTD && wotdTimestamp && (now - wotdTimestamp < 86400000)) {
-    document.getElementById('wotd').textContent = storedWOTD;
-  } else {
-    let wotd = defaultWords[Math.floor(Math.random() * defaultWords.length)];
-    localStorage.setItem('wotd', wotd);
-    localStorage.setItem('wotdTimestamp', now);
-    document.getElementById('wotd').textContent = wotd;
-  }
+  const daysSinceEpoch = Math.floor((now - EPOCH) / 86400000);
+  return WOTD_POOL[daysSinceEpoch % WOTD_POOL.length];
+}
+
+function loadWordOfTheDay() {
+  const wotd = getWordOfTheDay();
+  document.getElementById('wotd').textContent = wotd;
 }
 
 // Use a guard flag to prevent the Word of the Day click handler from firing twice.
