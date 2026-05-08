@@ -10,7 +10,7 @@ window.wordCatalogue = []; // Loaded per user - make globally accessible
 let randomTrials = [];
 
 // Global practice mode variable ('catalogue' or 'random')
-let practiceMode = 'catalogue';
+window.practiceMode = window.practiceMode || 'catalogue';
 
 // Global reveal counter for current word
 let currentRevealCount = 0;
@@ -578,7 +578,7 @@ document.addEventListener('click', (e) => {
 // ---------------------------
 document.getElementById('add-word-btn').addEventListener('click', () => { showScreen('add-word-screen'); });
 document.getElementById('practice-btn').addEventListener('click', () => {
-  if (practiceMode === 'catalogue' && wordCatalogue.length === 0) { alert('Please add at least one word first!'); return; }
+  if (window.practiceMode === 'catalogue' && wordCatalogue.length === 0) { alert('Please add at least one word first!'); return; }
   showScreen('practice-screen');
   loadPracticeWord();
 });
@@ -617,7 +617,7 @@ document.getElementById('save-word-btn').addEventListener('click', () => {
 // ---------------------------
 const maxScore = 100;
 function getRandomWord() {
-  if (practiceMode === 'random') {
+  if (window.practiceMode === 'random') {
     return getRandomDictionaryWord();
   } else {
     let totalWeight = 0;
@@ -640,7 +640,7 @@ function getRandomWord() {
 // ---------------------------
 // Load Practice Word (based on mode)
 function loadPracticeWord() {
-  if (practiceMode === 'random') {
+  if (window.practiceMode === 'random') {
     currentWordObj = getRandomDictionaryWord();
     let existing = randomTrials.find(t => t.word.toLowerCase() === currentWordObj.word.toLowerCase());
     if (existing) { existing.attempts = 0; existing.correct = false; }
@@ -660,6 +660,8 @@ function loadPracticeWord() {
     speechSynthesis.speak(utterance);
   }
 }
+
+window.loadPracticeWord = loadPracticeWord;
 
 // ---------------------------
 // Sound Toggle with Icon Change
@@ -717,7 +719,7 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
     feedbackEl.textContent = "Correct!";
     feedbackEl.className = "feedback-area feedback-correct";
     playSuccessSound(); // Play success audio
-    if (practiceMode === 'catalogue') {
+    if (window.practiceMode === 'catalogue') {
       currentWordObj.totalAttempts++;
       currentWordObj.streak++;
       let basePoints = 1;
@@ -740,7 +742,7 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
     attemptCount++;
     feedbackEl.textContent = "Incorrect. Try again!";
     feedbackEl.className = "feedback-area feedback-incorrect";
-    if (practiceMode === 'catalogue') {
+    if (window.practiceMode === 'catalogue') {
       if (!currentWordObj.mistakes) currentWordObj.mistakes = {};
       let attemptLower = userSpelling.toLowerCase();
       if (attemptLower !== actualWord.toLowerCase()) {
