@@ -15,6 +15,41 @@ window.practiceMode = window.practiceMode || 'catalogue';
 // Global reveal counter for current word
 let currentRevealCount = 0;
 
+// ---------------------------
+// Reusable Helper: Create Default Word Object
+// ---------------------------
+function createDefaultWordObject(word) {
+  return {
+    word: word,
+    totalAttempts: 0,
+    correctFirstTryCount: 0,
+    mistakes: {},
+    nextReview: Date.now(),
+    interval: 1,
+    score: 0,
+    streak: 0
+  };
+}
+window.createDefaultWordObject = createDefaultWordObject;
+
+// ---------------------------
+// Import Parser: Accepts JSON array of strings, JSON array of objects, or plain text
+// ---------------------------
+function parseImportData(raw) {
+  const trimmed = raw.trim();
+  if (trimmed.startsWith('[')) {
+    const parsed = JSON.parse(trimmed);
+    if (!Array.isArray(parsed)) throw new Error('Invalid format');
+    return parsed.map(item => {
+      if (typeof item === 'string') return item.trim();
+      if (item && typeof item === 'object' && typeof item.word === 'string') return item.word.trim();
+      return null;
+    }).filter(w => w && w.length > 0);
+  }
+  return trimmed.split('\n').map(line => line.trim()).filter(w => w.length > 0);
+}
+window.parseImportData = parseImportData;
+
 // Audio feedback
 let successAudio = null;
 
@@ -75,6 +110,7 @@ function saveCatalogue() {
     window.saveUserCatalogueToSupabase();
   }
 }
+window.saveCatalogue = saveCatalogue;
 
 // ---------------------------
 // Notification (Non-blocking)
@@ -138,16 +174,7 @@ document.getElementById('wotd').addEventListener('click', () => {
   fetchDefinition(wotd, (definition) => {
     if (confirm(`Definition: ${definition}\n\nWould you like to add this word to your catalogue?`)) {
       if (!wordCatalogue.find(w => w.word.toLowerCase() === wotd.toLowerCase())) {
-        wordCatalogue.push({
-          word: wotd,
-          totalAttempts: 0,
-          correctFirstTryCount: 0,
-          mistakes: {},
-          nextReview: Date.now(),
-          interval: 1,
-          score: 0,
-          streak: 0
-        });
+        wordCatalogue.push(createDefaultWordObject(wotd));
         saveCatalogue();
         showNotification(`"${wotd}" added to your catalogue`);
         updateProgressSummary();
@@ -593,16 +620,7 @@ document.getElementById('save-word-btn').addEventListener('click', () => {
   const wordInput = document.getElementById('word-input');
   const word = wordInput.value.trim();
   if (word !== "") {
-    wordCatalogue.push({
-      word: word,
-      totalAttempts: 0,
-      correctFirstTryCount: 0,
-      mistakes: {},
-      nextReview: Date.now(),
-      interval: 1,
-      score: 0,
-      streak: 0
-    });
+    wordCatalogue.push(createDefaultWordObject(word));
     saveCatalogue();
     wordInput.value = '';
     showNotification(`"${word}" added`);
@@ -662,6 +680,23 @@ function loadPracticeWord() {
 }
 
 window.loadPracticeWord = loadPracticeWord;
+
+// ---------------------------
+// Add Random Word to Catalogue Button
+document.addEventListener('click', (e) => {
+  if (e.target.closest('#add-random-to-catalogue-btn')) {
+    if (!currentWordObj) return;
+    const word = currentWordObj.word;
+    if (wordCatalogue.some(w => w.word.toLowerCase() === word.toLowerCase())) {
+      showNotification(`"${word}" is already in your catalogue`);
+      return;
+    }
+    wordCatalogue.push(createDefaultWordObject(word));
+    saveCatalogue();
+    showNotification(`"${word}" added to catalogue`);
+    updateProgressSummary();
+  }
+});
 
 // ---------------------------
 // Sound Toggle with Icon Change
@@ -783,20 +818,33 @@ document.getElementById('export-btn').addEventListener('click', () => {
 });
 
 document.getElementById('import-btn').addEventListener('click', () => {
-  let importData = prompt("Paste your catalogue JSON here:");
+  let importData = prompt("Paste words here (JSON array or one word per line):");
   if (importData) {
     try {
-      const imported = JSON.parse(importData);
-      if (Array.isArray(imported)) {
-        wordCatalogue = imported;
-        saveCatalogue();
-        showNotification("Catalogue imported successfully");
-        updateStatsList();
-      } else {
-        alert("Invalid data format.");
+      const words = parseImportData(importData);
+      if (words.length === 0) {
+        alert("No valid words found in the input.");
+        return;
       }
+      let added = 0;
+      let skipped = 0;
+      words.forEach(word => {
+        const exists = wordCatalogue.some(w => w.word.toLowerCase() === word.toLowerCase());
+        if (exists) {
+          skipped++;
+        } else {
+          wordCatalogue.push(createDefaultWordObject(word));
+          added++;
+        }
+      });
+      saveCatalogue();
+      updateProgressSummary();
+      updateStatsList();
+      updateStatsSummary();
+      refreshSmartList();
+      showNotification(`Import complete: ${added} added, ${skipped} already existed.`);
     } catch (e) {
-      alert("Error parsing JSON.");
+      alert("Error parsing import data. Accepted formats: JSON array or one word per line.");
     }
   }
 });

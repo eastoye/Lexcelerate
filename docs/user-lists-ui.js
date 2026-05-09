@@ -97,6 +97,12 @@ function setupListManagementListeners() {
     addWordForm.addEventListener('submit', handleAddWordToList);
   }
 
+  // Import words to list
+  const importWordsToListBtn = document.getElementById('import-words-to-list-btn');
+  if (importWordsToListBtn) {
+    importWordsToListBtn.addEventListener('click', handleImportWordsToList);
+  }
+
   // Editable title and description
   setupEditableFields();
 }
@@ -660,6 +666,66 @@ async function handleSaveListChanges() {
     }
   } else {
     alert(`Error updating list: ${result.error}`);
+  }
+}
+
+// Import words into the current custom list
+async function handleImportWordsToList() {
+  if (!currentListId) {
+    alert('No list selected.');
+    return;
+  }
+
+  const importData = prompt("Paste words here (JSON array or one word per line):");
+  if (!importData) return;
+
+  try {
+    const words = window.parseImportData(importData);
+    if (words.length === 0) {
+      alert("No valid words found in the input.");
+      return;
+    }
+
+    const existingLower = currentListWords.map(w => w.word.toLowerCase());
+    let added = 0;
+    let skipped = 0;
+
+    for (const word of words) {
+      if (existingLower.includes(word.toLowerCase())) {
+        skipped++;
+        continue;
+      }
+      const result = await addWordToList(currentListId, word);
+      if (result.success) {
+        added++;
+        existingLower.push(word.toLowerCase());
+      } else if (result.error && result.error.includes('already exists')) {
+        skipped++;
+      } else {
+        added++;
+      }
+    }
+
+    // Also add imported words to catalogue if missing
+    if (window.wordCatalogue && window.createDefaultWordObject) {
+      let catalogueAdded = 0;
+      words.forEach(word => {
+        const exists = window.wordCatalogue.some(w => w.word.toLowerCase() === word.toLowerCase());
+        if (!exists) {
+          window.wordCatalogue.push(window.createDefaultWordObject(word));
+          catalogueAdded++;
+        }
+      });
+      if (catalogueAdded > 0 && window.saveCatalogue) {
+        window.saveCatalogue();
+      }
+    }
+
+    await loadListWords(currentListId);
+    const showNotification = window.showNotification || alert;
+    showNotification(`Import complete: ${added} added, ${skipped} already existed.`);
+  } catch (e) {
+    alert("Error parsing import data. Accepted formats: JSON array or one word per line.");
   }
 }
 
