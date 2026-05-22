@@ -654,29 +654,6 @@ function getRandomWord() {
     return wordCatalogue[0];
   }
 }
-// ---------------------------
-// Reliable text-to-speech helper
-let speechTimeout = null;
-
-function speakWordSafely(word) {
-  if (!word || !window.speechSynthesis) return;
-
-  if (speechTimeout) {
-    clearTimeout(speechTimeout);
-  }
-
-  speechSynthesis.cancel();
-
-  speechTimeout = setTimeout(() => {
-    const utterance = new SpeechSynthesisUtterance(word);
-    utterance.lang = 'en-GB';
-    utterance.rate = 0.9;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-
-    speechSynthesis.speak(utterance);
-  }, 200);
-}
 
 // ---------------------------
 // Load Practice Word (based on mode)
@@ -684,28 +661,26 @@ function loadPracticeWord() {
   if (window.practiceMode === 'random') {
     currentWordObj = getRandomDictionaryWord();
     let existing = randomTrials.find(t => t.word.toLowerCase() === currentWordObj.word.toLowerCase());
-    if (existing) {
-      existing.attempts = 0;
-      existing.correct = false;
-    } else {
-      randomTrials.push({ word: currentWordObj.word, attempts: 0, correct: false });
-    }
+    if (existing) { existing.attempts = 0; existing.correct = false; }
+    else { randomTrials.push({ word: currentWordObj.word, attempts: 0, correct: false }); }
   } else {
     currentWordObj = getRandomWord();
   }
-
   let actualWord = currentWordObj.word;
   document.getElementById('prompt').textContent = getCoveredWord(actualWord);
   document.getElementById('feedback').textContent = '';
   document.getElementById('spell-input').value = '';
   attemptCount = 0;
-  currentRevealCount = 0;
+  currentRevealCount = 0; // Reset reveal count for each new word
   document.getElementById('spell-input').disabled = false;
-
   if (soundEnabled) {
-    speakWordSafely(actualWord);
+    const utterance = new SpeechSynthesisUtterance(actualWord);
+    speechSynthesis.speak(utterance);
   }
 }
+
+window.loadPracticeWord = loadPracticeWord;
+
 // ---------------------------
 // Add Random Word to Catalogue Button
 document.addEventListener('click', (e) => {
