@@ -1,14 +1,16 @@
+import { HELP_TEXT, openHelp } from './help-content.js';
+
 // ---------------------------
 // Global Variables for User & Catalogue
 // ---------------------------
 let currentUser = null; // Now managed by Firebase Auth
 window.wordCatalogue = []; // Loaded per user - make globally accessible
 
-// Global variable for random trials (for random practice stats)
+// Global variable for random trials (for random Practice tats)
 let randomTrials = [];
 
 // Global practice mode variable ('catalogue' or 'random')
-let practiceMode = 'catalogue';
+window.practiceMode = window.practiceMode || 'catalogue';
 
 // Global reveal counter for current word
 let currentRevealCount = 0;
@@ -19,7 +21,7 @@ let successAudio = null;
 // Initialize audio
 function initializeAudio() {
   try {
-    successAudio = new Audio('./correctbell.wav');
+    successAudio = new Audio('./bell noises.wav');
     successAudio.volume = 0.3; // Set moderate volume
     successAudio.preload = 'auto';
   } catch (error) {
@@ -39,6 +41,31 @@ function playSuccessSound() {
       console.warn('Error playing success audio:', error);
     }
   }
+}
+
+// Enable audio on first user interaction (required by modern browsers)
+function enableAudioOnFirstInteraction() {
+  const enableAudio = () => {
+    if (successAudio) {
+      // Play a silent sound to unlock audio context
+      successAudio.volume = 0;
+      successAudio.play().then(() => {
+        successAudio.volume = 0.3; // Restore volume
+      }).catch(() => {
+        // Ignore errors for this unlock attempt
+      });
+    }
+    
+    // Remove the event listeners after first interaction
+    document.removeEventListener('click', enableAudio);
+    document.removeEventListener('touchstart', enableAudio);
+    document.removeEventListener('keydown', enableAudio);
+  };
+  
+  // Add event listeners for first user interaction
+  document.addEventListener('click', enableAudio);
+  document.addEventListener('touchstart', enableAudio);
+  document.addEventListener('keydown', enableAudio);
 }
 
 // ---------------------------
@@ -66,30 +93,39 @@ function showNotification(message) {
 // ---------------------------
 // Word of the Day: Persist for 24 hours
 // ---------------------------
-function loadWordOfTheDay() {
-  const defaultWords = [
-  "serendipity", "eloquence", "ephemeral", "labyrinth", "mellifluous",
-  "arenaceous", "soliloquy", "pahoehoe", "soporific", "skerry", "guffaw",
-  "oubliette", "fusty", "proprioception", "hermetic", "bokeh", "smarmy",
-  "pavonine", "redound", "citify", "holus-bolus", "stelliferous", "doodad",
-  "jubilate", "exculpatory", "dislimn", "favonian", "gainsay", "burnish",
-  "whitherward", "heyday", "chatoyant", "pied-à-terre", "debonair",
-  "scrimshank", "tagliatelle", "harrumph", "afterclap", "unalienable",
-  "mundify", "chartaceous", "mugwump", "gutta-percha", "laudatory",
-  "glair", "garble", "scrabbly", "pugilistic", "polemics", "solstitial"
+const WOTD_POOL = [
+  "acceptable", "accidentally", "accommodate", "acquire", "acquit",
+  "amateur", "apparent", "argument", "calendar", "cemetery",
+  "changeable", "committed", "conscience", "conscientious", "conscious",
+  "consensus", "definitely", "discipline", "embarrass", "exhilarate",
+  "exceed", "existence", "experience", "fiery", "foreign",
+  "gauge", "grateful", "guarantee", "harass", "hierarchy",
+  "immediate", "independent", "indispensable", "intelligence", "jewellery",
+  "judgement", "liaison", "licence", "maintenance", "manoeuvre",
+  "millennium", "minuscule", "mischievous", "noticeable", "occasionally",
+  "occurrence", "perseverance", "possession", "privilege", "pronunciation",
+  "halcyon", "querulous", "lampoon", "temperance", "precocious",
+  "ramshackle", "praxis", "coterminous", "palimpsest", "reify",
+  "fervent", "quiescent", "harangue", "puckish", "antiquarian",
+  "vainglory", "incommunicado", "beatific", "triumvirate", "candour",
+  "effulgent", "perspicacious", "ascribe", "platitude", "breviloquent",
+  "lodestar", "schlep", "faux pas", "equanimous", "ossify",
+  "gambit", "plangent", "supervene", "pedagogy", "mondegreen",
+  "flummox", "extempore", "jocund", "reticent", "caesura",
+  "aphorism", "farrago", "clement", "moxie", "euphonious",
+  "alpenglow", "vehement", "piquant", "sempiternal", "parsimony"
 ];
 
-  const storedWOTD = localStorage.getItem('wotd');
-  const wotdTimestamp = localStorage.getItem('wotdTimestamp');
+function getWordOfTheDay() {
+  const EPOCH = Date.UTC(2025, 0, 1);
   const now = Date.now();
-  if (storedWOTD && wotdTimestamp && (now - wotdTimestamp < 86400000)) {
-    document.getElementById('wotd').textContent = storedWOTD;
-  } else {
-    let wotd = defaultWords[Math.floor(Math.random() * defaultWords.length)];
-    localStorage.setItem('wotd', wotd);
-    localStorage.setItem('wotdTimestamp', now);
-    document.getElementById('wotd').textContent = wotd;
-  }
+  const daysSinceEpoch = Math.floor((now - EPOCH) / 86400000);
+  return WOTD_POOL[daysSinceEpoch % WOTD_POOL.length];
+}
+
+function loadWordOfTheDay() {
+  const wotd = getWordOfTheDay();
+  document.getElementById('wotd').textContent = wotd;
 }
 
 // Use a guard flag to prevent the Word of the Day click handler from firing twice.
@@ -172,7 +208,71 @@ let soundEnabled = true; // Sound ON by default
 // ---------------------------
 // Dictionary Array for Random Words
 // ---------------------------
-const dictionaryWords = ["quixotic", "serendipity", "benevolent", "obfuscate", "pulchritude"];
+const dictionaryWords = [
+  "tiffin", "lickety-split", "clowder", "sciolism", "odoriferous",
+  "idoneous", "armadillo", "birr", "klatsch", "operose",
+  "sashay", "appetence", "braird", "futz", "purlieu",
+  "fait accompli", "flocculent", "impetrate", "uitwaaien", "erstwhile",
+  "phlegmatic", "perpend", "land of Nod", "caparison", "boondoggle",
+  "Lucullan", "lagniappe", "taradiddle", "infomania", "divagate",
+  "williwaw", "lapidify", "expiscate", "floriferous", "pericope",
+  "sub rosa", "juvenescent", "eidolon", "inhere", "muzz",
+  "pizzetta", "prescind", "rogue", "felicitate", "bon ton",
+  "aleatory", "hogwash", "vade mecum", "epistolize", "mumpsimus",
+  "odontoid", "yaw", "sobersided", "lunation", "adret",
+  "higgledy-piggledy", "billet-doux", "loblolly", "catechize", "eudemonic",
+  "vilipend", "xylography", "boohoo", "lateral", "mantic",
+  "ergophobia", "mythomania", "tutoyer", "plage", "atiptoe",
+  "boustrophedon", "inure", "ludic", "scofflaw", "anatine",
+  "krummholz", "circumambient", "hypethral", "sagittate", "apocope",
+  "sockeroo", "mephitic", "Panglossian", "vituperate", "skosh",
+  "moschate", "first-foot", "threshold", "simonize", "mascot",
+  "brumal", "sotto voce", "jollification", "tergiversate", "phillumenist",
+  "scry", "clishmaclaver", "comport", "prithee", "bergschrund",
+  "subfusc", "skiddoo", "boscage", "balustrade", "couchant",
+  "fulgurate", "curio", "Palladian", "consanguinity", "regnant",
+  "iiwi", "splurge", "gastronomy", "orthoepy", "homologous",
+  "mussitate", "acculturation", "vector", "liminal", "quixotic",
+  "osmosis", "permutation", "verisimilitude", "balneal", "akimbo",
+  "acedia", "brindled", "fantasticate", "fortitude", "ad rem",
+  "hunky-dory", "ambsace", "colloquial", "adjuvant", "jnana",
+  "ingeminate", "calque", "suspire", "olfactory", "grimoire",
+  "wheedle", "jaggery", "homologate", "qanat", "esoteric",
+  "agrestic", "snarf", "pinchbeck", "lanai", "quotha",
+  "contemporaneous", "crepitate", "interlard", "esemplastic", "spoor",
+  "majuscule", "placate", "velodrome", "toodle-oo", "fallal",
+  "al desko", "evenfall", "emend", "premiate", "pinnate",
+  "saxicoline", "incunabula", "cacography", "untoward", "doohickey",
+  "bonsai", "ethereal", "gung-ho", "furlough", "ombudsman",
+  "cherub", "bon mot", "pundit", "ao dai", "horde",
+  "boondocks", "lagom", "intelligentsia", "piranha", "mazurka",
+  "lucid", "mukbang", "banshee", "tycoon", "gleam",
+  "leviathan", "myriad", "caravan", "veld", "pidgin",
+  "talisman", "verboten", "vigilante", "panache", "gusto",
+  "pigeonhole", "amain", "sidereal", "carrack", "stymie",
+  "betimes", "gadzookery", "mistryst", "demitasse", "flexuous",
+  "riposte", "etiolate", "blithesome", "remora", "primogeniture",
+  "arenaceous", "soliloquy", "haply", "pahoehoe", "coze",
+  "rufous", "lief", "soporific", "skerry", "guffaw",
+  "oubliette", "fusty", "proprioception", "hermetic", "bokeh",
+  "smarmy", "pavonine", "hooey", "redound", "ilk",
+  "citify", "holus-bolus", "stelliferous", "doodad", "jubilate",
+  "exculpatory", "dislimn", "khaki", "favonian", "obi",
+  "gainsay", "burnish", "whitherward", "heyday", "chatoyant",
+  "pied-à-terre", "gad", "debonair", "yen", "scrimshank",
+  "tagliatelle", "harrumph", "afterclap", "unalienable", "mundify",
+  "roc", "chartaceous", "mugwump", "gutta-percha", "laudatory",
+  "glair", "garble", "scrabbly", "bukh", "pugilistic",
+  "polemics", "solstitial", "hotch", "soothfast", "jujitsu",
+  "equiponderate", "cipher", "tutelary", "pitapat", "vitrify",
+  "shindig", "galactoid", "tantalize", "carillon", "cockamamie",
+  "errantry", "kyoodle", "trafficator", "proscribe", "griseous",
+  "pogonip", "psittacine", "hornswoggle", "dactylogram", "fickle",
+  "nictate", "siesta", "erst", "geyser", "gnathonic",
+  "edify", "teratoid", "bijou", "gloze", "neatnik",
+  "mythopoeic", "coalesce", "zarf", "crabwise", "milestone",
+  "howdah", "peregrine", "affinity"
+];
 function getRandomDictionaryWord() {
   return { word: dictionaryWords[Math.floor(Math.random() * dictionaryWords.length)] };
 }
@@ -197,58 +297,74 @@ function updateStatsList() {
   // Update stats summary when updating stats list
   updateStatsSummary();
   
-  let html = '';
-  if (wordCatalogue.length === 0) {
-    html = '<p>No words added.</p>';
-  } else {
-    wordCatalogue.forEach((wordObj, index) => {
-      html += `<div class="word-stat">
-                <strong>${wordObj.word}</strong> ${Object.keys(wordObj.mistakes).length > 0 ? '!' : ''}
-                (Score: ${wordObj.score})
-                <button class="toggle-details" data-index="${index}">▼</button>
-                <button class="delete-word" data-index="${index}">Delete</button>
-                <div class="details" id="details-${index}">
-                  <p>Total Attempts: ${wordObj.totalAttempts}</p>
-                  <p>Correct on First Try: ${wordObj.correctFirstTryCount}</p>
-                  <p>Streak: ${wordObj.streak}</p>`;
-      if (Object.keys(wordObj.mistakes).length > 0) {
-        html += `<p>Mistakes:</p><ul>`;
-        for (let mistake in wordObj.mistakes) {
-          html += `<li>${mistake} : ${wordObj.mistakes[mistake]} time(s)</li>`;
-        }
-        html += `</ul>`;
-      } else {
-        html += `<p>No mistakes recorded.</p>`;
-      }
-      html += `</div></div>`;
-    });
+  renderStatsList(wordCatalogue);
+}
+
+// Modern card-based rendering function
+function renderStatsList(words) {
+  const statsListDiv = document.getElementById('stats-list');
+  
+  if (!words || words.length === 0) {
+    statsListDiv.innerHTML = '<p class="no-words">No words added yet.</p>';
+    return;
   }
+  
+  let html = '';
+  words.forEach((wordObj, index) => {
+    const mistakeCount = Object.keys(wordObj.mistakes || {}).length;
+    const hasDetails = wordObj.totalAttempts > 0 || mistakeCount > 0;
+    
+    html += `
+      <div class="word-stat-item" data-word="${wordObj.word.toLowerCase()}">
+        <div class="word-stat-header">
+          <div class="word-info">
+            <button class="toggle-details" data-word-index="${index}" aria-label="Toggle details for ${escapeHtml(wordObj.word)}">
+              <span>${escapeHtml(wordObj.word.toLowerCase())}</span>
+            </button>
+          </div>
+          <div class="word-score"><span>${(wordObj.score || 0).toFixed(1)}</span></div>
+
+          <button class="delete-word" data-word-index="${index}" aria-label="Delete word">×</button>
+        </div>
+        ${hasDetails ? `
+          <div class="details" id="details-${index}" style="display: none;">
+            <div class="detail-row">
+              <span class="detail-label">Total Attempts:</span>
+              <span class="detail-value">${wordObj.totalAttempts || 0}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Correct on First Try:</span>
+              <span class="detail-value">${wordObj.correctFirstTryCount || 0}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Current Streak:</span>
+              <span class="detail-value">${wordObj.streak || 0}</span>
+            </div>
+            ${mistakeCount > 0 ? `
+              <div class="mistakes-section">
+                <div class="mistakes-title">Common Mistakes</div>
+                ${Object.entries(wordObj.mistakes).map(([mistake, count]) => `
+                  <div class="mistake-item">
+                    <span class="mistake-word">${escapeHtml(mistake)}</span>
+                    <span class="mistake-count">${count}x</span>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  });
+  
   statsListDiv.innerHTML = html;
-  
-  document.querySelectorAll('.toggle-details').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      let idx = e.target.getAttribute('data-index');
-      let detailsDiv = document.getElementById('details-' + idx);
-      if (detailsDiv.style.display === 'block') {
-        detailsDiv.style.display = 'none';
-        e.target.textContent = '▼';
-      } else {
-        detailsDiv.style.display = 'block';
-        e.target.textContent = '▲';
-      }
-    });
-  });
-  
-  document.querySelectorAll('.delete-word').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      let idx = e.target.getAttribute('data-index');
-      if (confirm(`Delete word "${wordCatalogue[idx].word}"?`)) {
-        wordCatalogue.splice(idx, 1);
-        saveCatalogue();
-        updateStatsList();
-      }
-    });
-  });
+}
+
+// Utility function to escape HTML
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
 
 // Update stats summary cards
@@ -418,58 +534,57 @@ function refreshSmartList() {
 // Make refresh function globally accessible
 window.refreshSmartList = refreshSmartList;
 
+// Event delegation for stats list interactions
+document.addEventListener('click', (e) => {
+  // Handle toggle details button click
+  if (e.target.closest('.toggle-details')) {
+    const wordIndex = e.target.closest('.toggle-details').getAttribute('data-word-index');
+    const detailsDiv = document.getElementById(`details-${wordIndex}`);
+    
+    if (detailsDiv) {
+      const isExpanded = detailsDiv.style.display === 'block';
+      detailsDiv.style.display = isExpanded ? 'none' : 'block';
+      
+      // Update arrow in button text
+      const toggleBtn = e.target.closest('.toggle-details');
+      const buttonText = toggleBtn.innerHTML;
+      if (isExpanded) {
+        toggleBtn.innerHTML = buttonText.replace('▴', '▾');
+      } else {
+        toggleBtn.innerHTML = buttonText.replace('▾', '▴');
+      }
+      
+      toggleBtn.setAttribute('aria-expanded', !isExpanded);
+    }
+  }
+  
+  // Handle delete word
+  if (e.target.classList.contains('delete-word')) {
+    const wordIndex = parseInt(e.target.getAttribute('data-word-index'));
+    const wordObj = wordCatalogue[wordIndex];
+    
+    if (wordObj && confirm(`Delete word "${wordObj.word}"?`)) {
+      wordCatalogue.splice(wordIndex, 1);
+      saveCatalogue();
+      updateStatsList();
+      updateStatsSummary();
+      refreshSmartList();
+    }
+  }
+});
+
 // ---------------------------
 // Navigation Button Listeners
 // ---------------------------
 document.getElementById('add-word-btn').addEventListener('click', () => { showScreen('add-word-screen'); });
 document.getElementById('practice-btn').addEventListener('click', () => {
-  if (practiceMode === 'catalogue' && wordCatalogue.length === 0) { alert('Please add at least one word first!'); return; }
+  if (window.practiceMode === 'catalogue' && wordCatalogue.length === 0) { alert('Please add at least one word first!'); return; }
   showScreen('practice-screen');
   loadPracticeWord();
 });
 document.getElementById('stats-btn').addEventListener('click', () => { showScreen('stats-screen'); });
 document.querySelectorAll('.back-btn').forEach(button => {
   button.addEventListener('click', () => { showScreen('home-screen'); });
-});
-
-// ---------------------------
-// Practice Mode Toggle (Catalogue vs. Random)
-document.getElementById('mode-toggle-btn').addEventListener('click', () => {
-  if (practiceMode === 'catalogue') {
-    practiceMode = 'random';
-    document.getElementById('mode-toggle-btn').textContent = "Mode: Random";
-    document.getElementById('add-random-to-catalogue-btn').style.display = 'inline-block';
-  } else {
-    practiceMode = 'catalogue';
-    document.getElementById('mode-toggle-btn').textContent = "Mode: Catalogue";
-    document.getElementById('add-random-to-catalogue-btn').style.display = 'none';
-  }
-  loadPracticeWord();
-});
-
-// ---------------------------
-// Add Random Word to Catalogue (only in Random mode)
-document.getElementById('add-random-to-catalogue-btn').addEventListener('click', () => {
-  if (currentWordObj) {
-    let rw = currentWordObj.word;
-    if (!wordCatalogue.find(w => w.word.toLowerCase() === rw.toLowerCase())) {
-      wordCatalogue.push({
-        word: rw,
-        totalAttempts: 0,
-        correctFirstTryCount: 0,
-        mistakes: {},
-        nextReview: Date.now(),
-        interval: 1,
-        score: 0,
-        streak: 0
-      });
-      saveCatalogue();
-      showNotification(`"${rw}" added to your catalogue`);
-      updateProgressSummary();
-    } else {
-      showNotification(`"${rw}" is already in your catalogue`);
-    }
-  }
 });
 
 // ---------------------------
@@ -502,7 +617,7 @@ document.getElementById('save-word-btn').addEventListener('click', () => {
 // ---------------------------
 const maxScore = 100;
 function getRandomWord() {
-  if (practiceMode === 'random') {
+  if (window.practiceMode === 'random') {
     return getRandomDictionaryWord();
   } else {
     let totalWeight = 0;
@@ -525,7 +640,7 @@ function getRandomWord() {
 // ---------------------------
 // Load Practice Word (based on mode)
 function loadPracticeWord() {
-  if (practiceMode === 'random') {
+  if (window.practiceMode === 'random') {
     currentWordObj = getRandomDictionaryWord();
     let existing = randomTrials.find(t => t.word.toLowerCase() === currentWordObj.word.toLowerCase());
     if (existing) { existing.attempts = 0; existing.correct = false; }
@@ -545,6 +660,8 @@ function loadPracticeWord() {
     speechSynthesis.speak(utterance);
   }
 }
+
+window.loadPracticeWord = loadPracticeWord;
 
 // ---------------------------
 // Sound Toggle with Icon Change
@@ -600,8 +717,9 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
   
   if (userSpelling.toLowerCase() === actualWord.toLowerCase()) {
     feedbackEl.textContent = "Correct!";
+    feedbackEl.className = "feedback-area feedback-correct";
     playSuccessSound(); // Play success audio
-    if (practiceMode === 'catalogue') {
+    if (window.practiceMode === 'catalogue') {
       currentWordObj.totalAttempts++;
       currentWordObj.streak++;
       let basePoints = 1;
@@ -623,7 +741,8 @@ document.getElementById('submit-spelling-btn').addEventListener('click', () => {
   } else {
     attemptCount++;
     feedbackEl.textContent = "Incorrect. Try again!";
-    if (practiceMode === 'catalogue') {
+    feedbackEl.className = "feedback-area feedback-incorrect";
+    if (window.practiceMode === 'catalogue') {
       if (!currentWordObj.mistakes) currentWordObj.mistakes = {};
       let attemptLower = userSpelling.toLowerCase();
       if (attemptLower !== actualWord.toLowerCase()) {
@@ -682,78 +801,24 @@ document.getElementById('import-btn').addEventListener('click', () => {
   }
 });
 
-// ---------------------------
-// Help Modal Functionality
-document.getElementById('help-btn').addEventListener('click', () => {
-  let helpText = "";
-  const currentScreen = document.querySelector('.screen:not([style*="display: none"]), #home-screen:not([style*="display: none"]), #login-screen:not([style*="display: none"])');
-  switch(currentScreen.id) {
-    case "login-screen":
-      helpText = "Enter your username and password to sign in. All data is stored locally.";
-      break;
-    case "home-screen":
-      helpText = "Home: Use buttons to add words, practice word (toggle between Catalogue and Random modes), view stats, and see the Word of the Day. Click the Word of the Day for options.";
-      break;
-    case "add-word-screen":
-      helpText = "Add Word: Enter a new word to add to your catalogue and press 'Save Word'.";
-      break;
-    case "practice-screen":
-      helpText = "Practice Word: Toggle between Catalogue and Random modes using the Mode button. Click on the covered word to reveal it. If sound is ON, it will be spoken automatically; if OFF, it won't speak unless you press Talk. Note: Revealing the word reduces your score.";
-      break;
-    case "stats-screen":
-      helpText = "Stats: Review your catalogue with detailed stats. Use Export/Import to copy or paste your catalogue. Press 'Show Random Trials' to view random word attempts.";
-      break;
-    default:
-      helpText = "Welcome to Lexcelerate.";
-  }
-  document.getElementById('help-text').innerHTML = `<p>${helpText}</p>`;
-  document.getElementById('help-modal').style.display = 'block';
+
+// Help buttons: open modal with mapped content
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.help-btn-card');
+  if (!btn) return;
+  const helpType = btn.dataset.help; // e.g., "home", "practice", etc.
+
+  // Set content & open
+  openHelp(helpType);
 });
 
-// Add help button functionality for all screens
-document.addEventListener('click', (e) => {
-  if (e.target.classList.contains('help-btn-card')) {
-    let helpText = "";
-    const currentScreen = document.querySelector('.screen:not([style*="display: none"]), #home-screen:not([style*="display: none"]), #auth-screen:not([style*="display: none"])');
-    
-    if (!currentScreen) return;
-    
-    switch(currentScreen.id) {
-      case "auth-screen":
-        helpText = "Enter your email and password to sign in or sign up. Toggle between sign in and sign up modes using the link below the form.";
-        break;
-      case "home-screen":
-        helpText = "Home: Use buttons to add words, practice words, view stats, and see the Word of the Day. Click the Word of the Day for its definition and to add it to your catalogue.";
-        break;
-      case "username-setup-screen":
-        helpText = "Choose a unique username to complete your account setup. Your username must be at least 3 characters long and can only contain letters, numbers, and underscores.";
-        break;
-      case "add-word-screen":
-        helpText = "Add Word: Enter a new word to add to your catalogue and press 'Add Word'. The word will be saved to your personal vocabulary list.";
-        break;
-      case "practice-screen":
-        helpText = "Practice: Select your practice source from the dropdown (Catalogue, Random Words, or Custom Lists). Click the covered word to reveal it, then type your spelling. Use the Talk button to hear the word spoken aloud.";
-        break;
-      case "my-lists-screen":
-        helpText = "Custom Lists: Create and manage your custom word lists. Click 'Create New List' to make a new list, or click on existing lists to view and edit them.";
-        break;
-      case "list-detail-screen":
-        helpText = "List Detail: View and manage words in your custom list. Click the title or description to edit them. Add new words using the input field, or remove words using the minus button.";
-        break;
-      case "stats-screen":
-        helpText = "Statistics: View your learning progress and word performance. Export your data, import from backup, or create custom lists. Click on words to see detailed statistics and manage them.";
-        break;
-      default:
-        helpText = "Welcome to Lexcelerate - your personal spelling practice app.";
-    }
-    
-    document.getElementById('help-text').innerHTML = `<p>${helpText}</p>`;
-    document.getElementById('help-modal').style.display = 'block';
-  }
-});
-document.getElementById('help-close').addEventListener('click', () => {
-  document.getElementById('help-modal').style.display = 'none';
-});
+// Help modal close handlers
+const helpClose = document.getElementById('help-close');
+if (helpClose) {
+  helpClose.addEventListener('click', () => {
+    document.getElementById('help-modal').style.display = 'none';
+  });
+}
 
 window.addEventListener('click', (event) => {
   const modal = document.getElementById('help-modal');
@@ -767,33 +832,5 @@ window.addEventListener('click', (event) => {
 // Initialize audio when the page loads
 document.addEventListener('DOMContentLoaded', () => {
   initializeAudio();
-  
-  // Add WOTD event listener after DOM is ready
-  document.getElementById('wotd').addEventListener('click', () => {
-    if (wotdHandling) return;
-    wotdHandling = true;
-    const wotd = document.getElementById('wotd').textContent;
-    fetchDefinition(wotd, (definition) => {
-      if (confirm(`Definition: ${definition}\n\nWould you like to add this word to your catalogue?`)) {
-        if (!wordCatalogue.find(w => w.word.toLowerCase() === wotd.toLowerCase())) {
-          wordCatalogue.push({
-            word: wotd,
-            totalAttempts: 0,
-            correctFirstTryCount: 0,
-            mistakes: {},
-            nextReview: Date.now(),
-            interval: 1,
-            score: 0,
-            streak: 0
-          });
-          saveCatalogue();
-          showNotification(`"${wotd}" added to your catalogue`);
-          updateProgressSummary();
-        } else {
-          showNotification(`"${wotd}" is already in your catalogue`);
-        }
-      }
-      wotdHandling = false;
-    });
-  });
+  enableAudioOnFirstInteraction();
 });
