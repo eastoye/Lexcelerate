@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: 'docs',
-  envDir: '..',
   build: {
     outDir: '../dist',
     emptyOutDir: true,

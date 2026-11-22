@@ -369,7 +369,7 @@ class PracticeListSelector {
       document.getElementById('add-random-to-catalogue-btn').style.display = 'none';
     }
     
-    // Reload Practice 
+    // Reload practice word
     if (window.loadPracticeWord) {
       window.loadPracticeWord();
     }

@@ -29,15 +29,9 @@
   <div id="auth-screen" class="screen" style="display: none;">
     <div class="home-wrapper">
       <div class="minimal-container">
-        <!-- Help Button in Card -->
-        <button class="help-btn-card" data-help="auth">?</button>
-        
         <h2 id="auth-title" class="app-title">Sign In to Lexcelerate</h2>
         <div id="auth-error" class="error-message" style="display: none;"></div>
-        <input type="text" id="auth-email" class="form-input" placeholder="Email or Username" autocomplete="username" autocorrect="off" autocapitalize="off" spellcheck="false">
-        <div id="auth-username-container" style="display: none;">
-          <input type="text" id="auth-username" class="form-input" placeholder="Username" autocomplete="username" autocorrect="off" autocapitalize="off" spellcheck="false">
-        </div>
+        <input type="email" id="auth-email" class="form-input" placeholder="Email" autocomplete="email" autocorrect="off" autocapitalize="off" spellcheck="false">
         <input type="password" id="auth-password" class="form-input" placeholder="Password" autocomplete="current-password" autocorrect="off" autocapitalize="off" spellcheck="false">
         <button id="auth-submit-btn" class="minimal-button">Sign In</button>
         <p id="auth-toggle">
@@ -53,7 +47,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button class="help-btn-card" data-help="home">?</button>
+        <button id="help-btn" class="help-btn-card">?</button>
         
         <div class="app-title">
           <h1>Lexcelerate</h1>
@@ -72,7 +66,7 @@
         <!-- Navigation Buttons -->
         <div class="action-buttons-minimal">
           <button id="add-word-btn" class="minimal-button">Add Word</button>
-          <button id="practice-btn" class="minimal-button">Practice </button>
+          <button id="practice-btn" class="minimal-button">Practice Word</button>
           <button id="stats-btn" class="minimal-button">Stats</button>
           <button id="logout-btn" class="minimal-button">Log Out</button>
         </div>
@@ -88,7 +82,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button class="help-btn-card" data-help="username">?</button>
+        <button id="help-btn" class="help-btn-card">?</button>
         
         <h2 class="page-title">Choose Your Username</h2>
         <p class="page-subtitle">Please choose a username to complete your account setup.</p>
@@ -105,7 +99,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button class="help-btn-card" data-help="add-word">?</button>
+        <button id="help-btn" class="help-btn-card">?</button>
         
         <!-- Back Button -->
         <button class="back-btn" title="Back to Home">
@@ -147,7 +141,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button class="help-btn-card" data-help="practice">?</button>
+        <button id="help-btn" class="help-btn-card">?</button>
         
         <!-- Back Button -->
         <button class="back-btn" title="Back to Home">
@@ -155,11 +149,22 @@
           <span class="back-text">Back to Home</span>
         </button>
 
-        <h1 class="page-title">Practice </h1>
+        <h1 class="page-title">Practice Word</h1>
         <p class="page-subtitle">Test your spelling skills</p>
         
-        <!-- Practice Source Picker - managed by smart-list-generator.js -->
-        <div class="mode-section"></div>
+        <!-- Mode Toggle Section -->
+        <div class="mode-section">
+          <button id="mode-toggle-btn" class="mode-toggle-btn">
+            <span class="mode-icon">📚</span>
+            <span class="mode-text">Mode: Catalogue</span>
+          </button>
+          
+          <!-- Add Random Word Button (only visible in Random mode) -->
+          <button id="add-random-to-catalogue-btn" class="add-random-btn" style="display: none;">
+            <span class="btn-icon">➕</span>
+            <span class="btn-text">Add to Catalogue</span>
+          </button>
+        </div>
 
         <!-- Word Practice Area -->
         <div class="practice-area">
@@ -174,7 +179,7 @@
             <button id="sound-toggle-btn" class="control-btn">🔊</button>
             <button id="talk-btn" class="control-btn talk-btn" title="Speak word aloud">
               <span class="btn-icon">🔊</span>
-              <span class="btn-text">Hear Word</span>
+              <span class="btn-text">Talk</span>
             </button>
           </div>
 
@@ -212,7 +217,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button class="help-btn-card" data-help="lists">?</button>
+        <button id="help-btn" class="help-btn-card">?</button>
         
         <!-- Back Button -->
         <button class="back-btn" title="Back to Home">
@@ -234,7 +239,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button class="help-btn-card" data-help="list-detail">?</button>
+        <button id="help-btn" class="help-btn-card">?</button>
         
         <!-- Back Button -->
         <button class="back-btn" title="Back to Lists">
@@ -259,10 +264,6 @@
           <input type="text" id="new-word-input" class="form-input" placeholder="Enter word to add" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
           <button type="submit" class="add-btn">➕ Add Word</button>
         </form>
-        <button id="import-words-to-list-btn" class="action-btn import-btn">
-          <span class="btn-icon">📥</span>
-          <span class="btn-text">Import Words</span>
-        </button>
         
         <div id="list-words-loading" style="display: none;">Loading words...</div>
         <div id="list-words-error" class="error-message" style="display: none;"></div>
@@ -342,7 +343,7 @@
     <div class="home-wrapper">
       <div class="minimal-container">
         <!-- Help Button in Card -->
-        <button class="help-btn-card" data-help="stats">?</button>
+        <button id="help-btn" class="help-btn-card">?</button>
         
         <!-- Back Button -->
         <button class="back-btn" title="Back to Home">
